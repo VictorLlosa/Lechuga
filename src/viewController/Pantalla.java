@@ -15,15 +15,16 @@ public class Pantalla extends JPanel {
 	private static final long serialVersionUID = 1L;
 
 	// Necesitamos guardar las etiquetas
-	private JLabel[][] matrizLabels =new JLabel[10][6];
+	private JLabel[][] matrizLabels = null;
 	
 	/**
 	 * Create the panel.
 	 */
-	public Pantalla() {
-		setLayout(new GridLayout(10,6));
+	public Pantalla(int x, int y) {
+		setLayout(new GridLayout(x,y));
+		matrizLabels = new JLabel[x][y];
 		//Está más grande(x10), cambiar a (100,60)
-		setPreferredSize(new Dimension(1000, 600));
+		setPreferredSize(new Dimension(x*100, y*100));
 		for(int i=0; i < 10 ; i++) {
 			for (int j=0; j < 6 ; j++) {
 				JLabel casillaLabel = new JLabel();
@@ -31,10 +32,13 @@ public class Pantalla extends JPanel {
 				casillaLabel.setBackground(Color.black);
 				casillaLabel.setBorder(new LineBorder(Color.gray));
 				matrizLabels[i][j] = casillaLabel;
-				add(casillaLabel);	
+				add(casillaLabel);
 			}
 		}
 		
+	}
 
+	public void cambiarColor() {
+		
 	}
 }
