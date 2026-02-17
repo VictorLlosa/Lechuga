@@ -1,5 +1,8 @@
 package model;
 
-public class Alien {
+import java.util.Observable;
+
+@SuppressWarnings("deprecation")
+public class Alien extends Observable{
 
 }

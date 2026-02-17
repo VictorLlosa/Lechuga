@@ -1,5 +1,8 @@
 package model;
 
-public class Nave {
+import java.util.Observable;
+
+@SuppressWarnings("deprecation")
+public class Nave extends Observable{
 
 }
