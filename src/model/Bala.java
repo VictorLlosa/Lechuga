@@ -1,5 +1,7 @@
 package model;
 
-public class Bala {
+import java.util.Observable;
 
+@SuppressWarnings("deprecation")
+public class Bala extends Observable{
 }

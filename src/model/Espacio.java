@@ -1,5 +1,8 @@
 package model;
 
-public class Espacio {
+import java.util.Observable;
+
+@SuppressWarnings("deprecation")
+public class Espacio extends Observable{
 
 }
