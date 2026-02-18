@@ -10,9 +10,10 @@ import java.awt.Dimension;
 import java.awt.Color;
 import java.awt.GridLayout;
 
-public class Pantalla extends JPanel {
+public class PantallaJuego extends JPanel {
 
 	private static final long serialVersionUID = 1L;
+	private static PantallaJuego miPantallaJuego;
 
 	// Necesitamos guardar las etiquetas
 	private JLabel[][] matrizLabels = null;
@@ -20,13 +21,15 @@ public class Pantalla extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public Pantalla(int x, int y) {
+	public PantallaJuego(int x, int y) {
+		
 		setLayout(new GridLayout(x,y));
 		matrizLabels = new JLabel[x][y];
+		
 		//Está más grande(x10), cambiar a (100,60)
-		setPreferredSize(new Dimension(x*100, y*100));
-		for(int i=0; i < 10 ; i++) {
-			for (int j=0; j < 6 ; j++) {
+		setPreferredSize(new Dimension(x, y));
+		for(int i=0; i < x ; i++) {
+			for (int j=0; j < y ; j++) {
 				JLabel casillaLabel = new JLabel();
 				casillaLabel.setOpaque(true);
 				casillaLabel.setBackground(Color.black);
@@ -38,6 +41,10 @@ public class Pantalla extends JPanel {
 		
 	}
 
+	public static PantallaJuego getPantallaJuego() {
+		return miPantallaJuego;
+	}
+	
 	public void cambiarColor() {
 		
 	}
