@@ -9,11 +9,15 @@ import java.awt.Dimension;
 
 import java.awt.Color;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class PantallaJuego extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static PantallaJuego miPantallaJuego;
+	private static final int ancho = 100;
+	private static final int alto = 60;
+	private static PantallaJuego miPantallaJuego = new PantallaJuego(ancho, alto);
 
 	// Necesitamos guardar las etiquetas
 	private JLabel[][] matrizLabels = null;
@@ -21,7 +25,7 @@ public class PantallaJuego extends JPanel {
 	/**
 	 * Create the panel.
 	 */
-	public PantallaJuego(int x, int y) {
+	private PantallaJuego(int x, int y) {
 		
 		setLayout(new GridLayout(x,y));
 		matrizLabels = new JLabel[x][y];
@@ -36,6 +40,7 @@ public class PantallaJuego extends JPanel {
 				casillaLabel.setBorder(new LineBorder(Color.gray));
 				matrizLabels[i][j] = casillaLabel;
 				add(casillaLabel);
+				
 			}
 		}
 		
@@ -45,7 +50,14 @@ public class PantallaJuego extends JPanel {
 		return miPantallaJuego;
 	}
 	
-	public void cambiarColor() {
+	private class Controlador implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			
+		}
 		
 	}
+	
 }
