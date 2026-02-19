@@ -13,18 +13,22 @@ public class SpaceInvaders extends JFrame {
     private static final long serialVersionUID = 1L;
 	private CardLayout cardLayout;
     private JPanel contenedor;
-    private static SpaceInvaders miSpace=new SpaceInvaders();
+    private static SpaceInvaders miSpace=null;
 
     
     public static void main(String[] args) {
-        new SpaceInvaders();
+        SpaceInvaders.getSpaceInvaders();
     }
     
     public static SpaceInvaders getSpaceInvaders() {
+    	if (miSpace==null) {
+    		miSpace= new SpaceInvaders();
+    	}
     	return miSpace;
     }
     
     private SpaceInvaders() {
+    	
     	getContentPane().setForeground(Color.WHITE);
     	getContentPane().setBackground(Color.WHITE);
     	setForeground(Color.WHITE);

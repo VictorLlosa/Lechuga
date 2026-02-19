@@ -1,8 +1,11 @@
 package viewController;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
 import javax.swing.*;
 
-import main.Controlador;
+import main.SpaceInvaders;
 
 public class PantallaInicio extends JPanel{
 
@@ -27,6 +30,24 @@ public class PantallaInicio extends JPanel{
 		this.add(getLblInstrucciones(), BorderLayout.NORTH);
 		this.add(getLabelImagen(), BorderLayout.CENTER);
 		this.add(getLblPlay(), BorderLayout.SOUTH);
+		
+		
+		
+		
+		
+		
+		//pulsar enter
+		// Key Binding para ENTER
+		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+		    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "startGame");
+
+		this.getActionMap().put("startGame", new AbstractAction() {
+		    @Override
+		    public void actionPerformed(ActionEvent e) {
+		        SpaceInvaders.getSpaceInvaders().cambioPantalla();;
+		    }
+		});
+
 	}
 	
 
