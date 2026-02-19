@@ -2,6 +2,8 @@ package viewController;
 import java.awt.*;
 import javax.swing.*;
 
+import main.Controlador;
+
 public class PantallaInicio extends JPanel{
 
 	private static final long serialVersionUID = 1L;
@@ -60,6 +62,7 @@ public class PantallaInicio extends JPanel{
 		if (lblPlay == null) {
 	        lblPlay = new JLabel("PLAY", SwingConstants.CENTER);
 	        lblPlay.setForeground(Color.RED);
+	        lblPlay.addKeyListener(Controlador.getControlador());
 		}
 		return lblPlay;
 	}
