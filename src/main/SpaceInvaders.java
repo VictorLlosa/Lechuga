@@ -1,10 +1,9 @@
 package main;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-
 import javax.swing.*;
 
+import model.GestorPartida;
 import viewController.PantallaInicio;
 import viewController.PantallaJuego;
 
@@ -61,7 +60,7 @@ public class SpaceInvaders extends JFrame {
     		
     		cardLayout.show(contenedor, "Juego");
     		//Modelo:
-    		Espacio.getEspacio();
+    		GestorPartida.getGestorPartida();
     	
     }
     
