@@ -58,8 +58,10 @@ public class SpaceInvaders extends JFrame {
     }
     
     public void cambioPantalla() {
-    	
+    		
     		cardLayout.show(contenedor, "Juego");
+    		//Modelo:
+    		Espacio.getEspacio();
     	
     }
     

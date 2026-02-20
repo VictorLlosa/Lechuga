@@ -22,7 +22,7 @@ public class PantallaInicio extends JPanel{
 
 	private PantallaInicio(String rutaImagen) {
 
-		this.setLayout(new BorderLayout(0, 0));
+		this.setLayout(new BorderLayout(10, 10));
 		//this.setOpaque(false);
 		
 		imagen = new ImageIcon(getClass().getResource(rutaImagen)).getImage();
@@ -67,8 +67,9 @@ public class PantallaInicio extends JPanel{
 	
 	private JLabel getLblInstrucciones() {
 		if (lblInstrucciones == null) {
-	        lblInstrucciones = new JLabel("Press ENTER to Play", SwingConstants.CENTER);
-	        lblInstrucciones.setForeground(Color.RED);
+	        lblInstrucciones = new JLabel("Press <A-W-S-D> to move and <SPACE> to fire", SwingConstants.CENTER);
+	        lblInstrucciones.setFont(new Font("Bitstream Charter", Font.BOLD, 22));
+	        lblInstrucciones.setForeground(Color.WHITE);
 		}
 		return lblInstrucciones;
 	}
@@ -81,9 +82,9 @@ public class PantallaInicio extends JPanel{
 	}
 	private JLabel getLblPlay() {
 		if (lblPlay == null) {
-	        lblPlay = new JLabel("PLAY", SwingConstants.CENTER);
-	        lblPlay.setForeground(Color.RED);
-	        lblPlay.addKeyListener(Controlador.getControlador());
+	        lblPlay = new JLabel("Press <ENTER> to start playing", SwingConstants.CENTER);
+	        lblPlay.setFont(new Font("Bitstream Charter", Font.BOLD, 22));
+	        lblPlay.setForeground(Color.WHITE);
 		}
 		return lblPlay;
 	}
