@@ -7,28 +7,31 @@ import java.util.Observer;
 public class Espacio {
 
 	private static Espacio miEspacio;
-	private final int hDim = 100 ;
+	private final int hDim = 100;
 	private final int vDim = 60;
 
-	
+	private ListaNaves listaNaves;
+	private ListaBalas listaBalas;
+
 	private Casilla[][] matriz;
-	
+
 	private Espacio() {
-		
+
+		listaNaves = new ListaNaves();
+		listaBalas = new ListaBalas();
+
 		matriz = new Casilla[hDim][vDim];
-		for(int i = 0; i<hDim; i++) {
-			for(int j = 0; j<vDim; j++) {
+		for (int i = 0; i < hDim; i++) {
+			for (int j = 0; j < vDim; j++) {
 				matriz[i][j] = new Casilla();
 			}
 		}
 	}
-	
-	public void anadirNave(Coordenada centro, Nave nave) {
 
-		int cX = centro.getX();
-		int cY = centro.getY();
+	public void anadirNave(Color pColor, Coordenada pCoord) {
 
-		matriz[55][50].dibujarNave(nave.getColor());
+		listaNaves.anadirNave(pColor, pCoord);
+		matriz[55][50].dibujarNave(listaNaves.getColorNave(0));
 		/* NAVE DE + DE 1 PIXEL
 		for(int i = 55 - cX; i<= 55 + cX; i++) {
 			for(int j = 50 - cY; j<= 50 + cY; j++) {
@@ -42,61 +45,85 @@ public class Espacio {
 	public void asignarObserver(Observer o, int pX, int pY) {
 		matriz[pX][pY].asignarObserver(o);
 	}
-	
+
 	public static Espacio getEspacio() {
-		if(miEspacio == null) {
+		if (miEspacio == null) {
 			miEspacio = new Espacio();
 		}
 		return miEspacio;
 	}
 
-	public boolean esCoordenadaValida(int x, int y){
-        return x < this.hDim && y < this.vDim && x >= 0 && y >= 0;
-    }
-	public Coordenada moverNave(Coordenada coordNave, Color colorNave, String tecla) {
+	public boolean esCoordenadaValida(int x, int y) {
+		return x < this.hDim && y < this.vDim && x >= 0 && y >= 0;
+	}
+
+	public void moverNave(int idNave, String tecla) {
+
+		Coordenada coordNave = listaNaves.getCoordNave(idNave);
+
+		Color colorNave = listaNaves.getColorNave(idNave);
+
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
 
-		switch (tecla){
+		int dx = 0, dy = 0;
+		switch (tecla) {
 			case "w":
-				if (esCoordenadaValida(cX,cY-1)){
-					matriz[cX][cY].vaciar();
-					matriz[cX][cY-1].dibujarNave(colorNave);
-					return new Coordenada(cX,cY-1);
-				}
-				else{
-					return null;
-				}
-            case "a":
-				if (esCoordenadaValida(cX-1,cY)){
-					matriz[cX][cY].vaciar();
-					matriz[cX-1][cY].dibujarNave(colorNave);
-					return new Coordenada(cX-1,cY);
-				}
-				else{
-					return null;
-				}
-            case "s":
-				if (esCoordenadaValida(cX,cY+1)){
-					matriz[cX][cY].vaciar();
-					matriz[cX][cY+1].dibujarNave(colorNave);
-					return new Coordenada(cX,cY+1);
-				}
-				else{
-					return null;
-				}
-            case "d":
-				if (esCoordenadaValida(cX+1,cY)){
-					matriz[cX][cY].vaciar();
-					matriz[cX+1][cY].dibujarNave(colorNave);
-					return new Coordenada(cX+1,cY);
-				}
-				else{
-					return null;
-				}
-            default:
-				return null;
-        }
+				dy = -1;
+				break;
+			case "a":
+				dx = -1;
+				break;
+			case "s":
+				dy = 1;
+				break;
+			case "d":
+				dx = 1;
+				break;
+			default:
+				return;
+		}
 
+		int nx = cX + dx;
+		int ny = cY + dy;
+		if (esCoordenadaValida(nx, ny)) {
+			matriz[cX][cY].vaciar();
+			matriz[nx][ny].dibujarNave(colorNave);
+			listaNaves.setCoordNave(idNave, nx, ny);
+		}
+
+	}
+
+	public void disparar(int idNave) {
+		Coordenada coordNave = listaNaves.getCoordNave(idNave);
+		Coordenada coordBala = new Coordenada(coordNave.getX(), coordNave.getY() - 1);
+		if (esCoordenadaValida(coordBala.getX(), coordBala.getY())) {
+			listaBalas.anadirBala(idNave, coordBala);
+			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
+		}
+	}
+
+	public void moverBalas() {
+
+
+		// Primero vaciamos las casillas que tenian las balas
+		// luego delegamos a la lista de balas el movimiento (que actualiza las coordenadas internamente)
+		// y finalmente dibujamos las balas en sus nuevas posiciones
+
+		int num = listaBalas.getNumBalas();
+		for (int i = 0; i < num; i++) {
+			Coordenada coordBala = listaBalas.getCoordBala(i);
+			matriz[coordBala.getX()][coordBala.getY()].vaciar();
+		}
+
+		// Mover las balas en la lista (actualiza coordenadas internamente)
+		listaBalas.moverBalas();
+
+		// Dibujar las balas en sus nuevas posiciones
+		num = listaBalas.getNumBalas();
+		for (int i = 0; i < num; i++) {
+			Coordenada coordBala = listaBalas.getCoordBala(i);
+			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
+		}
 	}
 }

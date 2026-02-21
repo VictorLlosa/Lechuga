@@ -2,24 +2,15 @@ package viewController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.beans.PropertyChangeListener;
-import java.util.Observable;
 import java.util.Observer;
 
-import main.SpaceInvaders;
-import model.Espacio;
 import model.GestorPartida;
-
-import javax.swing.*;
 
 public class Controlador implements ActionListener {
 
-	private static Controlador miControlador=new Controlador();
-	
+	private static final Controlador miControlador = new Controlador();
+
 	private Controlador() {
-		
 	}
 	
 	public static Controlador getControlador() {
@@ -39,12 +30,26 @@ public class Controlador implements ActionListener {
 		GestorPartida.getGestorPartida().moverNave(tecla);
 	}
 	
-    public void iniciarModelo() {
+	public void iniciarModelo() {
 		GestorPartida.getGestorPartida();
-    }
+	}
 
 	public void iniciarPartida() {
 		GestorPartida.getGestorPartida().iniciarPartida();
 	}
 
+	public void startDisparar(int idNave) {
+		GestorPartida.getGestorPartida().startDisparar(idNave);
+	}
+	public void stopDisparar(int idNave) {
+		GestorPartida.getGestorPartida().stopDisparar(idNave);
+	}
+
+	public void startMover(String tecla) {
+		GestorPartida.getGestorPartida().startMover(tecla);
+	}
+
+	public void stopMover(String tecla) {
+		GestorPartida.getGestorPartida().stopMover(tecla);
+	}
 }

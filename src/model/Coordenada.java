@@ -21,4 +21,8 @@ public class Coordenada {
 		x= pX;
 		y= pY;
     }
+
+    public void setY(int pY) {
+		y = pY;
+    }
 }

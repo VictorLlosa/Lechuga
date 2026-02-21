@@ -41,13 +41,33 @@ public class PantallaJuego extends JPanel {
 		}
 
 		asignarWASD();
+		asignarTeclaDisparo();
 
 	}
 
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(hDim * TAMANO_CASILLA, vDim * TAMANO_CASILLA);
+	private void asignarTeclaDisparo() {
+		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = this.getActionMap();
+
+		// Space pressed -> empezar a disparar (disparo inmediato)
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "disparar_pressed");
+		am.put("disparar_pressed", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controlador.getControlador().startDisparar(0);
+			}
+		});
+
+		// Space released -> parar disparo continuo
+		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "disparar_released");
+		am.put("disparar_released", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controlador.getControlador().stopDisparar(0);
+			}
+		});
 	}
+
 
 	/**
 	 * Asigna los controles WASD para mover la nave.
@@ -64,16 +84,27 @@ public class PantallaJuego extends JPanel {
 	}
 
 	/**
-	 * Asigna una tecla específica a una acción de movimiento.
+	 * Asigna una tecla específica a una acción de movimiento (WASD).
 	 */
 	private void asignarTecla(int keyCode, String comando) {
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-				.put(KeyStroke.getKeyStroke(keyCode, 0), comando);
+		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+		ActionMap am = this.getActionMap();
 
-		this.getActionMap().put(comando, new AbstractAction() {
+		// Key pressed
+		im.put(KeyStroke.getKeyStroke(keyCode, 0, false), comando + "_pressed");
+		am.put(comando + "_pressed", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Controlador.getControlador().moverNave(comando);
+				Controlador.getControlador().startMover(comando);
+			}
+		});
+
+		// Key released
+		im.put(KeyStroke.getKeyStroke(keyCode, 0, true), comando + "_released");
+		am.put(comando + "_released", new AbstractAction() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Controlador.getControlador().stopMover(comando);
 			}
 		});
 	}
@@ -90,6 +121,12 @@ public class PantallaJuego extends JPanel {
 			}
 		}
 	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(hDim * TAMANO_CASILLA, vDim * TAMANO_CASILLA);
+	}
+
 	public static PantallaJuego getPantallaJuego() {
 		if(miPantallaJuego == null) {
 			miPantallaJuego = new PantallaJuego();
@@ -97,5 +134,4 @@ public class PantallaJuego extends JPanel {
 		return miPantallaJuego;
 	}
 }
-
 

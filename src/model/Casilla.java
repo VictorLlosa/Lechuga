@@ -26,6 +26,8 @@ public class Casilla extends Observable{
 	}
 	
 	public void cambiarColor(Color pColor) {
+		// Notificar sólo si el color cambia (evitar repaints redundantes)
+		if (pColor.equals(this.color)) return;
 		color = pColor;
 		Object[] arg ={pColor};
 		setChanged();
@@ -33,12 +35,15 @@ public class Casilla extends Observable{
 	}
 
 	public void vaciar() {
-
 		cambiarColor(Color.BLACK);
 	}
 
 	public void dibujarNave(Color colorNave) {
 
 		cambiarColor(colorNave);
+	}
+
+	public void dibujarBala() {
+		cambiarColor(Color.WHITE);
 	}
 }

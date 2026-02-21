@@ -1,0 +1,55 @@
+package model;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+
+public class ListaBalas {
+    private final ArrayList<Bala> listaBalas;
+
+    public ListaBalas() {
+        this.listaBalas = new ArrayList<>();
+    }
+    
+    public void anadirBala(int idNave, Coordenada coord) {
+        Bala bala = new Bala(idNave, coord);
+        listaBalas.add(bala);
+    }
+
+    public synchronized void moverBalas() {
+        Iterator<Bala> it = listaBalas.iterator();
+        while (it.hasNext()) {
+            Bala bala = it.next();
+            bala.actualizarPos();
+            Coordenada coord = bala.getCoord();
+            // si la bala salió por encima (y < 0) eliminarla
+            if (coord.getY() < 0) {
+                it.remove();
+            }
+        }
+    }
+
+    public synchronized void moverBala(int pPos) {
+
+        Bala bala =listaBalas.get(pPos);
+        bala.actualizarPos();
+
+        Coordenada coord = bala.getCoord();
+        // si la bala salió por encima (y < 0) eliminarla
+        if (coord.getY() < 0) {
+            listaBalas.remove(bala);
+        }
+    }
+
+
+    public Coordenada getCoordBala(int pPos) {
+        if (pPos >= 0 && pPos < listaBalas.size()) {
+            return listaBalas.get(pPos).getCoord();
+
+        }
+        return null;
+    }
+
+    public int getNumBalas() {
+        return listaBalas.size();
+    }
+}
