@@ -11,7 +11,11 @@ public class Casilla extends Observable{
 	//private int x = 0;
 	//private int y = 0;
 	
-	public Casilla(Observer o) {
+	public Casilla() {
+		
+	}
+	
+	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
 	public Casilla(boolean pOcup, Color pColor, Observer o) {

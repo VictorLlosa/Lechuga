@@ -48,9 +48,7 @@ public class SpaceInvaders extends JFrame {
         // Agregar paneles al contenedor
         contenedor.add(panelInicio, "Inicio");
         contenedor.add(panelJuego, "Juego");
-        //Para cambiar entre pantallas:
         
-        //cardLayout.show(contenedor, "Juego");
        
         getContentPane().add(contenedor);
         setVisible(true);
@@ -61,6 +59,7 @@ public class SpaceInvaders extends JFrame {
     		cardLayout.show(contenedor, "Juego");
     		//Modelo:
     		GestorPartida.getGestorPartida();
+    		PantallaJuego.asignarObservers();
     	
     }
     

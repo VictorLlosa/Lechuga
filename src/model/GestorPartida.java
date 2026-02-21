@@ -11,7 +11,7 @@ public class GestorPartida {
 		Espacio espacio = Espacio.getEspacio();
 		Nave nave = new Nave(Color.red);
 		
-		espacio.añadirNave(nave.getCentro(), nave.getMatriz(), nave.getColor());
+		espacio.añadirNave(nave.getCentro(), nave.getMatriz());
 		
 	}
 

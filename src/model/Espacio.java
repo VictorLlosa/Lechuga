@@ -2,9 +2,10 @@ package model;
 
 import java.awt.Color;
 import java.util.Observable;
+import java.util.Observer;
 
-@SuppressWarnings("deprecation")
-public class Espacio extends Observable{
+
+public class Espacio {
 
 	private static Espacio miEspacio;
 	private final int hDim = 100;
@@ -18,15 +19,14 @@ public class Espacio extends Observable{
 		matriz = new Casilla[hDim][vDim];
 		for(int i = 0; i<hDim; i++) {
 			for(int j = 0; j<vDim; j++) {
-				// matriz[i][j] = new Casilla(); 
-				//pasar el JLabel que va a observar a esta Casilla
+				matriz[i][j] = new Casilla();
 			}
 		}
 		
 	
 	}
 	
-	public void añadirNave(Coordenada centro, Color[][] nave,Color colorNave) {
+	public void añadirNave(Coordenada centro, Color[][] nave) {
 		int cX = centro.getX();
 		int cY = centro.getY();
 		
@@ -39,6 +39,11 @@ public class Espacio extends Observable{
 		
 		
 		
+	}
+	
+	@SuppressWarnings("deprecation")
+	public void asignarObserver(Observer o, int pX, int pY) {
+		matriz[pX][pY].addObserver(o);
 	}
 	
 	public static Espacio getEspacio() {

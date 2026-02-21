@@ -20,7 +20,7 @@ public class PantallaJuego extends JPanel {
 	private static PantallaJuego miPantallaJuego = new PantallaJuego(ancho, alto);
 
 	// Necesitamos guardar las etiquetas
-	private JLabel[][] matrizLabels = null;
+	private static LabelCasilla[][] matrizLabels = null;
 	
 	/**
 	 * Create the panel.
@@ -28,13 +28,11 @@ public class PantallaJuego extends JPanel {
 	private PantallaJuego(int x, int y) {
 		
 		setLayout(new GridLayout(x,y));
-		matrizLabels = new JLabel[x][y];
+		matrizLabels = new LabelCasilla[x][y];
 		
-		//Está más grande(x10), cambiar a (100,60)
-		setPreferredSize(new Dimension(x, y));
 		for(int i=0; i < x ; i++) {
 			for (int j=0; j < y ; j++) {
-				JLabel casillaLabel = new JLabel();
+				LabelCasilla casillaLabel = new LabelCasilla();
 				casillaLabel.setOpaque(true);
 				casillaLabel.setBackground(Color.black);
 				casillaLabel.setBorder(new LineBorder(Color.gray));
@@ -45,7 +43,15 @@ public class PantallaJuego extends JPanel {
 		}
 		
 	}
-
+	
+	public static void asignarObservers() {
+		for(int i=0; i < ancho; i++) {
+			for (int j=0; j < alto ; j++) {
+				Controlador.getControlador().asignarObserver(matrizLabels[i][j], i, j);
+		
+			}
+		}
+	}
 	public static PantallaJuego getPantallaJuego() {
 		return miPantallaJuego;
 	}
