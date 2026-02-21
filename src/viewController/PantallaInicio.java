@@ -11,8 +11,9 @@ public class PantallaInicio extends JPanel{
 
 	private static final long serialVersionUID = 1L;
 	
-	private static final String rutaImagen = "/resources/imagenEspacio.jpg";
-	private static PantallaInicio miPantallaInicio = new PantallaInicio(rutaImagen);
+	private static final String rutaImagenFondo = "/resources/imagenEspacio.jpg";
+	private static final String rutaImagenLogo = "/resources/imagenLogo.png";
+	private static PantallaInicio miPantallaInicio = new PantallaInicio(rutaImagenFondo);
 	
     private JLabel lblInstrucciones;
     private JLabel labelImagen;
@@ -30,22 +31,16 @@ public class PantallaInicio extends JPanel{
 		this.add(getLblInstrucciones(), BorderLayout.NORTH);
 		this.add(getLabelImagen(), BorderLayout.CENTER);
 		this.add(getLblPlay(), BorderLayout.SOUTH);
-		
-		
-		
-		
-		
-		
+
 		//pulsar enter
-		// Key Binding para ENTER
 		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
 		    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "startGame");
 
 		this.getActionMap().put("startGame", new AbstractAction() {
-		    @Override
-		    public void actionPerformed(ActionEvent e) {
-		        SpaceInvaders.getSpaceInvaders().cambioPantalla();;
-		    }
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				SpaceInvaders.getSpaceInvaders().cambioPantalla();
+			}
 		});
 
 	}
@@ -76,7 +71,7 @@ public class PantallaInicio extends JPanel{
 	private JLabel getLabelImagen() {
 		if (labelImagen == null) {
 			labelImagen = new JLabel("",SwingConstants.CENTER);
-			labelImagen.setIcon(new ImageIcon(this.getClass().getResource("/resources/imagenLogo.png")));
+			labelImagen.setIcon(new ImageIcon(this.getClass().getResource(rutaImagenLogo)));
 		}
 		return labelImagen;
 	}

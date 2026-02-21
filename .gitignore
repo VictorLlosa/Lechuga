@@ -2,3 +2,6 @@
 .metadata
 .classpath
 .project
+.idea/
+Lechuga.iml
+out/

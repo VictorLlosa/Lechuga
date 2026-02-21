@@ -1,10 +1,10 @@
 package main;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-
 import javax.swing.*;
 
+import model.GestorPartida;
+import viewController.Controlador;
 import viewController.PantallaInicio;
 import viewController.PantallaJuego;
 
@@ -33,36 +33,38 @@ public class SpaceInvaders extends JFrame {
     	getContentPane().setBackground(Color.WHITE);
     	setForeground(Color.WHITE);
     	
-        setSize(600, 400);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
-        // Crear CardLayout
+        // Crear CardLayout y contenedor
         cardLayout = new CardLayout();
         contenedor = new JPanel(cardLayout);
         contenedor.setBackground(Color.WHITE);
 
         // Crear paneles
         JPanel panelInicio = PantallaInicio.getPantallaInicio();
-        
         JPanel panelJuego = PantallaJuego.getPantallaJuego();
 
         // Agregar paneles al contenedor
         contenedor.add(panelInicio, "Inicio");
         contenedor.add(panelJuego, "Juego");
-        //Para cambiar entre pantallas:
         
-        //cardLayout.show(contenedor, "Juego");
-       
+        // Establecer tamaño preferido del contenedor basándose en PantallaJuego
+        Dimension tamano = panelJuego.getPreferredSize();
+        contenedor.setPreferredSize(tamano);
+
+        // Agregar contenedor a la ventana
         getContentPane().add(contenedor);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
         setVisible(true);
     }
     
     public void cambioPantalla() {
     		
-    		cardLayout.show(contenedor, "Juego");
-    		//Modelo:
-    		Espacio.getEspacio();
-    	
+        cardLayout.show(contenedor, "Juego");
+        //Modelo:
+        Controlador.getControlador().iniciarModelo();
+        PantallaJuego.asignarObservers();
+        Controlador.getControlador().iniciarPartida();
     }
     
     
