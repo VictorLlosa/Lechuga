@@ -24,6 +24,7 @@ public class Espacio {
 	}
 	
 	public void anadirNave(Coordenada centro, Nave nave) {
+
 		int cX = centro.getX();
 		int cY = centro.getY();
 
@@ -50,7 +51,7 @@ public class Espacio {
 	}
 
 	public boolean esCoordenadaValida(int x, int y){
-        return x < this.hDim && y < this.vDim;
+        return x < this.hDim && y < this.vDim && x >= 0 && y >= 0;
     }
 	public Coordenada moverNave(Coordenada coordNave, Color colorNave, String tecla) {
 		int cX = coordNave.getX();

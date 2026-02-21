@@ -3,6 +3,7 @@ package viewController;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
@@ -12,6 +13,7 @@ public class PantallaJuego extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int hDim = 100 ;
 	private static final int vDim = 60;
+	private static final int TAMANO_CASILLA = 10;
 	private static PantallaJuego miPantallaJuego = null;
 
 	// Matriz de etiquetas que representan las casillas del juego
@@ -32,7 +34,7 @@ public class PantallaJuego extends JPanel {
 
 				casillaLabel.setBackground(Color.black);
 
-				casillaLabel.setBorder(new LineBorder(Color.gray));
+				casillaLabel.setBorder(new LineBorder(Color.BLACK));
 				matrizLabels[i][j] = casillaLabel;
 				add(casillaLabel);
 			}
@@ -40,6 +42,11 @@ public class PantallaJuego extends JPanel {
 
 		asignarWASD();
 
+	}
+
+	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(hDim * TAMANO_CASILLA, vDim * TAMANO_CASILLA);
 	}
 
 	/**

@@ -10,21 +10,22 @@ import javax.swing.JLabel;
 public class LabelCasilla extends JLabel implements Observer{
 
 	private static final long serialVersionUID = 1L;
-	
+	private static final int ANCHO_CASILLA = 10;
+	private static final int ALTO_CASILLA = 10;
+
 	public LabelCasilla() {
 		super();
 	}
 
 	@Override
+	public Dimension getPreferredSize() {
+		return new Dimension(ANCHO_CASILLA, ALTO_CASILLA);
+	}
+
+	@Override
 	public void update(Observable o, Object arg) {
 		Object[] params = (Object[])arg;
-		if(!(boolean)params[1]){//no ocupado -> se dibuja
-			this.setBackground((Color) params[0]);
-			this.setOpaque(true);
-		}else{
-			this.setOpaque(false);
-		}
-
+		this.setBackground((Color) params[0]);
 	}
 	
 
