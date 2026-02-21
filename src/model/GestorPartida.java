@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+import java.util.Observer;
 
 public class GestorPartida {
 
@@ -9,20 +10,22 @@ public class GestorPartida {
 	
 	private GestorPartida() {
 		Espacio espacio = Espacio.getEspacio();
-		Nave nave = new Nave(Color.red);
-		
-		espacio.añadirNave(nave.getCentro(), nave.getMatriz());
-		
 	}
 
 
 	public static GestorPartida getGestorPartida() {
-		// TODO Auto-generated method stub
 		if(miGestorPartida == null) {
 			miGestorPartida = new GestorPartida();
 		}
 		return miGestorPartida;
 	}
 
-	
+	public void iniciarPartida(){
+		Nave nave = new Nave(Color.red);
+		Espacio.getEspacio().añadirNave(nave.getCentro(), nave.getMatriz());
+	}
+
+	public void asignarObserver(Observer o, int pX, int pY) {
+		Espacio.getEspacio().asignarObserver(o,pX,pY);
+	}
 }

@@ -10,11 +10,16 @@ public class Nave {
 	private int dimX, dimY;
 	
 	public Nave(Color pColor) {
-		dimX = 3;
-		dimY = 2;
+		dimX = 1;
+		dimY = 1;
 		color = pColor;
 		
 		nave = new Color[dimX][dimY];
+		nave[0][0] = pColor;
+
+		centro = new Coordenada(0,0);
+
+		/*
 		//empieza todo en negro
 		for(int i = 0; i<dimX; i++) {
 			for(int j = 0; j<dimX; j++) {
@@ -39,7 +44,7 @@ public class Nave {
 		 *          |
 		 *Centro: (1,2)
 		 */
-		
+
 	}
 	
 	public int getDimX() {

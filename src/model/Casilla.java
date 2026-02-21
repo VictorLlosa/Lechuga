@@ -6,15 +6,16 @@ import java.util.Observer;
 
 @SuppressWarnings("deprecation")
 public class Casilla extends Observable{
-	private boolean ocupado = false;
+	private boolean ocupado;
 	private Color color;
 	//private int x = 0;
 	//private int y = 0;
 	
 	public Casilla() {
-		
+		ocupado = false;
+		color = null;
 	}
-	
+
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
@@ -26,6 +27,8 @@ public class Casilla extends Observable{
 	
 	public void cambiarColor(Color pColor) {
 		color = pColor;
+		setChanged();
+		notifyObservers(pColor); //notifica al Observer que se ha cambiado el color
 	}
 
 }

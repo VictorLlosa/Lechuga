@@ -4,6 +4,7 @@ import java.awt.*;
 import javax.swing.*;
 
 import model.GestorPartida;
+import viewController.Controlador;
 import viewController.PantallaInicio;
 import viewController.PantallaJuego;
 
@@ -56,11 +57,11 @@ public class SpaceInvaders extends JFrame {
     
     public void cambioPantalla() {
     		
-    		cardLayout.show(contenedor, "Juego");
-    		//Modelo:
-    		GestorPartida.getGestorPartida();
-    		PantallaJuego.asignarObservers();
-    	
+        cardLayout.show(contenedor, "Juego");
+        //Modelo:
+        Controlador.getControlador().iniciarModelo();
+        PantallaJuego.asignarObservers();
+        Controlador.getControlador().iniciarPartida();
     }
     
     

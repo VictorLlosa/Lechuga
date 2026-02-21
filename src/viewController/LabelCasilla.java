@@ -1,5 +1,6 @@
 package viewController;
 
+import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -16,8 +17,7 @@ public class LabelCasilla extends JLabel implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-		
+		this.setBackground((Color) arg);
 	}
 	
 

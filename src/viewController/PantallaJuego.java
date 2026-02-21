@@ -15,20 +15,20 @@ import java.awt.event.ActionListener;
 public class PantallaJuego extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final int ancho = 100;
-	private static final int alto = 60;
-	private static PantallaJuego miPantallaJuego = new PantallaJuego(ancho, alto);
+	private static final int ancho = 60 ;
+	private static final int alto = 100;
+	private static PantallaJuego miPantallaJuego = null;
 
 	// Necesitamos guardar las etiquetas
-	private static LabelCasilla[][] matrizLabels = null;
-	
+	private static LabelCasilla[][] matrizLabels;
+
 	/**
 	 * Create the panel.
 	 */
 	private PantallaJuego(int x, int y) {
-		
+
 		setLayout(new GridLayout(x,y));
-		matrizLabels = new LabelCasilla[x][y];
+		matrizLabels = new LabelCasilla[x][y]; //fila, columna
 		
 		for(int i=0; i < x ; i++) {
 			for (int j=0; j < y ; j++) {
@@ -53,6 +53,9 @@ public class PantallaJuego extends JPanel {
 		}
 	}
 	public static PantallaJuego getPantallaJuego() {
+		if(miPantallaJuego == null){
+			miPantallaJuego = new PantallaJuego(ancho, alto);
+		}
 		return miPantallaJuego;
 	}
 	

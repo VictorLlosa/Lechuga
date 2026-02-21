@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import model.Espacio;
+import model.GestorPartida;
 
 public class Controlador implements ActionListener{
 
@@ -22,7 +23,7 @@ public class Controlador implements ActionListener{
 	}
 	
 	public void asignarObserver(Observer o, int pX, int pY) {
-		Espacio.getEspacio().asignarObserver(o,pX,pY);
+		GestorPartida.getGestorPartida().asignarObserver(o, pX, pY);
 	}
 	
 	
@@ -30,8 +31,13 @@ public class Controlador implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 		
 	}
-	
-	
 
 
+    public void iniciarModelo() {
+		GestorPartida.getGestorPartida();
+    }
+
+	public void iniciarPartida() {
+		GestorPartida.getGestorPartida().iniciarPartida();
+	}
 }
