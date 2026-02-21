@@ -16,4 +16,9 @@ public class Coordenada {
 	public int getY() {
 		return y;
 	}
+
+    public void setCoord(int pX, int pY) {
+		x= pX;
+		y= pY;
+    }
 }

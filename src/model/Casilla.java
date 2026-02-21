@@ -25,10 +25,20 @@ public class Casilla extends Observable{
 		color = pColor;	
 	}
 	
-	public void cambiarColor(Color pColor) {
+	public void cambiarColor(Color pColor, boolean ocupado) {
 		color = pColor;
+		Object[] arg ={pColor, ocupado};
 		setChanged();
-		notifyObservers(pColor); //notifica al Observer que se ha cambiado el color
+		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
 	}
 
+	public void vaciar() {
+		ocupado = false;
+		cambiarColor(null, ocupado);
+	}
+
+	public void dibujarNave(Color colorNave) {
+		this.ocupado = true;
+		cambiarColor(colorNave,ocupado);
+	}
 }

@@ -4,21 +4,24 @@ import java.awt.Color;
 
 public class Nave {
 
-	private Color[][] nave;
+	//private Color[][] nave;
 	private Coordenada centro;
+	private Coordenada coord;
 	private Color color;
-	private int dimX, dimY;
+	//private int dimX, dimY;
 	
-	public Nave(Color pColor) {
+	public Nave(Color pColor, Coordenada pCoord) {
+		/*
 		dimX = 1;
 		dimY = 1;
+		 */
 		color = pColor;
 		
-		nave = new Color[dimX][dimY];
-		nave[0][0] = pColor;
+		//nave = new Color[dimX][dimY];
+		//nave[0][0] = pColor;
 
 		centro = new Coordenada(0,0);
-
+		coord = pCoord;
 		/*
 		//empieza todo en negro
 		for(int i = 0; i<dimX; i++) {
@@ -46,22 +49,41 @@ public class Nave {
 		 */
 
 	}
-	
+	/*
 	public int getDimX() {
 		return dimX;
 	}
 	public int getDimY() {
 		return dimY;
 	}
-	
+
+
+	public Color getColor(int pX, int pY) {
+		return nave[pX][pY];
+	}
+
+
 	public Color[][] getMatriz(){
 		return nave;
 	}
+	*/
 	public Coordenada getCentro() {
 		return centro;
 	}
 
 	public Color getColor() {
 		return color;
+	}
+
+	public void setCentro(int pX, int pY) {
+
+	}
+
+	public void setCoord(int pX, int pY) {
+		coord.setCoord(pX,pY);
+	}
+
+	public Coordenada getCoord() {
+		return coord;
 	}
 }
