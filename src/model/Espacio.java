@@ -147,6 +147,10 @@ public class Espacio {
 			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
 		}
 	}
+	public void borrarEnemigos(){
+		listaEnemigos.borrarListaEnemigos();
+	}
+
 	public void moverEnemigos() {
 		int num = listaEnemigos.getNumEnemigos();
 		for (int i = 0; i < num; i++) {

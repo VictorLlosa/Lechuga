@@ -36,9 +36,17 @@ public class GestorPartida extends Observable {
 	private int contadorAcciones = 0;
 
 	private GestorPartida() {
-
+		numeroEnemigosAleatorio(4,8);
 	}
 
+	/**
+	 * Metodo dentro de la ctr de GestorPartida, lo usamos en caso de que el n. de
+	 * querer generar los enemigos aleatoriamente (de 4 a 8)
+	 */
+	public void numeroEnemigosAleatorio(int nMinEne,int nMaxEne){
+		Random r=new Random();
+		this.numEnemigos=nMinEne + r.nextInt(1+nMaxEne-nMinEne);
+	}
 
 	public static GestorPartida getGestorPartida() {
 		if(miGestorPartida == null) {
@@ -53,6 +61,10 @@ public class GestorPartida extends Observable {
 		//Añadir Enegmigos
 		anadirEnemigos();
 		iniciarLoopJuego();
+	}
+
+	public void reiniciarPartida(){
+		borrarEnemigos();
 	}
 
 	private void iniciarLoopJuego() {
@@ -113,6 +125,10 @@ public class GestorPartida extends Observable {
 
 			espacio.anadirEnemigos(0,new Coordenada(random,5));
 		}
+	}
+
+	private void borrarEnemigos(){
+		espacio.borrarEnemigos();
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {

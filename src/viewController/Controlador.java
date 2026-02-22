@@ -37,6 +37,10 @@ public class Controlador implements ActionListener {
 		GestorPartida.getGestorPartida().iniciarPartida();
 	}
 
+	public void reiniciarPartida(){
+		GestorPartida.getGestorPartida().reiniciarPartida();
+	}
+
 	public void startDisparar(int idNave) {
 		GestorPartida.getGestorPartida().startDisparar(idNave);
 	}

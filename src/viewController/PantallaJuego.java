@@ -44,6 +44,8 @@ public class PantallaJuego extends JPanel {
 		asignarWASD();
 		asignarTeclaDisparo();
 
+
+
 	}
 
 	private void asignarTeclaDisparo() {
@@ -120,6 +122,10 @@ public class PantallaJuego extends JPanel {
 				Controlador.getControlador().asignarObserverCasilla(matrizLabels[i][j], i, j);
 			}
 		}
+	}
+
+	public void reiniciarJuegoConR(){
+
 	}
 
 	@Override
