@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Color;
+import java.util.Iterator;
 import java.util.Observer;
 
 
@@ -12,6 +13,7 @@ public class Espacio {
 
 	private ListaNaves listaNaves;
 	private ListaBalas listaBalas;
+	private ListaEnemigos listaEnemigos;
 
 	private Casilla[][] matriz;
 
@@ -19,6 +21,7 @@ public class Espacio {
 
 		listaNaves = new ListaNaves();
 		listaBalas = new ListaBalas();
+		listaEnemigos = new ListaEnemigos();
 
 		matriz = new Casilla[hDim][vDim];
 		for (int i = 0; i < hDim; i++) {
@@ -93,7 +96,7 @@ public class Espacio {
 		}
 
 	}
-
+//Creación y Movimiento de Balas
 	public void disparar(int idNave) {
 		Coordenada coordNave = listaNaves.getCoordNave(idNave);
 		Coordenada coordBala = new Coordenada(coordNave.getX(), coordNave.getY() - 1);
@@ -126,4 +129,45 @@ public class Espacio {
 			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
 		}
 	}
+//Creación y movimiento de Enemigos
+	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
+		if (esCoordenadaValida(cord.getX(), cord.getY())) {
+			listaEnemigos.anadirEnemigo(idEnemigo, cord);
+			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
+		}
+	}
+	public void moverEnemigos() {
+		int num = listaEnemigos.getNumEnemigos();
+		for (int i = 0; i < num; i++) {
+			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
+			matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
+		}
+
+		// Mover los enemigos en la lista (actualiza coordenadas internamente)
+		listaEnemigos.moverEnemigos();
+
+		// Dibujar los enemigos en sus nuevas posiciones
+		num = listaEnemigos.getNumEnemigos();
+		for (int i = 0; i < num; i++) {
+			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
+			matriz[coordEnem.getX()][coordEnem.getY()].dibujarEnemigo();
+		}
+	}
+
+	/*
+	public void eliminarEnemigo() {
+		Iterator<Enemigo> it = listaEnemigos.iterator();
+		while (it.hasNext()) {
+			Enemigo enemigo = it.next();
+			Iterator<Bala> itBala = listaBalas.iterator();
+			while (itBala.hasNext()) {
+			Bala bala = itBala.next();
+				if (bala.getCoord().equals(enemigo.getCoord())) {
+					listaEnemigos.eliminarEnemigo(enemigo.getId());
+				}
+			}
+		}
+
+	}
+	*/
 }

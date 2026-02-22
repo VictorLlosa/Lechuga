@@ -12,7 +12,8 @@ public class GestorPartida {
 									//(mejor que tener un timer por nave o bala,
 									// porque la GUI tiene un thread único y esto
 									// evita conflictos de concurrencia)
-	private final int gameDelay = 33; // ms
+	private final int gameDelay = 10; // ms
+	private int frameCount = 0;
 
 	// estado de teclas para movimiento continuo
 	private volatile boolean upPressed = false;
@@ -38,15 +39,29 @@ public class GestorPartida {
 	}
 
 	public void iniciarPartida(){
-		Espacio.getEspacio().anadirNave(Color.red, new Coordenada(55,50));
+		Espacio.getEspacio().anadirNave(Color.red, new Coordenada(55,50));  //Añadir Nave
+
+		//Añadir Enegmigos
+		Espacio.getEspacio().anadirEnemigos(1,new Coordenada(15,5));
+		Espacio.getEspacio().anadirEnemigos(2,new Coordenada(25,5));
+		Espacio.getEspacio().anadirEnemigos(3,new Coordenada(65,5));
+		Espacio.getEspacio().anadirEnemigos(4,new Coordenada(90,5));
 		// iniciar game loop si no existe
 		if (gameTimer == null) {
 			gameTimer = new Timer(gameDelay, e -> {
-				// mover balas y repintar
-				Espacio.getEspacio().moverBalas();
+				frameCount++;
+				// mover balas y mover enemigos, cambiar 2 por 5 para que sea cada 50ms
+				if (frameCount % 2 == 0) {
+					Espacio.getEspacio().moverBalas();
+					procesarMovimientoContinuo();
+				}
+				if (frameCount % 20 == 0) {
+					Espacio.getEspacio().moverEnemigos();
+				}
+				// repintar pantalla
 				PantallaJuego.getPantallaJuego().repaint();
 				// procesar movimiento continuo de la nave
-				procesarMovimientoContinuo();
+
 				// procesar disparo
 				contDisparo++;
 				if(contDisparo > contDisparoMax) contDisparo = contDisparoMax;

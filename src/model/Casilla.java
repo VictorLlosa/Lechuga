@@ -39,11 +39,10 @@ public class Casilla extends Observable{
 	}
 
 	public void dibujarNave(Color colorNave) {
-
 		cambiarColor(colorNave);
 	}
-
 	public void dibujarBala() {
 		cambiarColor(Color.WHITE);
 	}
+	public void dibujarEnemigo() {cambiarColor(Color.BLUE);}
 }
