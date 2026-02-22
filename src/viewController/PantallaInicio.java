@@ -13,20 +13,25 @@ public class PantallaInicio extends JPanel{
 	
 	private static final String rutaImagenFondo = "/resources/imagenEspacio.jpg";
 	private static final String rutaImagenLogo = "/resources/imagenLogo.png";
-	private static PantallaInicio miPantallaInicio = new PantallaInicio(rutaImagenFondo);
+	private static PantallaInicio miPantallaInicio = null;
 	
     private JLabel lblInstrucciones;
     private JLabel labelImagen;
     private JLabel lblPlay;
 	
-	private Image imagen;
+	private Image imagenFondo;
 
-	private PantallaInicio(String rutaImagen) {
+	/**
+	 * Contiene los textos de como iniciar la partida y como moverse, aparte del logo. con
+	 * .getInputMap le asignamos una accion codificada como "startGame", a la que luego le asociamos
+	 * una acción 
+	 */
+	private PantallaInicio() {
 
 		this.setLayout(new BorderLayout(10, 10));
 		//this.setOpaque(false);
 		
-		imagen = new ImageIcon(getClass().getResource(rutaImagen)).getImage();
+		imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 		
 		this.add(getLblInstrucciones(), BorderLayout.NORTH);
 		this.add(getLabelImagen(), BorderLayout.CENTER);
@@ -39,26 +44,29 @@ public class PantallaInicio extends JPanel{
 		this.getActionMap().put("startGame", new AbstractAction() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				SpaceInvaders.getSpaceInvaders().cambioPantalla();
+				SpaceInvaders.getSpaceInvaders().cambioPantallaJuego();
 			}
 		});
 
 	}
-	
+	public static PantallaInicio getPantallaInicio() {
+		if(miPantallaInicio == null) {
+			miPantallaInicio = new PantallaInicio();
+		}
+		return miPantallaInicio;
+	}
+
+
 
     @Override
     protected void paintComponent(Graphics g) {
     	super.paintComponent(g);
     	
-        if (imagen != null) {
-            g.drawImage(imagen, 0, 0, getWidth(), getHeight(), this);
+        if (imagenFondo != null) {
+            g.drawImage(imagenFondo, 0, 0, getWidth(), getHeight(), this);
         }
         
     }
-
-	public static PantallaInicio getPantallaInicio() {
-		return miPantallaInicio;
-	}
 	
 	private JLabel getLblInstrucciones() {
 		if (lblInstrucciones == null) {

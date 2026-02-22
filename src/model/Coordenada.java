@@ -25,4 +25,16 @@ public class Coordenada {
     public void setY(int pY) {
 		y = pY;
     }
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Coordenada otraCoord = (Coordenada) o;
+		return x == otraCoord.x && y == otraCoord.y;
+	}
+
+	public boolean debajo(Coordenada pCoord) {
+		return (this.x == pCoord.getX()) && (this.y == pCoord.getX()+1);
+	}
 }

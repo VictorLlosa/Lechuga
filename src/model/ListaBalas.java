@@ -53,4 +53,9 @@ public class ListaBalas {
         return listaBalas.size();
     }
 
+    public void eliminarBala(int posBala) {
+        if (posBala >= 0 && posBala < listaBalas.size()) {
+            listaBalas.remove(posBala);
+        }
+    }
 }

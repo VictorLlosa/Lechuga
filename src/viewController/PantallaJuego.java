@@ -40,6 +40,7 @@ public class PantallaJuego extends JPanel {
 			}
 		}
 
+
 		asignarWASD();
 		asignarTeclaDisparo();
 
@@ -113,11 +114,10 @@ public class PantallaJuego extends JPanel {
 	/**
 	 * Asigna los observers a todas las casillas del tablero.
 	 */
-	public static void asignarObservers() {
+	public void asignarObservers() {
 		for(int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
-
-				Controlador.getControlador().asignarObserver(matrizLabels[i][j], i, j);
+				Controlador.getControlador().asignarObserverCasilla(matrizLabels[i][j], i, j);
 			}
 		}
 	}
