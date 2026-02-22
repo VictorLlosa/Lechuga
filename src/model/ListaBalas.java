@@ -10,7 +10,7 @@ public class ListaBalas {
         this.listaBalas = new ArrayList<>();
     }
     
-    public void anadirBala(int idNave, Coordenada coord) {
+    public synchronized void anadirBala(int idNave, Coordenada coord) {
         Bala bala = new Bala(idNave, coord);
         listaBalas.add(bala);
     }
@@ -41,7 +41,7 @@ public class ListaBalas {
     }
 
 
-    public Coordenada getCoordBala(int pPos) {
+    public synchronized Coordenada getCoordBala(int pPos) {
         if (pPos >= 0 && pPos < listaBalas.size()) {
             return listaBalas.get(pPos).getCoord();
 
@@ -49,7 +49,13 @@ public class ListaBalas {
         return null;
     }
 
-    public int getNumBalas() {
+    public synchronized int getNumBalas() {
         return listaBalas.size();
+    }
+
+    public void eliminarBala(int posBala) {
+        if (posBala >= 0 && posBala < listaBalas.size()) {
+            listaBalas.remove(posBala);
+        }
     }
 }
