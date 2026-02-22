@@ -79,9 +79,7 @@ public class Nave {
 
 	}
 
-	public void setCoord(int pX, int pY) {
-		coord.setCoord(pX,pY);
-	}
+	public void setCoord(int pX, int pY) { coord.setCoord(pX,pY); }
 
 	public Coordenada getCoord() {
 		return coord;

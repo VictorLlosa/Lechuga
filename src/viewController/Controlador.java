@@ -17,8 +17,11 @@ public class Controlador implements ActionListener {
 		return miControlador;
 	}
 	
-	public void asignarObserver(Observer o, int pX, int pY) {
-		GestorPartida.getGestorPartida().asignarObserver(o, pX, pY);
+	public void asignarObserverCasilla(Observer o, int pX, int pY) {
+		GestorPartida.getGestorPartida().asignarObserverCasilla(o, pX, pY);
+	}
+	public void asignarObserverGestor(Observer o) {
+		GestorPartida.getGestorPartida().asignarObserver(o);
 	}
 	
 	
@@ -26,10 +29,6 @@ public class Controlador implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 	}
 
-	public void moverNave(String tecla){
-		GestorPartida.getGestorPartida().moverNave(tecla);
-	}
-	
 	public void iniciarModelo() {
 		GestorPartida.getGestorPartida();
 	}
