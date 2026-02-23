@@ -147,8 +147,17 @@ public class Espacio {
 			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
 		}
 	}
-	public void borrarEnemigos(){
+	public void borrarEnemigos(int pNumEnemigos){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i<=pNumEnemigos;i++){ //TODO numenemigos-1
+			Enemigo e=listaEnemigos.getEnemigoEnPos(i);
+			matriz[e.getCoord().getX()][e.getCoord().getY()].vaciar();
+			System.out.println("el ultimo indice que se ha borrado es:" + i);
+		}
+		//ahora los borramos de la lista
+
 		listaEnemigos.borrarListaEnemigos();
+		System.out.println("vacia listaE");
 	}
 
 	public void moverEnemigos() {

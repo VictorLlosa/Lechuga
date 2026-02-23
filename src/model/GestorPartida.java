@@ -45,7 +45,7 @@ public class GestorPartida extends Observable {
 	 */
 	public void numeroEnemigosAleatorio(int nMinEne,int nMaxEne){
 		Random r=new Random();
-		this.numEnemigos=nMinEne + r.nextInt(1+nMaxEne-nMinEne);
+		numEnemigos=nMinEne + r.nextInt(nMaxEne-nMinEne+1);
 	}
 
 	public static GestorPartida getGestorPartida() {
@@ -65,6 +65,7 @@ public class GestorPartida extends Observable {
 
 	public void reiniciarPartida(){
 		borrarEnemigos();
+
 	}
 
 	private void iniciarLoopJuego() {
@@ -116,6 +117,7 @@ public class GestorPartida extends Observable {
 
 	private void anadirEnemigos() {
 		int random = 5;
+		System.out.println("En GestorPartida tenemos "+numEnemigos+" enemigos");
 		for (int i = 0; i < numEnemigos; i++) {
 
 			do {
@@ -128,7 +130,7 @@ public class GestorPartida extends Observable {
 	}
 
 	private void borrarEnemigos(){
-		espacio.borrarEnemigos();
+		espacio.borrarEnemigos(numEnemigos);
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
