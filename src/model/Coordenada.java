@@ -35,6 +35,6 @@ public class Coordenada {
 	}
 
 	public boolean debajo(Coordenada pCoord) {
-		return (this.x == pCoord.getX()) && (this.y == pCoord.getX()+1);
+		return (this.x == pCoord.getX()) && ((this.y == pCoord.getY()+1));
 	}
 }

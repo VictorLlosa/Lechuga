@@ -227,6 +227,7 @@ public class Espacio {
 					//y se mueven a la vez, la bala va a quedar arriba y el enemigo abajo.
 
 					matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
+					matriz[coordBala.getX()][coordBala.getY()].vaciar();
 
 					// Eliminar bala y enemigo
 					listaBalas.eliminarBala(j);
