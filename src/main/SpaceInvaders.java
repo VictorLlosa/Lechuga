@@ -80,6 +80,14 @@ public class SpaceInvaders extends JFrame implements Observer {
 
     }
 
+    public void cambioPantallaInicio(){
+        cardLayout.show(contenedor,"Inicio");
+        contenedor.revalidate();
+        contenedor.repaint();
+
+        Controlador.getControlador().reiniciarPartida();
+
+    }
 
     @Override
     public void update(Observable o, Object arg) {

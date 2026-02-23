@@ -20,7 +20,6 @@ public class PantallaJuego extends JPanel {
 	private static LabelCasilla[][] matrizLabels;
 
 	private PantallaJuego() {
-
 		setLayout(new GridLayout(vDim,hDim));
 		matrizLabels = new LabelCasilla[hDim][vDim];
 
@@ -39,14 +38,11 @@ public class PantallaJuego extends JPanel {
 				add(casillaLabel);
 			}
 		}
-
-
 		asignarWASD();
 		asignarTeclaDisparo();
-
 	}
 
-	private void asignarTeclaDisparo() {
+	public void asignarTeclaDisparo() {
 		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap am = this.getActionMap();
 
@@ -73,7 +69,7 @@ public class PantallaJuego extends JPanel {
 	/**
 	 * Asigna los controles WASD para mover la nave.
 	 */
-	private void asignarWASD() {
+	public void asignarWASD() {
 		// Array de caracteres y sus correspondientes códigos de tecla
 		String[] teclas = {"w", "a", "s", "d"};
 		int[] keyCodes = {KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D};
@@ -87,7 +83,7 @@ public class PantallaJuego extends JPanel {
 	/**
 	 * Asigna una tecla específica a una acción de movimiento (WASD).
 	 */
-	private void asignarTecla(int keyCode, String comando) {
+	public void asignarTecla(int keyCode, String comando) {
 		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
 		ActionMap am = this.getActionMap();
 
@@ -109,7 +105,6 @@ public class PantallaJuego extends JPanel {
 			}
 		});
 	}
-
 
 	/**
 	 * Asigna los observers a todas las casillas del tablero.

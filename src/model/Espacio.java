@@ -36,6 +36,8 @@ public class Espacio {
 		return miEspacio;
 	}
 
+	public int getMaxEspaciado(int pNumEnem){
+		return hDim / pNumEnem;	}
 
 	@SuppressWarnings("deprecation")
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
@@ -107,6 +109,14 @@ public class Espacio {
 		}
 
 	}
+	public void borrarNaves(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaNaves.getNumNaves();i++){
+			Coordenada coordNave = listaNaves.getCoordNave(i);
+			matriz[coordNave.getX()][coordNave.getY()].vaciar();
+		}
+		listaNaves.borrarListaNaves();
+	}
 
 	//Creación y Movimiento de Balas
 	public void disparar(int idNave) {
@@ -139,6 +149,14 @@ public class Espacio {
 			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
 		}
 	}
+	public void borrarBalas(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaBalas.getNumBalas();i++){
+			Coordenada coordBala = listaBalas.getCoordBala(i);
+			matriz[coordBala.getX()][coordBala.getY()].vaciar();
+		}
+		listaBalas.borrarListaBalas();
+	}
 
 	//Creación y movimiento de Enemigos
 	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
@@ -163,6 +181,15 @@ public class Espacio {
 			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
 			matriz[coordEnem.getX()][coordEnem.getY()].dibujarEnemigo();
 		}
+	}
+	public void borrarEnemigos(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaEnemigos.getNumEnemigos();i++){
+			Coordenada coordEnemigo = listaEnemigos.getCoordEnemigos(i);
+			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
+		}
+		//ahora los borramos de la lista
+		listaEnemigos.borrarListaEnemigos();
 	}
 
 	public void comprobarColisiones() {

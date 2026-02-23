@@ -1,7 +1,11 @@
 package viewController;
 
+import main.SpaceInvaders;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 
 public class PantallaFin extends JPanel{
     private static final long serialVersionUID = 1L;
@@ -13,6 +17,7 @@ public class PantallaFin extends JPanel{
 
     private JLabel labelCentral;
     private Image imagenFondo;
+    private JLabel lblInstruccionesF;
 
     private PantallaFin() {
 
@@ -21,9 +26,11 @@ public class PantallaFin extends JPanel{
 
         labelCentral = new JLabel("", SwingConstants.CENTER);
         this.add(labelCentral, BorderLayout.CENTER);
+        this.add(getLblInstruccionesF(),BorderLayout.SOUTH);
 
         imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 
+       asignarRReinicio();
     }
     public static PantallaFin getPantallaFin() {
         if(miPantallaFin== null) {
@@ -32,6 +39,27 @@ public class PantallaFin extends JPanel{
         return miPantallaFin;
     }
 
+    private void asignarRReinicio(){
+        //si pulsamos la R, reiniciamos la partida
+        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "startGame");
+
+        this.getActionMap().put("startGame", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SpaceInvaders.getSpaceInvaders().cambioPantallaInicio();
+            }
+        });
+    }
+
+    private JLabel getLblInstruccionesF() {
+        if (lblInstruccionesF == null) {
+            lblInstruccionesF = new JLabel("Press <R> to RESTART your game", SwingConstants.CENTER);
+            lblInstruccionesF.setFont(new Font("Bitstream Charter", Font.BOLD, 22));
+            lblInstruccionesF.setForeground(Color.WHITE);
+        }
+        return lblInstruccionesF;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {

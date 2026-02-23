@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListaEnemigos {
+    private static final int MAX_ENEMIGOS_POSIBLES=8;
     private final ArrayList<Enemigo> listaEnemigos;
     private boolean enemigoHaLlegadoAbajo;
     public ListaEnemigos() {
@@ -12,9 +13,17 @@ public class ListaEnemigos {
         enemigoHaLlegadoAbajo = false;
     }
 
+
     public synchronized void anadirEnemigo(int idEnemigo, Coordenada coord) {
-        Enemigo enemigo = new Enemigo(idEnemigo, coord);
-        listaEnemigos.add(enemigo);
+        if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
+            Enemigo enemigo = new Enemigo(idEnemigo, coord);
+            listaEnemigos.add(enemigo);
+        }
+    }
+
+    public void borrarListaEnemigos(){
+        listaEnemigos.clear();
+        enemigoHaLlegadoAbajo = false;
     }
 
     public synchronized void moverEnemigos() {
