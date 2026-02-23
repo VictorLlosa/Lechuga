@@ -13,31 +13,17 @@ public class ListaEnemigos {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public static int getMaxEnemigosPosibles() {
-        return MAX_ENEMIGOS_POSIBLES;
-    }
 
     public synchronized void anadirEnemigo(int idEnemigo, Coordenada coord) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            System.out.println("a;adido");
             Enemigo enemigo = new Enemigo(idEnemigo, coord);
             listaEnemigos.add(enemigo);
         }
     }
 
-    public Enemigo getEnemigoEnPos(int i){
-        System.out.println("El tama;o de listaEnemigos en LE es"+listaEnemigos.size());
-        if (i>=0 && i<= listaEnemigos.size()){
-            System.out.println("Accedemos al indice: " + i);
-            return listaEnemigos.get(i);
-        }
-        else {System.out.println("Salimos del bucle en: " + i);
-            return null;
-
-        }
-    }
     public void borrarListaEnemigos(){
         listaEnemigos.clear();
+        enemigoHaLlegadoAbajo = false;
     }
 
     public synchronized void moverEnemigos() {

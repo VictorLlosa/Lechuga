@@ -36,6 +36,8 @@ public class Espacio {
 		return miEspacio;
 	}
 
+	public int getMaxEspaciado(int pNumEnem){
+		return hDim / pNumEnem;	}
 
 	@SuppressWarnings("deprecation")
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
@@ -107,6 +109,14 @@ public class Espacio {
 		}
 
 	}
+	public void borrarNaves(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaNaves.getNumNaves();i++){
+			Coordenada coordNave = listaNaves.getCoordNave(i);
+			matriz[coordNave.getX()][coordNave.getY()].vaciar();
+		}
+		listaNaves.borrarListaNaves();
+	}
 
 	//Creación y Movimiento de Balas
 	public void disparar(int idNave) {
@@ -139,6 +149,14 @@ public class Espacio {
 			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
 		}
 	}
+	public void borrarBalas(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaBalas.getNumBalas();i++){
+			Coordenada coordBala = listaBalas.getCoordBala(i);
+			matriz[coordBala.getX()][coordBala.getY()].vaciar();
+		}
+		listaBalas.borrarListaBalas();
+	}
 
 	//Creación y movimiento de Enemigos
 	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
@@ -147,19 +165,6 @@ public class Espacio {
 			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
 		}
 	}
-	public void borrarEnemigos(int pNumEnemigos){
-		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i<=pNumEnemigos;i++){ //TODO numenemigos-1
-			Enemigo e=listaEnemigos.getEnemigoEnPos(i);
-			matriz[e.getCoord().getX()][e.getCoord().getY()].vaciar();
-			System.out.println("el ultimo indice que se ha borrado es:" + i);
-		}
-		//ahora los borramos de la lista
-
-		listaEnemigos.borrarListaEnemigos();
-		System.out.println("vacia listaE");
-	}
-
 	public void moverEnemigos() {
 		int num = listaEnemigos.getNumEnemigos();
 		for (int i = 0; i < num; i++) {
@@ -176,6 +181,15 @@ public class Espacio {
 			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
 			matriz[coordEnem.getX()][coordEnem.getY()].dibujarEnemigo();
 		}
+	}
+	public void borrarEnemigos(){
+		//los borraremos de la pantalla primero y despues de la lista
+		for (int i=0;i < listaEnemigos.getNumEnemigos();i++){
+			Coordenada coordEnemigo = listaEnemigos.getCoordEnemigos(i);
+			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
+		}
+		//ahora los borramos de la lista
+		listaEnemigos.borrarListaEnemigos();
 	}
 
 	public void comprobarColisiones() {

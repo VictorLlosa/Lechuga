@@ -11,7 +11,9 @@ public class GestorPartida extends Observable {
 
 	private static GestorPartida miGestorPartida;
 	private final Espacio espacio = Espacio.getEspacio();
-	private int numEnemigos = 4; // número de enemigos a generar (ajustable para dificultad)
+	private int numEnemigos; // número de enemigos a generar (ajustable para dificultad)
+	private final int MIN_ENEM = 4;
+	private final int MAX_ENEM = 8;
 
 	private Timer gameTimer = null; // Timer único para el bucle del juego
 									//(mejor que tener un timer por nave o bala,
@@ -36,16 +38,16 @@ public class GestorPartida extends Observable {
 	private int contadorAcciones = 0;
 
 	private GestorPartida() {
-		numeroEnemigosAleatorio(4,8);
+		numeroEnemigosAleatorio();
 	}
 
 	/**
 	 * Metodo dentro de la ctr de GestorPartida, lo usamos en caso de que el n. de
 	 * querer generar los enemigos aleatoriamente (de 4 a 8)
 	 */
-	public void numeroEnemigosAleatorio(int nMinEne,int nMaxEne){
-		Random r=new Random();
-		numEnemigos=nMinEne + r.nextInt(nMaxEne-nMinEne+1);
+	public void numeroEnemigosAleatorio(){
+		Random r = new Random();
+		numEnemigos = MIN_ENEM + r.nextInt(MAX_ENEM - MIN_ENEM+1);
 	}
 
 	public static GestorPartida getGestorPartida() {
@@ -53,6 +55,14 @@ public class GestorPartida extends Observable {
 			miGestorPartida = new GestorPartida();
 		}
 		return miGestorPartida;
+	}
+
+	private void reiniciarTeclas(){
+		upPressed = false;
+		downPressed = false;
+		leftPressed = false;
+		rightPressed = false;
+		disparoPressed = false;
 	}
 
 	public void iniciarPartida(){
@@ -65,7 +75,10 @@ public class GestorPartida extends Observable {
 
 	public void reiniciarPartida(){
 		borrarEnemigos();
-
+		borrarNaves();
+		borrarBalas();
+		reiniciarTeclas();
+		numeroEnemigosAleatorio();
 	}
 
 	private void iniciarLoopJuego() {
@@ -115,13 +128,19 @@ public class GestorPartida extends Observable {
 		espacio.anadirNave(Color.red, new Coordenada(55,50));
 	}
 
+	private void borrarNaves(){
+		espacio.borrarNaves();
+	}
+
+	private void borrarBalas(){
+		espacio.borrarBalas();
+	}
+
 	private void anadirEnemigos() {
 		int random = 5;
-		System.out.println("En GestorPartida tenemos "+numEnemigos+" enemigos");
 		for (int i = 0; i < numEnemigos; i++) {
-
 			do {
-				random += new Random().nextInt(10, 30);
+				random += new Random().nextInt(10, espacio.getMaxEspaciado(numEnemigos));
 			}
 			while(!espacio.esCoordenadaValida(random,5));
 
@@ -130,15 +149,11 @@ public class GestorPartida extends Observable {
 	}
 
 	private void borrarEnemigos(){
-		espacio.borrarEnemigos(numEnemigos);
+		espacio.borrarEnemigos();
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
 		espacio.asignarObserverCasilla(o,pX,pY);
-	}
-
-	public void moverNave(String tecla) {
-		espacio.moverNave(0, tecla);
 	}
 
 	// start/stop disparo continuo

@@ -58,4 +58,8 @@ public class ListaBalas {
             listaBalas.remove(posBala);
         }
     }
+
+    public void borrarListaBalas() {
+        listaBalas.clear();
+    }
 }

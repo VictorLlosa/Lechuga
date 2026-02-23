@@ -42,7 +42,10 @@ public class ListaNaves {
     public void eliminarNave(int posNave) {
         if (posNave >= 0 && posNave < listaNaves.size()) {
             listaNaves.remove(posNave);
-        }
+}
+    }
+    public void borrarListaNaves() {
+       listaNaves.clear();
     }
 
 }
