@@ -24,11 +24,7 @@ public class GestorPartida extends Observable {
 	private String estadoFinal = "";
 
 
-	// estado de teclas para movimiento continuo
-	private volatile boolean upPressed = false;
-	private volatile boolean downPressed = false;
-	private volatile boolean leftPressed = false;
-	private volatile boolean rightPressed = false;
+
 
 	// estado de disparo para evitar disparo infinito
 	private volatile boolean disparoPressed = false;
@@ -56,7 +52,7 @@ public class GestorPartida extends Observable {
 		}
 		return miGestorPartida;
 	}
-
+/*
 	private void reiniciarTeclas(){
 		upPressed = false;
 		downPressed = false;
@@ -64,21 +60,25 @@ public class GestorPartida extends Observable {
 		rightPressed = false;
 		disparoPressed = false;
 	}
-
+*/
 	public void iniciarPartida(){
 		//Añadir Nave
 		anadirNaves();
 		//Añadir Enegmigos
 		anadirEnemigos();
 		iniciarLoopJuego();
+		setChanged();
+		notifyObservers("jugar");
 	}
 
 	public void reiniciarPartida(){
 		borrarEnemigos();
 		borrarNaves();
 		borrarBalas();
-		reiniciarTeclas();
+		//reiniciarTeclas();
 		numeroEnemigosAleatorio();
+		setChanged();
+		notifyObservers("reiniciar");
 	}
 
 	private void iniciarLoopJuego() {
@@ -106,7 +106,10 @@ public class GestorPartida extends Observable {
 			setChanged();
 			notifyObservers("repaint");
 			// procesar movimiento continuo de la nave
+			/* PABLO: version anterior del movimiento 8con booleanos
 			procesarMovimientoContinuo();
+			*/
+
 			// procesar disparo
 			contDisparo++;
 			if(contDisparo > contDisparoMax) contDisparo = contDisparoMax;
@@ -171,13 +174,13 @@ public class GestorPartida extends Observable {
 			contDisparo = 0; // reset tras disparo automático
 		}
 	}
-
+/*
 	// start/stop movimiento continuo
 	public void startMover(String tecla) {
 		switch (tecla) {
 			case "w": upPressed = true; break;
 			case "a": leftPressed = true; break;
-			case "s": downPressed = true; break;
+			case "s": downPressed = false; break;
 			case "d": rightPressed = true; break;
 		}
 	}
@@ -197,6 +200,10 @@ public class GestorPartida extends Observable {
 		if (downPressed) espacio.moverNave(0, "s");
 		if (leftPressed) espacio.moverNave(0, "a");
 		if (rightPressed) espacio.moverNave(0, "d");
+	}
+*/
+	public void moverNave(String tecla) {
+		espacio.moverNave(0, tecla);
 	}
 
 	//

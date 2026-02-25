@@ -68,45 +68,55 @@ public class SpaceInvaders extends JFrame implements Observer {
     }
     
     public void cambioPantallaJuego() {
-        cardLayout.show(contenedor, "Juego");
-        contenedor.revalidate();
-        contenedor.repaint();
-
         //Modelo:
         Controlador.getControlador().iniciarModelo();
+        Controlador.getControlador().asignarObserverGestor(this);
         PantallaJuego.getPantallaJuego().asignarObservers();
         Controlador.getControlador().iniciarPartida();
-        Controlador.getControlador().asignarObserverGestor(this);
+
 
     }
 
     public void cambioPantallaInicio(){
-        cardLayout.show(contenedor,"Inicio");
-        contenedor.revalidate();
-        contenedor.repaint();
-
         Controlador.getControlador().reiniciarPartida();
 
     }
 
     @Override
+    /**
+     * El gestorPartida, dependiendo del string que metamos, cambiamos de pantalla. Si ponemos jugar, cambia a la patnalla de juego
+     */
     public void update(Observable o, Object arg) {
         switch ((String) arg){
-            case "repaint":
+            case "repaint": //TODO quitar repaint
                 PantallaJuego.getPantallaJuego().repaint();
-            break;
+                //Controlador.getControlador().procesarMovimiento();
+                break;
+            case "jugar":
+                cardLayout.show(contenedor, "Juego");
+                contenedor.revalidate();
+                contenedor.repaint();
+                PantallaJuego.getPantallaJuego().setFocusable(true);
+                PantallaJuego.getPantallaJuego().requestFocusInWindow();
+                break;
+
             case "perdido":
                 PantallaFin.getPantallaFin().setPerdido();
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
                 contenedor.repaint();
-            break;
+                break;
             case "ganado":
                 PantallaFin.getPantallaFin().setGanado();
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
                 contenedor.repaint();
-            break;
+                break;
+            case "reiniciar":
+                cardLayout.show(contenedor,"Inicio");
+                contenedor.revalidate();
+                contenedor.repaint();
+                break;
             default:
 
         }

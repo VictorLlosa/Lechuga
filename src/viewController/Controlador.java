@@ -2,18 +2,35 @@ package viewController;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.Observer;
 
 import model.GestorPartida;
 
-public class Controlador implements ActionListener {
+import javax.swing.*;
 
-	private static final Controlador miControlador = new Controlador();
+/**
+ * Implementa el KeyListener para poder usar las teclas
+ */
+public class Controlador implements KeyListener {
+
+
+	private static Controlador miControlador =null;
+
+	// estado de teclas para movimiento continuo
+	private volatile boolean upPressed = false;
+	private volatile boolean downPressed = false;
+	private volatile boolean leftPressed = false;
+	private volatile boolean rightPressed = false;
 
 	private Controlador() {
 	}
 	
 	public static Controlador getControlador() {
+		if(miControlador == null){
+			miControlador = new Controlador();
+		}
 		return miControlador;
 	}
 	
@@ -24,10 +41,6 @@ public class Controlador implements ActionListener {
 		GestorPartida.getGestorPartida().asignarObserver(o);
 	}
 	
-	
-	@Override
-	public void actionPerformed(ActionEvent e) {
-	}
 
 	public void iniciarModelo() {
 		GestorPartida.getGestorPartida();
@@ -41,18 +54,70 @@ public class Controlador implements ActionListener {
 		GestorPartida.getGestorPartida().reiniciarPartida();
 	}
 
-	public void startDisparar(int idNave) {
-		GestorPartida.getGestorPartida().startDisparar(idNave);
-	}
-	public void stopDisparar(int idNave) {
-		GestorPartida.getGestorPartida().stopDisparar(idNave);
+	@Override
+	public void keyTyped(KeyEvent e) {
 	}
 
-	public void startMover(String tecla) {
-		GestorPartida.getGestorPartida().startMover(tecla);
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch(e.getKeyCode()){
+			case  KeyEvent.VK_W:
+				this.upPressed = true;
+				GestorPartida.getGestorPartida().moverNave("w");
+				break;
+			case KeyEvent.VK_A:
+				this.leftPressed = true;
+				GestorPartida.getGestorPartida().moverNave("a");
+				break;
+			case KeyEvent.VK_S:
+				this.downPressed = true;
+				GestorPartida.getGestorPartida().moverNave("s");
+				break;
+			case KeyEvent.VK_D:
+				this.rightPressed = true;
+				GestorPartida.getGestorPartida().moverNave("d");
+				break;
+			case KeyEvent.VK_SPACE:
+				//this.spacePressed = true;
+				GestorPartida.getGestorPartida().startDisparar(0);
+				break;
+			default:
+
+		}
 	}
 
-	public void stopMover(String tecla) {
-		GestorPartida.getGestorPartida().stopMover(tecla);
+	public void procesarMovimiento() {
+		if (upPressed) GestorPartida.getGestorPartida().moverNave("w");
+		if (downPressed) GestorPartida.getGestorPartida().moverNave("a");
+		if (leftPressed) GestorPartida.getGestorPartida().moverNave("s");
+		if (rightPressed) GestorPartida.getGestorPartida().moverNave("d");
+	}
+	@Override
+	public void keyReleased(KeyEvent e) {
+		switch(e.getKeyCode()){
+			case  KeyEvent.VK_W:
+				this.upPressed = false;
+				GestorPartida.getGestorPartida().moverNave("w");
+				break;
+			case KeyEvent.VK_A:
+				this.leftPressed = false;
+				GestorPartida.getGestorPartida().moverNave("a");
+				break;
+			case KeyEvent.VK_S:
+				this.downPressed = false;
+				GestorPartida.getGestorPartida().moverNave("s");
+				break;
+			case KeyEvent.VK_D:
+				this.rightPressed = false;
+				GestorPartida.getGestorPartida().moverNave("d");
+				break;
+			case KeyEvent.VK_SPACE:
+				//this.spacePressed = false;
+				GestorPartida.getGestorPartida().stopDisparar(0);
+				break;
+			default:
+
+		}
+
 	}
 }
