@@ -30,23 +30,12 @@ public class PantallaInicio extends JPanel{
 
 		this.setLayout(new BorderLayout(10, 10));
 		//this.setOpaque(false);
-		
+		this.addKeyListener(Controlador.getControlador());
 		imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 		
 		this.add(getLblInstrucciones(), BorderLayout.NORTH);
 		this.add(getLabelImagen(), BorderLayout.CENTER);
 		this.add(getLblPlay(), BorderLayout.SOUTH);
-
-		//pulsar enter
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "startGame");
-
-		this.getActionMap().put("startGame", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SpaceInvaders.getSpaceInvaders().cambioPantallaJuego();
-			}
-		});
 
 	}
 	public static PantallaInicio getPantallaInicio() {

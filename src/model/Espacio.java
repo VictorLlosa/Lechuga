@@ -50,9 +50,9 @@ public class Espacio {
 	}
 
 	//Creación y Movimiento de Naves
-	public void anadirNave(Color pColor, Coordenada pCoord) {
+	public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
 
-		listaNaves.anadirNave(pColor, pCoord);
+		listaNaves.anadirNave(pId, pColor, pCoord);
 		matriz[55][50].dibujarNave(listaNaves.getColorNave(0));
 		/* NAVE DE + DE 1 PIXEL
 		for(int i = 55 - cX; i<= 55 + cX; i++) {
@@ -62,32 +62,21 @@ public class Espacio {
 		}
 		*/
 	}
-	public void moverNave(int idNave, String tecla) {
 
+	/**
+	 * Si no existe la nave (listaNaves.lenght()!=0), no haremos nada. Esto es para que
+	 * @param idNave
+	 * @param dx
+	 * @param dy
+	 */
+	public void moverNave(int idNave, int dx, int dy) {
+		if(!listaNaves.existeNave(idNave)) return;
 		Coordenada coordNave = listaNaves.getCoordNave(idNave);
 
 		Color colorNave = listaNaves.getColorNave(idNave);
 
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
-
-		int dx = 0, dy = 0;
-		switch (tecla) {
-			case "w":
-				dy = -1;
-				break;
-			case "a":
-				dx = -1;
-				break;
-			case "s":
-				dy = 1;
-				break;
-			case "d":
-				dx = 1;
-				break;
-			default:
-				return;
-		}
 
 		int nx = cX + dx;
 		int ny = cY + dy;
@@ -199,6 +188,9 @@ public class Espacio {
 		comprobarColEnemigoNave();
 	}
 
+	/**
+	 * Recorremos toda la longitud de la lista de Naves y en cada iteracion, obtenemos la coordenada en la que esta la nave.
+	 */
 	private void comprobarColEnemigoNave() {
 		for(int i = listaNaves.getNumNaves() - 1; i>=0; i--) {
 			Coordenada coordNave = listaNaves.getCoordNave(i);

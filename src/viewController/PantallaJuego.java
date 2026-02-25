@@ -38,6 +38,7 @@ public class PantallaJuego extends JPanel {
 				add(casillaLabel);
 			}
 		}
+		asignarObservers();
 	}
 
 	/**
