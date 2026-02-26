@@ -5,9 +5,17 @@ import java.util.ArrayList;
 
 public class ListaNaves {
     private ArrayList<Nave> listaNaves;
+    private static ListaNaves miListaNaves;
 
     public ListaNaves() {
         this.listaNaves = new ArrayList<>();
+    }
+
+    public static ListaNaves getListaNaves(){
+        if(miListaNaves == null){
+            miListaNaves = new ListaNaves();
+        }
+        return miListaNaves;
     }
 
     public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
@@ -64,4 +72,5 @@ public class ListaNaves {
     public boolean existeNave(int idNave) {
         return findNave(idNave) != null;
     }
+
 }

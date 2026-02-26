@@ -31,12 +31,22 @@ public class Controlador implements KeyListener {
 	private final int CADENCIA = 5; // ajustar para controlar cadencia de disparo (más bajo = más rápido)
 
 	private Controlador() {
-		timer = new Timer(30, e -> {
+		timer = new Timer(40, e -> {
 			procesarMovimiento();
-			// procesar disparo
-			contDisparo++;
-			if(contDisparo > CADENCIA) contDisparo = CADENCIA;
-			procesarDisparo();
+			/**
+			 * Si el atrib. disparoPressed es T y el numero de disparos en pantalla (contDisparo) es
+			 * >= a la CADENCIA, dispararemos automaticamente.
+			 */
+
+			if (spacePressed) {
+				contDisparo++;
+				if (contDisparo >= CADENCIA) {
+					GestorPartida.getGestorPartida().disparar();
+					contDisparo = 0;
+				}
+			} else {
+				contDisparo = CADENCIA; // permite disparar instantáneamente al pulsar
+			}
 		});
 	}
 
@@ -122,20 +132,14 @@ public class Controlador implements KeyListener {
 	}
 
 	public void procesarMovimiento() {
-		if (upPressed) GestorPartida.getGestorPartida().moverNave(0,0,-1);
-		if (leftPressed) GestorPartida.getGestorPartida().moverNave(0,-1,0);
-		if (downPressed) GestorPartida.getGestorPartida().moverNave(0,0,1);
-		if (rightPressed) GestorPartida.getGestorPartida().moverNave(0,1,0);
+		int dx = 0, dy = 0;
+
+		if (upPressed) dy -= 1;
+		if (leftPressed) dx -=1;
+		if (downPressed) dy += 1;
+		if (rightPressed) dx +=1;
+
+		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
 	}
 
-	/**
-	 * Si el atrib. disparoPressed es T y el numero de disparos en pantalla (contDisparo) es
-	 * >= a la CADENCIA, dispararemos automaticamente.
-	 */
-	private void procesarDisparo() {
-		if(spacePressed && contDisparo >= CADENCIA) {
-			GestorPartida.getGestorPartida().disparar();
-			contDisparo = 0; // reset tras disparo automático
-		}
-	}
 }
