@@ -30,7 +30,7 @@ public class PantallaFin extends JPanel{
 
         imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 
-       asignarRReinicio();
+        this.addKeyListener(Controlador.getControlador());
     }
     public static PantallaFin getPantallaFin() {
         if(miPantallaFin== null) {
@@ -39,18 +39,6 @@ public class PantallaFin extends JPanel{
         return miPantallaFin;
     }
 
-    private void asignarRReinicio(){
-        //si pulsamos la R, reiniciamos la partida
-        this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-                .put(KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), "startGame");
-
-        this.getActionMap().put("startGame", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SpaceInvaders.getSpaceInvaders().cambioPantallaInicio();
-            }
-        });
-    }
 
     private JLabel getLblInstruccionesF() {
         if (lblInstruccionesF == null) {

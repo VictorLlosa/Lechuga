@@ -8,11 +8,18 @@ public class ListaEnemigos {
     private static final int MAX_ENEMIGOS_POSIBLES=8;
     private final ArrayList<Enemigo> listaEnemigos;
     private boolean enemigoHaLlegadoAbajo;
+    private static ListaEnemigos miListaEnemigos = null;
     public ListaEnemigos() {
         this.listaEnemigos = new ArrayList<>();
         enemigoHaLlegadoAbajo = false;
     }
 
+    public static ListaEnemigos getListaEnemigos(){
+        if(miListaEnemigos == null){
+            miListaEnemigos = new ListaEnemigos();
+        }
+        return miListaEnemigos;
+    }
 
     public synchronized void anadirEnemigo(int idEnemigo, Coordenada coord) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {

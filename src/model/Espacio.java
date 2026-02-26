@@ -10,18 +10,9 @@ public class Espacio {
 	private final int hDim = 100;
 	private final int vDim = 60;
 
-	private final ListaNaves listaNaves;
-	private final ListaBalas listaBalas;
-	private final ListaEnemigos listaEnemigos;
-
 	private final Casilla[][] matriz;
 
 	private Espacio() {
-
-		listaNaves = new ListaNaves();
-		listaBalas = new ListaBalas();
-		listaEnemigos = new ListaEnemigos();
-
 		matriz = new Casilla[hDim][vDim];
 		for (int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
@@ -50,10 +41,10 @@ public class Espacio {
 	}
 
 	//Creación y Movimiento de Naves
-	public void anadirNave(Color pColor, Coordenada pCoord) {
+	public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
 
-		listaNaves.anadirNave(pColor, pCoord);
-		matriz[55][50].dibujarNave(listaNaves.getColorNave(0));
+		ListaNaves.getListaNaves().anadirNave(pId, pColor, pCoord);
+		matriz[55][50].dibujarNave(ListaNaves.getListaNaves().getColorNave(0));
 		/* NAVE DE + DE 1 PIXEL
 		for(int i = 55 - cX; i<= 55 + cX; i++) {
 			for(int j = 50 - cY; j<= 50 + cY; j++) {
@@ -62,68 +53,57 @@ public class Espacio {
 		}
 		*/
 	}
-	public void moverNave(int idNave, String tecla) {
 
-		Coordenada coordNave = listaNaves.getCoordNave(idNave);
+	/**
+	 * Si no existe la nave (listaNaves.lenght()!=0), no haremos nada. Esto es para que
+	 * @param idNave
+	 * @param dx
+	 * @param dy
+	 */
+	public void moverNave(int idNave, int dx, int dy) {
+		if(!ListaNaves.getListaNaves().existeNave(idNave)) return;
+		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
 
-		Color colorNave = listaNaves.getColorNave(idNave);
+		Color colorNave = ListaNaves.getListaNaves().getColorNave(idNave);
 
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
-
-		int dx = 0, dy = 0;
-		switch (tecla) {
-			case "w":
-				dy = -1;
-				break;
-			case "a":
-				dx = -1;
-				break;
-			case "s":
-				dy = 1;
-				break;
-			case "d":
-				dx = 1;
-				break;
-			default:
-				return;
-		}
 
 		int nx = cX + dx;
 		int ny = cY + dy;
 		if (esCoordenadaValida(nx, ny)) {
 			matriz[cX][cY].vaciar();
 			matriz[nx][ny].dibujarNave(colorNave);
-			listaNaves.setCoordNave(idNave, nx, ny);
+			ListaNaves.getListaNaves().setCoordNave(idNave, nx, ny);
 		}else{
 			if(nx > this.hDim - 1){
 				matriz[cX][cY].vaciar();
 				matriz[0][ny].dibujarNave(colorNave);
-				listaNaves.setCoordNave(idNave, 0, ny);
+				ListaNaves.getListaNaves().setCoordNave(idNave, 0, ny);
 			}
 			else if(nx<0){
 				matriz[cX][cY].vaciar();
 				matriz[hDim-1][ny].dibujarNave(colorNave);
-				listaNaves.setCoordNave(idNave, hDim-1, ny);
+				ListaNaves.getListaNaves().setCoordNave(idNave, hDim-1, ny);
 			}
 		}
 
 	}
 	public void borrarNaves(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i < listaNaves.getNumNaves();i++){
-			Coordenada coordNave = listaNaves.getCoordNave(i);
+		for (int i=0;i < ListaNaves.getListaNaves().getNumNaves();i++){
+			Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(i);
 			matriz[coordNave.getX()][coordNave.getY()].vaciar();
 		}
-		listaNaves.borrarListaNaves();
+		ListaNaves.getListaNaves().borrarListaNaves();
 	}
 
 	//Creación y Movimiento de Balas
 	public void disparar(int idNave) {
-		Coordenada coordNave = listaNaves.getCoordNave(idNave);
+		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
 		Coordenada coordBala = new Coordenada(coordNave.getX(), coordNave.getY() - 1);
 		if (esCoordenadaValida(coordBala.getX(), coordBala.getY())) {
-			listaBalas.anadirBala(idNave, coordBala);
+			ListaBalas.getListaBalas().anadirBala(idNave, coordBala);
 			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
 		}
 	}
@@ -133,94 +113,95 @@ public class Espacio {
 		// luego delegamos a la lista de balas el movimiento (que actualiza las coordenadas internamente)
 		// y finalmente dibujamos las balas en sus nuevas posiciones
 
-		int num = listaBalas.getNumBalas();
+		int num = ListaBalas.getListaBalas().getNumBalas();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordBala = listaBalas.getCoordBala(i);
+			Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(i);
 			matriz[coordBala.getX()][coordBala.getY()].vaciar();
 		}
 
 		// Mover las balas en la lista (actualiza coordenadas internamente)
-		listaBalas.moverBalas();
+		ListaBalas.getListaBalas().moverBalas();
 
 		// Dibujar las balas en sus nuevas posiciones
-		num = listaBalas.getNumBalas();
+		num = ListaBalas.getListaBalas().getNumBalas();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordBala = listaBalas.getCoordBala(i);
+			Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(i);
 			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
 		}
 	}
 	public void borrarBalas(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i < listaBalas.getNumBalas();i++){
-			Coordenada coordBala = listaBalas.getCoordBala(i);
+		for (int i=0;i < ListaBalas.getListaBalas().getNumBalas();i++){
+			Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(i);
 			matriz[coordBala.getX()][coordBala.getY()].vaciar();
 		}
-		listaBalas.borrarListaBalas();
+		ListaBalas.getListaBalas().borrarListaBalas();
 	}
 
 	//Creación y movimiento de Enemigos
 	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
 		if (esCoordenadaValida(cord.getX(), cord.getY())) {
-			listaEnemigos.anadirEnemigo(idEnemigo, cord);
+			ListaEnemigos.getListaEnemigos().anadirEnemigo(idEnemigo, cord);
 			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
 		}
 	}
 	public void moverEnemigos() {
-		int num = listaEnemigos.getNumEnemigos();
+		int num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
 			matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
 		}
 
 		// Mover los enemigos en la lista (actualiza coordenadas internamente)
-		listaEnemigos.moverEnemigos();
+		ListaEnemigos.getListaEnemigos().moverEnemigos();
 
 		// Dibujar los enemigos en sus nuevas posiciones
-		num = listaEnemigos.getNumEnemigos();
+		num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
 			matriz[coordEnem.getX()][coordEnem.getY()].dibujarEnemigo();
 		}
 	}
 	public void borrarEnemigos(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i < listaEnemigos.getNumEnemigos();i++){
-			Coordenada coordEnemigo = listaEnemigos.getCoordEnemigos(i);
+		for (int i=0;i < ListaEnemigos.getListaEnemigos().getNumEnemigos();i++){
+			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
 			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
 		}
 		//ahora los borramos de la lista
-		listaEnemigos.borrarListaEnemigos();
+		ListaEnemigos.getListaEnemigos().borrarListaEnemigos();
 	}
 
 	public void comprobarColisiones() {
 		//Balas vs Enemigos
 		comprobarColBalaEnemigo();
 		//Enemigos vs Nave
-		comprobarColEnemigoNave();
+		comprobarColEnemigoNave(0);
 	}
 
-	private void comprobarColEnemigoNave() {
-		for(int i = listaNaves.getNumNaves() - 1; i>=0; i--) {
-			Coordenada coordNave = listaNaves.getCoordNave(i);
-			for(int j = listaEnemigos.getNumEnemigos() - 1; j>=0; j--) {
-				Coordenada coordEnem = listaEnemigos.getCoordEnemigos(j);
-				if(coordNave.equals(coordEnem)) {
-					matriz[coordNave.getX()][coordNave.getY()].vaciar();
-					listaNaves.eliminarNave(i);
-					listaEnemigos.eliminarEnemigo(j);
-					break; // si la nave ya ha sido eliminada no hay que seguir
-				}
+	/**
+	 * Recorremos toda la longitud de la lista de Naves y en cada iteracion, obtenemos la coordenada en la que esta la nave.
+	 */
+	private void comprobarColEnemigoNave(int pId) {
+		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(pId);
+		for(int j = ListaEnemigos.getListaEnemigos().getNumEnemigos() - 1; j>=0; j--) {
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(j);
+			if(coordNave.equals(coordEnem)) {
+				matriz[coordNave.getX()][coordNave.getY()].vaciar();
+				ListaNaves.getListaNaves().eliminarNave(pId);
+				ListaEnemigos.getListaEnemigos().eliminarEnemigo(j);
+				break; // si la nave ya ha sido eliminada no hay que seguir
 			}
 		}
 	}
 
 	private void comprobarColBalaEnemigo() {
 		// Iterar de atrás hacia adelante para evitar problemas con índices al eliminar
-		for (int i = listaEnemigos.getNumEnemigos() - 1; i >= 0; i--) {
-			Coordenada coordEnem = listaEnemigos.getCoordEnemigos(i);
+		for (int i = ListaEnemigos.getListaEnemigos().getNumEnemigos() - 1; i >= 0; i--) {
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
 
-			for (int j = listaBalas.getNumBalas() - 1; j >= 0; j--) {
-				Coordenada coordBala = listaBalas.getCoordBala(j);
+			for (int j = ListaBalas.getListaBalas().getNumBalas() - 1; j >= 0; j--) {
+				Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(j);
 
 				if (coordEnem.equals(coordBala) || coordEnem.debajo(coordBala)) {
 					//Hay que tener en cuenta que si la bala y el enemigo estan en posiciones contiguas
@@ -230,8 +211,8 @@ public class Espacio {
 					matriz[coordBala.getX()][coordBala.getY()].vaciar();
 
 					// Eliminar bala y enemigo
-					listaBalas.eliminarBala(j);
-					listaEnemigos.eliminarEnemigo(i);
+					ListaBalas.getListaBalas().eliminarBala(j);
+					ListaEnemigos.getListaEnemigos().eliminarEnemigo(i);
 
 					break; // Si el enemigo ya ha sido eliminado no hay que seguir
 				}
@@ -240,14 +221,16 @@ public class Espacio {
 	}
 
 	public boolean quedanEnemigos() {
-		return listaEnemigos.getNumEnemigos() > 0;
-	}
-
-	public boolean quedanNaves() {
-		return listaNaves.getNumNaves() > 0;
+		return ListaEnemigos.getListaEnemigos().getNumEnemigos() > 0;
 	}
 
 	public boolean enemigoGana() {
-		return listaEnemigos.enemigoHaLLegadoAbajo();
+		return ListaEnemigos.getListaEnemigos().enemigoHaLLegadoAbajo();
 	}
+
+	public boolean quedanNaves() {
+		return ListaNaves.getListaNaves().getNumNaves() > 0;
+	}
+
+
 }

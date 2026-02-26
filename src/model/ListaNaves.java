@@ -5,33 +5,44 @@ import java.util.ArrayList;
 
 public class ListaNaves {
     private ArrayList<Nave> listaNaves;
+    private static ListaNaves miListaNaves;
 
     public ListaNaves() {
         this.listaNaves = new ArrayList<>();
     }
 
-    public void anadirNave(Color pColor, Coordenada pCoord) {
-        Nave nave = new Nave(pColor, pCoord);
+    public static ListaNaves getListaNaves(){
+        if(miListaNaves == null){
+            miListaNaves = new ListaNaves();
+        }
+        return miListaNaves;
+    }
+
+    public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
+        Nave nave = new Nave(pId,pColor, pCoord);
         listaNaves.add(nave);
     }
 
-    public Color getColorNave(int posNave) {
-        if (posNave>= 0 && posNave < listaNaves.size()) {
-            return listaNaves.get(posNave).getColor();
+    public Color getColorNave(int pIdNave) {
+        Nave nave = findNave(pIdNave);
+        if(nave != null){
+            return nave.getColor();
         }
-        return null; // o lanzar una excepción
+        return null;
     }
 
-    public Coordenada getCoordNave(int posNave) {
-        if (posNave >= 0 && posNave < listaNaves.size()) {
-            return listaNaves.get(posNave).getCoord();
+    public Coordenada getCoordNave(int pIdNave) {
+        Nave nave = findNave(pIdNave);
+        if(nave != null){
+            return nave.getCoord();
         }
-        return null; // o lanzar una excepción
+        return null;
     }
 
-    public void setCoordNave(int posNave, int cX, int cY) {
-        if (posNave >= 0 && posNave < listaNaves.size()) {
-            listaNaves.get(posNave).setCoord(cX, cY);
+    public void setCoordNave(int pIdNave, int cX, int cY) {
+        Nave nave = findNave(pIdNave);
+        if(nave != null){
+           nave.setCoord(cX, cY);
         }
     }
 
@@ -39,13 +50,27 @@ public class ListaNaves {
         return listaNaves.size();
     }
 
-    public void eliminarNave(int posNave) {
-        if (posNave >= 0 && posNave < listaNaves.size()) {
-            listaNaves.remove(posNave);
-}
+    public void eliminarNave(int pIdNave) {
+        Nave nave = findNave(pIdNave);
+        if(nave != null){
+            listaNaves.remove(nave);
+        }
+
+
     }
     public void borrarListaNaves() {
        listaNaves.clear();
+    }
+
+    private Nave findNave(int idNave){
+        for(int i = 0; i<listaNaves.size(); i++){
+            if(listaNaves.get(i).tienesId(idNave)) return listaNaves.get(i);
+        }
+        return null;
+    }
+
+    public boolean existeNave(int idNave) {
+        return findNave(idNave) != null;
     }
 
 }

@@ -22,7 +22,7 @@ public class PantallaJuego extends JPanel {
 	private PantallaJuego() {
 		setLayout(new GridLayout(vDim,hDim));
 		matrizLabels = new LabelCasilla[hDim][vDim];
-
+		this.addKeyListener(Controlador.getControlador());
 		// Crear y configurar todas las casillas
 		// Se itera primero por j (filas del GridLayout) y luego por i (columnas del GridLayout)
 		// para que la posición visual coincida con la matriz [i][j]
@@ -38,72 +38,7 @@ public class PantallaJuego extends JPanel {
 				add(casillaLabel);
 			}
 		}
-		asignarWASD();
-		asignarTeclaDisparo();
-	}
-
-	public void asignarTeclaDisparo() {
-		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap am = this.getActionMap();
-
-		// Space pressed -> empezar a disparar (disparo inmediato)
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, false), "disparar_pressed");
-		am.put("disparar_pressed", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controlador.getControlador().startDisparar(0);
-			}
-		});
-
-		// Space released -> parar disparo continuo
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_SPACE, 0, true), "disparar_released");
-		am.put("disparar_released", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controlador.getControlador().stopDisparar(0);
-			}
-		});
-	}
-
-
-	/**
-	 * Asigna los controles WASD para mover la nave.
-	 */
-	public void asignarWASD() {
-		// Array de caracteres y sus correspondientes códigos de tecla
-		String[] teclas = {"w", "a", "s", "d"};
-		int[] keyCodes = {KeyEvent.VK_W, KeyEvent.VK_A, KeyEvent.VK_S, KeyEvent.VK_D};
-
-		for (int i = 0; i < teclas.length; i++) {
-			String comando = teclas[i];
-			asignarTecla(keyCodes[i], comando);
-		}
-	}
-
-	/**
-	 * Asigna una tecla específica a una acción de movimiento (WASD).
-	 */
-	public void asignarTecla(int keyCode, String comando) {
-		InputMap im = this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-		ActionMap am = this.getActionMap();
-
-		// Key pressed
-		im.put(KeyStroke.getKeyStroke(keyCode, 0, false), comando + "_pressed");
-		am.put(comando + "_pressed", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controlador.getControlador().startMover(comando);
-			}
-		});
-
-		// Key released
-		im.put(KeyStroke.getKeyStroke(keyCode, 0, true), comando + "_released");
-		am.put(comando + "_released", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				Controlador.getControlador().stopMover(comando);
-			}
-		});
+		asignarObservers();
 	}
 
 	/**

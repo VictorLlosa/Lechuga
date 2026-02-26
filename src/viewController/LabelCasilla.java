@@ -7,6 +7,10 @@ import java.util.Observer;
 import javax.swing.JLabel;
 
 @SuppressWarnings("deprecation")
+/**
+ * El label es observador de la casilla. Cuando la casilla cambia de color, notifica a su Label observador; y este,
+ * en su update, cambia el volor de su background.
+ */
 public class LabelCasilla extends JLabel implements Observer{
 
 	private static final long serialVersionUID = 1L;
