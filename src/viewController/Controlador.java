@@ -102,7 +102,7 @@ public class Controlador implements KeyListener {
 	}
 
 	/**
-	 * Cuando reiniciamos la partida sin salirnos dandole a la R
+	 * Cuando reiniciamos la partida sin salirnos, dandole a la R
 	 */
 	private void reiniciarTeclas(){
 		upPressed = false;
@@ -112,6 +112,10 @@ public class Controlador implements KeyListener {
 		spacePressed = false;
 	}
 
+	/**
+	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false
+	 * @param e
+	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
 		if (pantallaActual.equals("Juego")) {
@@ -120,7 +124,11 @@ public class Controlador implements KeyListener {
 
 	}
 
-
+	/**
+	 *
+	 * @param keyCode el VK_(tecla)
+	 * @param pressed booleano que dice si se ha presionado (true) o no la tecla
+	 */
 	private void setTecla(int keyCode, boolean pressed) {
 		switch(keyCode) {
 			case KeyEvent.VK_W: upPressed = pressed; break;

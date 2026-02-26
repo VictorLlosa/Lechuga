@@ -26,6 +26,12 @@ public class LabelCasilla extends JLabel implements Observer{
 		return new Dimension(ANCHO_CASILLA, ALTO_CASILLA);
 	}
 
+	/**
+	 * A esta funcion se le llama cada vez que una casilla notifica de un cambio
+	 * @param o     la instancia de la Casilla que ha producido la notificación
+	 * @param arg   el argumento que le pasamos al mét0do {@code notifyObservers}
+	 *
+	 */
 	@Override
 	public void update(Observable o, Object arg) {
 		Object[] params = (Object[])arg;

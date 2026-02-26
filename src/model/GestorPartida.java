@@ -5,8 +5,11 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 import javax.swing.Timer;
-import viewController.PantallaJuego;
 
+
+/**
+ * Es observado por SpaceInvaders. Esta MAE se encarga de gestionar
+ */
 public class GestorPartida extends Observable {
 
 	private static GestorPartida miGestorPartida;

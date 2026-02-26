@@ -5,24 +5,19 @@ import java.util.Observable;
 import java.util.Observer;
 
 @SuppressWarnings("deprecation")
+/**
+ * Es parte del espacio. La casilla nos sirve para saber de qué color pintar su jframe.
+ */
 public class Casilla extends Observable{
-	private boolean ocupado;
 	private Color color;
-	//private int x = 0;
-	//private int y = 0;
+
 	
 	public Casilla() {
-		ocupado = false;
 		color = null;
 	}
 
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
-	}
-	public Casilla(boolean pOcup, Color pColor, Observer o) {
-		this.addObserver(o);
-		ocupado = pOcup;
-		color = pColor;	
 	}
 	
 	public void cambiarColor(Color pColor) {

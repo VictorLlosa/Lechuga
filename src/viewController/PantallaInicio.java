@@ -22,9 +22,7 @@ public class PantallaInicio extends JPanel{
 	private Image imagenFondo;
 
 	/**
-	 * Contiene los textos de como iniciar la partida y como moverse, aparte del logo. con
-	 * .getInputMap le asignamos una accion codificada como "startGame", a la que luego le asociamos
-	 * una acción 
+	 * Contiene los textos de como iniciar la partida y el logo.
 	 */
 	private PantallaInicio() {
 
