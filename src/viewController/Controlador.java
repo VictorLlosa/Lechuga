@@ -143,9 +143,9 @@ public class Controlador implements KeyListener {
 		int dx = 0, dy = 0;
 
 		if (upPressed) dy -= 1;
-		if (leftPressed) dx -=1;
+		if (leftPressed) dx -= 1;
 		if (downPressed) dy += 1;
-		if (rightPressed) dx +=1;
+		if (rightPressed) dx += 1;
 
 		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
 	}

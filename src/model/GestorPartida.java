@@ -26,8 +26,6 @@ public class GestorPartida extends Observable {
 
 	private String estadoFinal = "";
 
-	// estado de disparo para evitar disparo infinito
-	private volatile boolean disparoPressed = false;
 	// contador general para controlar acciones periódicas (movimiento enemigos, balas, etc.)
 	private int contadorAcciones = 0;
 
@@ -79,8 +77,9 @@ public class GestorPartida extends Observable {
 					detenerGameTimer();
 					setChanged();
 					notifyObservers(estadoFinal);
+				}else{
+					LoopJuego();
 				}
-				LoopJuego();
 			});
 			gameTimer.setInitialDelay(0);
 			gameTimer.start();
