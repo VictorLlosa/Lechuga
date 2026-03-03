@@ -5,8 +5,6 @@ import javax.swing.border.LineBorder;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class PantallaJuego extends JPanel {
 
@@ -44,7 +42,7 @@ public class PantallaJuego extends JPanel {
 	/**
 	 * Asigna los observers a todas las casillas del tablero.
 	 */
-	public void asignarObservers() {
+	void asignarObservers() {
 		for(int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
 				Controlador.getControlador().asignarObserverCasilla(matrizLabels[i][j], i, j);

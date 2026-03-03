@@ -1,14 +1,9 @@
-package main;
+package viewController;
 
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
-
-import viewController.Controlador;
-import viewController.PantallaFin;
-import viewController.PantallaInicio;
-import viewController.PantallaJuego;
 
 public class SpaceInvaders extends JFrame implements Observer {
 
@@ -16,9 +11,10 @@ public class SpaceInvaders extends JFrame implements Observer {
 	private CardLayout cardLayout;
     private JPanel contenedor;
     private static SpaceInvaders miSpace=null;
+    String pantallaActual;
 
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpaceInvaders.getSpaceInvaders();
     }
     
@@ -65,18 +61,17 @@ public class SpaceInvaders extends JFrame implements Observer {
         Controlador.getControlador().asignarObserverGestor(this);
         setVisible(true);
 
-        Controlador.getControlador().setPantallaActual("Inicio");
+        pantallaActual = "Inicio";
 
         PantallaInicio.getPantallaInicio().setFocusable(true);
         PantallaInicio.getPantallaInicio().requestFocusInWindow();
 
 
     }
-
-    @Override
     /**
      * El gestorPartida, dependiendo del string que metamos, cambiamos de pantalla. Si ponemos jugar, cambia a la patnalla de juego
      */
+    @Override
     public void update(Observable o, Object arg) {
         switch ((String) arg){
             case "repaint": //TODO quitar repaint
@@ -84,7 +79,7 @@ public class SpaceInvaders extends JFrame implements Observer {
                 //Controlador.getControlador().procesarMovimiento();
                 break;
             case "jugar":
-                Controlador.getControlador().setPantallaActual("Juego");
+                pantallaActual = "Juego";
                 cardLayout.show(contenedor, "Juego");
                 contenedor.revalidate();
                 contenedor.repaint();
@@ -95,7 +90,7 @@ public class SpaceInvaders extends JFrame implements Observer {
 
             case "perdido":
                 PantallaFin.getPantallaFin().setPerdido();
-                Controlador.getControlador().setPantallaActual("Fin");
+                pantallaActual = "Fin";
 
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
@@ -106,7 +101,7 @@ public class SpaceInvaders extends JFrame implements Observer {
                 break;
             case "ganado":
                 PantallaFin.getPantallaFin().setGanado();
-                Controlador.getControlador().setPantallaActual("Fin");
+                pantallaActual = "Fin";
 
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
@@ -116,7 +111,7 @@ public class SpaceInvaders extends JFrame implements Observer {
                 PantallaFin.getPantallaFin().requestFocusInWindow();
                 break;
             case "reiniciar":
-                Controlador.getControlador().setPantallaActual("Inicio");
+                pantallaActual = "Inicio";
 
                 cardLayout.show(contenedor,"Inicio");
                 contenedor.revalidate();
@@ -129,7 +124,4 @@ public class SpaceInvaders extends JFrame implements Observer {
 
         }
     }
-
-
-
 }

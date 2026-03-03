@@ -1,11 +1,7 @@
 package viewController;
 
-import main.SpaceInvaders;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 public class PantallaFin extends JPanel{
     private static final long serialVersionUID = 1L;
@@ -59,12 +55,12 @@ public class PantallaFin extends JPanel{
 
     }
 
-    public void setPerdido() {
+    void setPerdido() {
         labelCentral.setIcon(
                 new ImageIcon(getClass().getResource(rutaImagenGameOver))
         );
     }
-    public void setGanado() {
+    void setGanado() {
         labelCentral.setIcon(
                 new ImageIcon(getClass().getResource(rutaImagenWinner))
         );

@@ -13,7 +13,6 @@ import javax.swing.Timer;
 public class GestorPartida extends Observable {
 
 	private static GestorPartida miGestorPartida;
-	private final Espacio espacio = Espacio.getEspacio();
 	private int numEnemigos; // número de enemigos a generar (ajustable para dificultad)
 	private final int MIN_ENEM = 4;
 	private final int MAX_ENEM = 8;
@@ -94,10 +93,10 @@ public class GestorPartida extends Observable {
 		}
 		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
 		if (contadorAcciones % 5 == 0) { // 50 ms
-			espacio.moverBalas();
+			Espacio.getEspacio().moverBalas();
 		}
 		if (contadorAcciones % 20 == 0) { // 200 ms
-			espacio.moverEnemigos();
+			Espacio.getEspacio().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
 
@@ -105,51 +104,51 @@ public class GestorPartida extends Observable {
 	}
 
 	private void anadirNaves() {
-		espacio.anadirNave(0, Color.red, new Coordenada(55,50));
+		Espacio.getEspacio().anadirNave(0, Color.red, new Coordenada(55,50));
 	}
 
 	private void borrarNaves(){
-		espacio.borrarNaves();
+		Espacio.getEspacio().borrarNaves();
 	}
 
 	private void borrarBalas(){
-		espacio.borrarBalas();
+		Espacio.getEspacio().borrarBalas();
 	}
 
 	private void anadirEnemigos() {
 		int random = 5;
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
-				random += new Random().nextInt(10, espacio.getMaxEspaciado(numEnemigos));
+				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
 			}
-			while(!espacio.esCoordenadaValida(random,5));
+			while(!Espacio.getEspacio().esCoordenadaValida(random,5));
 
-			espacio.anadirEnemigos(0,new Coordenada(random,5));
+			Espacio.getEspacio().anadirEnemigos(0,new Coordenada(random,5));
 		}
 	}
 
 	private void borrarEnemigos(){
-		espacio.borrarEnemigos();
+		Espacio.getEspacio().borrarEnemigos();
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
-		espacio.asignarObserverCasilla(o,pX,pY);
+		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
 
 	public void moverNave(int idNave, int dx, int dy) {
-		espacio.moverNave(idNave, dx, dy);
+		Espacio.getEspacio().moverNave(idNave, dx, dy);
 	}
 
 	private void comprobarColisiones() {
-		espacio.comprobarColisiones();
+		Espacio.getEspacio().comprobarColisiones();
 	}
 
 	private boolean esFinPartida() {
-		if(!espacio.quedanEnemigos() && !espacio.enemigoGana()){
+		if(!Espacio.getEspacio().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "ganado";
 			return true;
 		}
-		else if(!espacio.quedanNaves() || espacio.enemigoGana()){
+		else if(!Espacio.getEspacio().quedanNaves() || Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "perdido";
 			return true;
 		}else{
@@ -169,6 +168,6 @@ public class GestorPartida extends Observable {
 	}
 
     public void disparar() {
-		espacio.disparar(0);
+		Espacio.getEspacio().disparar(0);
     }
 }

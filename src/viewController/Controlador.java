@@ -5,7 +5,6 @@ import java.awt.event.KeyListener;
 import java.util.Observer;
 
 import model.GestorPartida;
-import model.ListaNaves;
 
 import javax.swing.*;
 
@@ -17,7 +16,6 @@ public class Controlador implements KeyListener {
 
 
 	private static Controlador miControlador =null;
-	private String pantallaActual;
 	private Timer timer;
 
 	// estado de teclas para movimiento continuo
@@ -30,13 +28,13 @@ public class Controlador implements KeyListener {
 	private int contDisparo = 0; // contador para limitar velocidad de disparo
 	private final int CADENCIA = 5; // ajustar para controlar cadencia de disparo (más bajo = más rápido)
 
+	/**
+	 * Si el atrib. disparoPressed es T y el numero de disparos en pantalla (contDisparo) es
+	 * >= a la CADENCIA, dispararemos automaticamente.
+	 */
 	private Controlador() {
 		timer = new Timer(40, e -> {
 			procesarMovimiento();
-			/**
-			 * Si el atrib. disparoPressed es T y el numero de disparos en pantalla (contDisparo) es
-			 * >= a la CADENCIA, dispararemos automaticamente.
-			 */
 
 			if (spacePressed) {
 				contDisparo++;
@@ -48,6 +46,7 @@ public class Controlador implements KeyListener {
 				contDisparo = CADENCIA; // permite disparar instantáneamente al pulsar
 			}
 		});
+		timer.start();
 	}
 
 	public static Controlador getControlador() {
@@ -57,34 +56,25 @@ public class Controlador implements KeyListener {
 		return miControlador;
 	}
 	
-	public void asignarObserverCasilla(Observer o, int pX, int pY) {
+	void asignarObserverCasilla(Observer o, int pX, int pY) {
 		GestorPartida.getGestorPartida().asignarObserverCasilla(o, pX, pY);
 	}
-	public void asignarObserverGestor(Observer o) {
+	void asignarObserverGestor(Observer o) {
 		GestorPartida.getGestorPartida().asignarObserver(o);
 	}
 
-	/**
-	 * Empezamos el timer aqui par que de tiempo a crearse la nave y podamos acceder a sus coordenadas en .disparar()
-	 * @param pPantalla String que entra como parametro, que nos dice la pantalla
-	 */
-	public void setPantallaActual(String pPantalla){
-		pantallaActual = pPantalla;
-		if(pantallaActual.equals("Juego")) timer.start();
-		else timer.stop();
-	}
 	@Override
 	public void keyTyped(KeyEvent e) {
 	}
 
-	@Override
 	/**
 	 * Tratamos todas las acciones de las teclas. Desde SpaceInvaders le llamamos en su metodo 'update' de Observer, al metodo setPantallaActual,
 	 * para cambiar el atributo de Controlador de "pantallaActual". Lo usamos de forma parecida a una maquina de estados, donde dependiendo de que
 	 * estado (pantalla actual) tengamos activa, "activaremos o desactivaremos" una serie de teclas
 	 */
+	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (pantallaActual) {
+		switch (SpaceInvaders.getSpaceInvaders().pantallaActual) {
 			case("Inicio"):
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER) GestorPartida.getGestorPartida().iniciarPartida();
@@ -114,11 +104,10 @@ public class Controlador implements KeyListener {
 
 	/**
 	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false
-	 * @param e
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (pantallaActual.equals("Juego")) {
+		if (SpaceInvaders.getSpaceInvaders().pantallaActual.equals("Juego")) {
 			setTecla(e.getKeyCode(), false);
 		}
 
@@ -139,7 +128,7 @@ public class Controlador implements KeyListener {
 		}
 	}
 
-	public void procesarMovimiento() {
+	private void procesarMovimiento() {
 		int dx = 0, dy = 0;
 
 		if (upPressed) dy -= 1;
