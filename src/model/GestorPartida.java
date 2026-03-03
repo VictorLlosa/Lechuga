@@ -13,7 +13,6 @@ import javax.swing.Timer;
 public class GestorPartida extends Observable {
 
 	private static GestorPartida miGestorPartida;
-	private int numEnemigos; // número de enemigos a generar (ajustable para dificultad)
 	private final int MIN_ENEM = 4;
 	private final int MAX_ENEM = 8;
 
@@ -40,9 +39,9 @@ public class GestorPartida extends Observable {
 	 * Metodo dentro de la ctr de GestorPartida, lo usamos en caso de que el n. de
 	 * querer generar los enemigos aleatoriamente (de 4 a 8)
 	 */
-	public void numeroEnemigosAleatorio(){
+	public int numeroEnemigosAleatorio(){
 		Random r = new Random();
-		numEnemigos = MIN_ENEM + r.nextInt(MAX_ENEM - MIN_ENEM+1);
+		return MIN_ENEM + r.nextInt(MAX_ENEM - MIN_ENEM+1);
 	}
 
 	public void iniciarPartida(){
@@ -117,6 +116,7 @@ public class GestorPartida extends Observable {
 
 	private void anadirEnemigos() {
 		int random = 5;
+		int numEnemigos = numeroEnemigosAleatorio();
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
