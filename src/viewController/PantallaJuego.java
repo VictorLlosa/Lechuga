@@ -11,7 +11,8 @@ public class PantallaJuego extends JPanel {
 	private static final long serialVersionUID = 1L;
 	private static final int hDim = 100 ;
 	private static final int vDim = 60;
-	private static final int TAMANO_CASILLA = 10;
+	private final int ALTO_CASILLA = 25;
+	private final int ANCHO_CASILLA = 25;
 	private static PantallaJuego miPantallaJuego = null;
 
 	// Matriz de etiquetas que representan las casillas del juego
@@ -32,10 +33,12 @@ public class PantallaJuego extends JPanel {
 				casillaLabel.setBackground(Color.black);
 
 				casillaLabel.setBorder(new LineBorder(Color.BLACK));
+				casillaLabel.setSize(ANCHO_CASILLA, ALTO_CASILLA);
 				matrizLabels[i][j] = casillaLabel;
 				add(casillaLabel);
 			}
 		}
+		setPreferredSize(new Dimension(  hDim * ALTO_CASILLA,  vDim * ANCHO_CASILLA));
 		asignarObservers();
 	}
 
@@ -48,11 +51,6 @@ public class PantallaJuego extends JPanel {
 				Controlador.getControlador().asignarObserverCasilla(matrizLabels[i][j], i, j);
 			}
 		}
-	}
-
-	@Override
-	public Dimension getPreferredSize() {
-		return new Dimension(hDim * TAMANO_CASILLA, vDim * TAMANO_CASILLA);
 	}
 
 	public static PantallaJuego getPantallaJuego() {

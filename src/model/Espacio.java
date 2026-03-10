@@ -101,6 +101,7 @@ public class Espacio {
 	//Creación y Movimiento de Balas
 	public void disparar(int idNave) {
 		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
+		if (coordNave == null) return;
 		Coordenada coordBala = new Coordenada(coordNave.getX(), coordNave.getY() - 1);
 		if (esCoordenadaValida(coordBala.getX(), coordBala.getY())) {
 			ListaBalas.getListaBalas().anadirBala(idNave, coordBala);

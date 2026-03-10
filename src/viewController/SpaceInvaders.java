@@ -50,9 +50,7 @@ public class SpaceInvaders extends JFrame implements Observer {
         contenedor.add(panelJuego, "Juego");
         contenedor.add(panelFin, "Fin");
 
-        // Establecer tamaño preferido del contenedor basándose en PantallaJuego
-        Dimension tamano = panelJuego.getPreferredSize();
-        contenedor.setPreferredSize(tamano);
+        setResizable(false);
         // Agregar contenedor a la ventana
         getContentPane().add(contenedor);
 
@@ -60,6 +58,7 @@ public class SpaceInvaders extends JFrame implements Observer {
         pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
         Controlador.getControlador().asignarObserverGestor(this);
         setVisible(true);
+        this.
 
         pantallaActual = "Inicio";
 
