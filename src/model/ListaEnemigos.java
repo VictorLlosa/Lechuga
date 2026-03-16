@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListaEnemigos {
-    private static final int MAX_ENEMIGOS_POSIBLES=8;
+    private final int MAX_ENEMIGOS_POSIBLES=8;
     private final ArrayList<Enemigo> listaEnemigos;
     private boolean enemigoHaLlegadoAbajo;
     private static ListaEnemigos miListaEnemigos = null;

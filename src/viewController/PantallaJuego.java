@@ -9,8 +9,8 @@ import java.awt.GridLayout;
 public class PantallaJuego extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private static final int hDim = 100 ;
-	private static final int vDim = 60;
+	private final int hDim = 100 ;
+	private final int vDim = 60;
 	private final int ALTO_CASILLA = 25;
 	private final int ANCHO_CASILLA = 25;
 	private static PantallaJuego miPantallaJuego = null;
