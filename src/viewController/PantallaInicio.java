@@ -1,11 +1,7 @@
 package viewController;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
 
 import javax.swing.*;
-
-import main.SpaceInvaders;
 
 public class PantallaInicio extends JPanel{
 
@@ -22,31 +18,18 @@ public class PantallaInicio extends JPanel{
 	private Image imagenFondo;
 
 	/**
-	 * Contiene los textos de como iniciar la partida y como moverse, aparte del logo. con
-	 * .getInputMap le asignamos una accion codificada como "startGame", a la que luego le asociamos
-	 * una acción 
+	 * Contiene los textos de como iniciar la partida y el logo.
 	 */
 	private PantallaInicio() {
 
 		this.setLayout(new BorderLayout(10, 10));
 		//this.setOpaque(false);
-		
+		this.addKeyListener(Controlador.getControlador());
 		imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 		
 		this.add(getLblInstrucciones(), BorderLayout.NORTH);
 		this.add(getLabelImagen(), BorderLayout.CENTER);
 		this.add(getLblPlay(), BorderLayout.SOUTH);
-
-		//pulsar enter
-		this.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
-		    .put(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER, 0), "startGame");
-
-		this.getActionMap().put("startGame", new AbstractAction() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				SpaceInvaders.getSpaceInvaders().cambioPantallaJuego();
-			}
-		});
 
 	}
 	public static PantallaInicio getPantallaInicio() {

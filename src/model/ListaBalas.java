@@ -5,11 +5,19 @@ import java.util.Iterator;
 
 public class ListaBalas {
     private final ArrayList<Bala> listaBalas;
+    private static ListaBalas miListaBalas;
 
     public ListaBalas() {
         this.listaBalas = new ArrayList<>();
     }
-    
+
+    public static ListaBalas getListaBalas(){
+        if(miListaBalas == null){
+            miListaBalas = new ListaBalas();
+        }
+        return miListaBalas;
+    }
+
     public synchronized void anadirBala(int idNave, Coordenada coord) {
         Bala bala = new Bala(idNave, coord);
         listaBalas.add(bala);
@@ -57,5 +65,9 @@ public class ListaBalas {
         if (posBala >= 0 && posBala < listaBalas.size()) {
             listaBalas.remove(posBala);
         }
+    }
+
+    public void borrarListaBalas() {
+        listaBalas.clear();
     }
 }

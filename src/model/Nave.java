@@ -8,13 +8,15 @@ public class Nave {
 	private Coordenada centro;
 	private Coordenada coord;
 	private Color color;
+	private int id;
 	//private int dimX, dimY;
 	
-	public Nave(Color pColor, Coordenada pCoord) {
+	public Nave(int pId, Color pColor, Coordenada pCoord) {
 		/*
 		dimX = 1;
 		dimY = 1;
 		 */
+		id = pId;
 		color = pColor;
 		
 		//nave = new Color[dimX][dimY];
@@ -84,4 +86,9 @@ public class Nave {
 	public Coordenada getCoord() {
 		return coord;
 	}
+
+	public boolean tienesId(int pId){
+		return pId == id;
+	}
+
 }

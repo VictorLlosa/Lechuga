@@ -13,6 +13,7 @@ public class PantallaFin extends JPanel{
 
     private JLabel labelCentral;
     private Image imagenFondo;
+    private JLabel lblInstruccionesF;
 
     private PantallaFin() {
 
@@ -21,9 +22,11 @@ public class PantallaFin extends JPanel{
 
         labelCentral = new JLabel("", SwingConstants.CENTER);
         this.add(labelCentral, BorderLayout.CENTER);
+        this.add(getLblInstruccionesF(),BorderLayout.SOUTH);
 
         imagenFondo = new ImageIcon(getClass().getResource(rutaImagenFondo)).getImage();
 
+        this.addKeyListener(Controlador.getControlador());
     }
     public static PantallaFin getPantallaFin() {
         if(miPantallaFin== null) {
@@ -32,6 +35,15 @@ public class PantallaFin extends JPanel{
         return miPantallaFin;
     }
 
+
+    private JLabel getLblInstruccionesF() {
+        if (lblInstruccionesF == null) {
+            lblInstruccionesF = new JLabel("Press <R> to RESTART your game", SwingConstants.CENTER);
+            lblInstruccionesF.setFont(new Font("Bitstream Charter", Font.BOLD, 22));
+            lblInstruccionesF.setForeground(Color.WHITE);
+        }
+        return lblInstruccionesF;
+    }
 
     @Override
     protected void paintComponent(Graphics g) {
@@ -43,12 +55,12 @@ public class PantallaFin extends JPanel{
 
     }
 
-    public void setPerdido() {
+    void setPerdido() {
         labelCentral.setIcon(
                 new ImageIcon(getClass().getResource(rutaImagenGameOver))
         );
     }
-    public void setGanado() {
+    void setGanado() {
         labelCentral.setIcon(
                 new ImageIcon(getClass().getResource(rutaImagenWinner))
         );

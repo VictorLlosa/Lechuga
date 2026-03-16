@@ -1,14 +1,9 @@
-package main;
+package viewController;
 
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
-
-import viewController.Controlador;
-import viewController.PantallaFin;
-import viewController.PantallaInicio;
-import viewController.PantallaJuego;
 
 public class SpaceInvaders extends JFrame implements Observer {
 
@@ -16,9 +11,10 @@ public class SpaceInvaders extends JFrame implements Observer {
 	private CardLayout cardLayout;
     private JPanel contenedor;
     private static SpaceInvaders miSpace=null;
+    String pantallaActual;
 
 
-    public static void main(String[] args) {
+    static void main(String[] args) {
         SpaceInvaders.getSpaceInvaders();
     }
     
@@ -39,7 +35,6 @@ public class SpaceInvaders extends JFrame implements Observer {
     	getContentPane().setBackground(Color.WHITE);
     	setForeground(Color.WHITE);
 
-
         // Crear CardLayout y contenedor
         cardLayout = new CardLayout();
         contenedor = new JPanel(cardLayout);
@@ -55,55 +50,77 @@ public class SpaceInvaders extends JFrame implements Observer {
         contenedor.add(panelJuego, "Juego");
         contenedor.add(panelFin, "Fin");
 
-        // Establecer tamaño preferido del contenedor basándose en PantallaJuego
-        Dimension tamano = panelJuego.getPreferredSize();
-        contenedor.setPreferredSize(tamano);
-
+        setResizable(false);
         // Agregar contenedor a la ventana
         getContentPane().add(contenedor);
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
-        setVisible(true);
-    }
-    
-    public void cambioPantallaJuego() {
-        cardLayout.show(contenedor, "Juego");
-        contenedor.revalidate();
-        contenedor.repaint();
-
-        //Modelo:
-        Controlador.getControlador().iniciarModelo();
-        PantallaJuego.getPantallaJuego().asignarObservers();
-        Controlador.getControlador().iniciarPartida();
         Controlador.getControlador().asignarObserverGestor(this);
+        setVisible(true);
+        this.
+
+        pantallaActual = "Inicio";
+
+        PantallaInicio.getPantallaInicio().setFocusable(true);
+        PantallaInicio.getPantallaInicio().requestFocusInWindow();
+
 
     }
-
-
+    /**
+     * El gestorPartida, dependiendo del string que metamos, cambiamos de pantalla. Si ponemos jugar, cambia a la patnalla de juego
+     */
     @Override
     public void update(Observable o, Object arg) {
         switch ((String) arg){
-            case "repaint":
+            case "repaint": //TODO quitar repaint
                 PantallaJuego.getPantallaJuego().repaint();
-            break;
+                //Controlador.getControlador().procesarMovimiento();
+                break;
+            case "jugar":
+                pantallaActual = "Juego";
+                cardLayout.show(contenedor, "Juego");
+                contenedor.revalidate();
+                contenedor.repaint();
+
+                PantallaJuego.getPantallaJuego().setFocusable(true);
+                PantallaJuego.getPantallaJuego().requestFocusInWindow();
+                break;
+
             case "perdido":
                 PantallaFin.getPantallaFin().setPerdido();
+                pantallaActual = "Fin";
+
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
                 contenedor.repaint();
-            break;
+
+                PantallaFin.getPantallaFin().setFocusable(true);
+                PantallaFin.getPantallaFin().requestFocusInWindow();
+                break;
             case "ganado":
                 PantallaFin.getPantallaFin().setGanado();
+                pantallaActual = "Fin";
+
                 cardLayout.show(contenedor, "Fin");
                 contenedor.revalidate();
                 contenedor.repaint();
-            break;
+
+                PantallaFin.getPantallaFin().setFocusable(true);
+                PantallaFin.getPantallaFin().requestFocusInWindow();
+                break;
+            case "reiniciar":
+                pantallaActual = "Inicio";
+
+                cardLayout.show(contenedor,"Inicio");
+                contenedor.revalidate();
+                contenedor.repaint();
+
+                PantallaInicio.getPantallaInicio().setFocusable(true);
+                PantallaInicio.getPantallaInicio().requestFocusInWindow();
+                break;
             default:
 
         }
     }
-
-
-
 }
