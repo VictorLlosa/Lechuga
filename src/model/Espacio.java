@@ -44,7 +44,7 @@ public class Espacio {
 	public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
 
 		ListaNaves.getListaNaves().anadirNave(pId, pColor, pCoord);
-		matriz[55][50].dibujarNave(ListaNaves.getListaNaves().getColorNave(0));
+		matriz[55][50].cambiarObjeto("Nave");
 		/* NAVE DE + DE 1 PIXEL
 		for(int i = 55 - cX; i<= 55 + cX; i++) {
 			for(int j = 50 - cY; j<= 50 + cY; j++) {
@@ -64,8 +64,6 @@ public class Espacio {
 		if(!ListaNaves.getListaNaves().existeNave(idNave)) return;
 		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
 
-		Color colorNave = ListaNaves.getListaNaves().getColorNave(idNave);
-
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
 
@@ -73,17 +71,17 @@ public class Espacio {
 		int ny = cY + dy;
 		if (esCoordenadaValida(nx, ny)) {
 			matriz[cX][cY].vaciar();
-			matriz[nx][ny].dibujarNave(colorNave);
+			matriz[nx][ny].cambiarObjeto("Nave");
 			ListaNaves.getListaNaves().setCoordNave(idNave, nx, ny);
 		}else{
 			if(nx > this.hDim - 1){
 				matriz[cX][cY].vaciar();
-				matriz[0][ny].dibujarNave(colorNave);
+				matriz[0][ny].cambiarObjeto("Nave");
 				ListaNaves.getListaNaves().setCoordNave(idNave, 0, ny);
 			}
 			else if(nx<0){
 				matriz[cX][cY].vaciar();
-				matriz[hDim-1][ny].dibujarNave(colorNave);
+				matriz[hDim-1][ny].cambiarObjeto("Nave");
 				ListaNaves.getListaNaves().setCoordNave(idNave, hDim-1, ny);
 			}
 		}
@@ -105,7 +103,7 @@ public class Espacio {
 		Coordenada coordBala = new Coordenada(coordNave.getX(), coordNave.getY() - 1);
 		if (esCoordenadaValida(coordBala.getX(), coordBala.getY())) {
 			ListaBalas.getListaBalas().anadirBala(idNave, coordBala);
-			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
+			matriz[coordBala.getX()][coordBala.getY()].cambiarObjeto("Bala");
 		}
 	}
 	public void moverBalas() {
@@ -127,7 +125,7 @@ public class Espacio {
 		num = ListaBalas.getListaBalas().getNumBalas();
 		for (int i = 0; i < num; i++) {
 			Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(i);
-			matriz[coordBala.getX()][coordBala.getY()].dibujarBala();
+			matriz[coordBala.getX()][coordBala.getY()].cambiarObjeto("Bala");
 		}
 	}
 	public void borrarBalas(){
@@ -143,7 +141,7 @@ public class Espacio {
 	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
 		if (esCoordenadaValida(cord.getX(), cord.getY())) {
 			ListaEnemigos.getListaEnemigos().anadirEnemigo(idEnemigo, cord);
-			matriz[cord.getX()][cord.getY()].dibujarEnemigo();
+			matriz[cord.getX()][cord.getY()].cambiarObjeto("Enemigo");
 		}
 	}
 	public void moverEnemigos() {
@@ -160,7 +158,7 @@ public class Espacio {
 		num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
 			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
-			matriz[coordEnem.getX()][coordEnem.getY()].dibujarEnemigo();
+			matriz[coordEnem.getX()][coordEnem.getY()].cambiarObjeto("Enemigo");
 		}
 	}
 	public void borrarEnemigos(){

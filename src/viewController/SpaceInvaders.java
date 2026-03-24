@@ -1,5 +1,7 @@
 package viewController;
 
+import model.GestorPartida;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -56,7 +58,7 @@ public class SpaceInvaders extends JFrame implements Observer {
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
-        Controlador.getControlador().asignarObserverGestor(this);
+        GestorPartida.getGestorPartida().asignarObserver(this);
         setVisible(true);
         this.
 

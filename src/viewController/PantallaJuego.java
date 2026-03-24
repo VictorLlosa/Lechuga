@@ -1,5 +1,5 @@
 package viewController;
-
+import model.GestorPartida;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -48,7 +48,7 @@ public class PantallaJuego extends JPanel {
 	void asignarObservers() {
 		for(int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
-				Controlador.getControlador().asignarObserverCasilla(matrizLabels[i][j], i, j);
+				GestorPartida.getGestorPartida().asignarObserverCasilla(matrizLabels[i][j], i, j);
 			}
 		}
 	}

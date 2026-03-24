@@ -28,7 +28,23 @@ public class LabelCasilla extends JLabel implements Observer{
 	@Override
 	public void update(Observable o, Object arg) {
 		Object[] params = (Object[])arg;
-		this.setBackground((Color) params[0]);
+
+		switch ((String) params[0]){
+			case "Vacio":
+				this.setBackground(Color.BLACK);
+			break;
+			case "Nave":
+				this.setBackground(Color.BLUE);
+			break;
+			case "Bala":
+				this.setBackground(Color.WHITE);
+			break;
+			case "Enemigo":
+				this.setBackground(Color.RED);
+			break;
+
+		}
+
 	}
 	
 

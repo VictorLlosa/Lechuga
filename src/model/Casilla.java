@@ -9,35 +9,27 @@ import java.util.Observer;
  * Es parte del espacio. La casilla nos sirve para saber de qué color pintar su jframe.
  */
 public class Casilla extends Observable{
-	private Color color;
+	private String objeto;
 
 	
 	public Casilla() {
-		color = null;
+		objeto = "vacio";
 	}
 
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
 	
-	public void cambiarColor(Color pColor) {
+	public void cambiarObjeto(String pObjeto) {
 		// Notificar sólo si el color cambia (evitar repaints redundantes)
-		if (pColor.equals(this.color)) return;
-		color = pColor;
-		Object[] arg ={pColor};
+		if (pObjeto.equals(this.objeto)) return;
+		objeto = pObjeto;
+		Object[] arg ={pObjeto};
 		setChanged();
 		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
 	}
 
 	public void vaciar() {
-		cambiarColor(Color.BLACK);
+		cambiarObjeto("Vacio");
 	}
-
-	public void dibujarNave(Color colorNave) {
-		cambiarColor(colorNave);
-	}
-	public void dibujarBala() {
-		cambiarColor(Color.WHITE);
-	}
-	public void dibujarEnemigo() {cambiarColor(Color.BLUE);}
 }
