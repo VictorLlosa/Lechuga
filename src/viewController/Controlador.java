@@ -55,13 +55,6 @@ public class Controlador implements KeyListener {
 		}
 		return miControlador;
 	}
-	
-	void asignarObserverCasilla(Observer o, int pX, int pY) {
-		GestorPartida.getGestorPartida().asignarObserverCasilla(o, pX, pY);
-	}
-	void asignarObserverGestor(Observer o) {
-		GestorPartida.getGestorPartida().asignarObserver(o);
-	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
