@@ -41,9 +41,9 @@ public class Espacio {
 	}
 
 	//Creación y Movimiento de Naves
-	public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
+	public void anadirNave(int pId, String pTipo, Coordenada pCoord) {
 
-		ListaNaves.getListaNaves().anadirNave(pId, pColor, pCoord);
+		ListaNaves.getListaNaves().anadirNave(pId, pTipo, pCoord);
 		matriz[55][50].cambiarObjeto("Nave");
 		/* NAVE DE + DE 1 PIXEL
 		for(int i = 55 - cX; i<= 55 + cX; i++) {

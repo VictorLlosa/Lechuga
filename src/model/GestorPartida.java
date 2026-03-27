@@ -103,7 +103,7 @@ public class GestorPartida extends Observable {
 	}
 
 	private void anadirNaves() {
-		Espacio.getEspacio().anadirNave(0, Color.red, new Coordenada(55,50));
+		Espacio.getEspacio().anadirNave(0, "roja", new Coordenada(55,50));
 	}
 
 	private void borrarNaves(){

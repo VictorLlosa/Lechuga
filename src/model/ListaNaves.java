@@ -1,10 +1,12 @@
 package model;
 
+import model.Factorias.FactoriaNave;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class ListaNaves {
-    private ArrayList<Nave> listaNaves;
+    private ArrayList<NaveAbstracta> listaNaves;
     private static ListaNaves miListaNaves;
 
     public ListaNaves() {
@@ -18,21 +20,27 @@ public class ListaNaves {
         return miListaNaves;
     }
 
-    public void anadirNave(int pId, Color pColor, Coordenada pCoord) {
-        Nave nave = new Nave(pId,pColor, pCoord);
+    /**
+     * anade una nave a ListaNaves
+     * @param pId
+     * @param pTipo
+     * @param pCoord
+     */
+    public void anadirNave(int pId, String pTipo, Coordenada pCoord) {
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo);
         listaNaves.add(nave);
     }
 
-    public Color getColorNave(int pIdNave) {
-        Nave nave = findNave(pIdNave);
+    public String getColorNave(int pIdNave) {
+        NaveAbstracta nave = findNave(pIdNave);
         if(nave != null){
-            return nave.getColor();
+            return nave.getTipo();
         }
         return null;
     }
 
     public Coordenada getCoordNave(int pIdNave) {
-        Nave nave = findNave(pIdNave);
+        NaveAbstracta nave = findNave(pIdNave);
         if(nave != null){
             return nave.getCoord();
         }
@@ -40,7 +48,7 @@ public class ListaNaves {
     }
 
     public void setCoordNave(int pIdNave, int cX, int cY) {
-        Nave nave = findNave(pIdNave);
+        NaveAbstracta nave = findNave(pIdNave);
         if(nave != null){
            nave.setCoord(cX, cY);
         }
@@ -51,7 +59,7 @@ public class ListaNaves {
     }
 
     public void eliminarNave(int pIdNave) {
-        Nave nave = findNave(pIdNave);
+        NaveAbstracta nave = findNave(pIdNave);
         if(nave != null){
             listaNaves.remove(nave);
         }
@@ -62,7 +70,7 @@ public class ListaNaves {
        listaNaves.clear();
     }
 
-    private Nave findNave(int idNave){
+    private NaveAbstracta findNave(int idNave){
         for(int i = 0; i<listaNaves.size(); i++){
             if(listaNaves.get(i).tienesId(idNave)) return listaNaves.get(i);
         }

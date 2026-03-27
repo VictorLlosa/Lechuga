@@ -1,5 +1,8 @@
 package model.Factorias;
 
+import model.NaveAbstracta;
+import model.Nave;
+
 public class FactoriaNave {
     private static FactoriaNave miFactoriaNave = null;
 
@@ -20,6 +23,6 @@ public class FactoriaNave {
      * @return
      */
     public NaveAbstracta generar(String pTipo){
-
+        return new Nave(pTipo);
     }
 }
