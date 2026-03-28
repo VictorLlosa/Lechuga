@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.*;
+import Strategy.DisparoStrategy;
 
 /**
  *
