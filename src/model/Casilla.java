@@ -10,8 +10,9 @@ import java.util.Observer;
  * Es Observer del objeto que esta representando. Desde Bala,Enemigo o nave tenemos un Eliminar, que le
  * avisa a esta clase de que esta vacia
  */
-public class Casilla extends Observable{
+public class Casilla extends Observable implements Observer{
 	private String objeto;
+
 
 	
 	public Casilla() {
@@ -32,6 +33,14 @@ public class Casilla extends Observable{
 	}
 
 	public void vaciar() {
-		cambiarObjeto("Vacio");
+		cambiarObjeto("vacio");
+	}
+
+
+	public String getObjeto() {
+		return objeto;
+	}
+	public void update(Observable o, Object arg){
+		objeto = (String)arg;
 	}
 }

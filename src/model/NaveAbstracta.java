@@ -1,21 +1,29 @@
 package model;
 
-import Strategy.DisparoStrategy;
+import model.Strategy.*;
+
+import java.util.ArrayList;
+import java.util.Observable;
 
 /**
  * id Empieza en 0, es un atributo autoincremental
  */
-public abstract class NaveAbstracta {
+public abstract class NaveAbstracta extends Observable {
 
     private Coordenada coord;
-    private Coordenada[] arrayCoord;
-    private String tipo;
-    private int id;
+    private  Coordenada cannon;
+    private static int id= -1;
     private DisparoStrategy disparo;
+    private ListaBalas listaBalas;
 
-    protected NaveAbstracta(String pTipo){
-        this.tipo = pTipo;
-        this.disparo = new disparoPixel();
+    protected NaveAbstracta(){
+        this.disparo = new DisparoPixel();
+        this.id++;
+        listaBalas = new ListaBalas();
+    }
+
+    protected void setCannon(int pX, int pY) {
+        cannon.setCoord(pX,pY);
     }
 
     protected void setCoord(int pX, int pY) {
@@ -26,12 +34,8 @@ public abstract class NaveAbstracta {
         return coord;
     }
 
-    protected void disparar(){
-        disparo.disparar();
-    }
-
-    protected  String getTipo(){
-        return this.tipo;
+    public Coordenada disparar(){
+        return disparo.disparar(cannon.getX(), cannon.getY());
     }
 
     public boolean tienesId(int idNave) {

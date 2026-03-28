@@ -1,8 +1,10 @@
 package model;
 
 public class Nave extends NaveAbstracta {
-	public Nave(String pTipo) {
-		super(pTipo);
+	public Nave(int pX, int pY) {
+		super();
+		this.setCoord(pX,pY);
+		this.setCannon(pX,pY);
 	}
 
 }

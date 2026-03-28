@@ -15,6 +15,8 @@ public class PantallaJuego extends JPanel {
 	private final int ANCHO_CASILLA = 25;
 	private static PantallaJuego miPantallaJuego = null;
 
+	private Color colorNave;
+
 	// Matriz de etiquetas que representan las casillas del juego
 	private static LabelCasilla[][] matrizLabels;
 
@@ -58,6 +60,14 @@ public class PantallaJuego extends JPanel {
 			miPantallaJuego = new PantallaJuego();
 		}
 		return miPantallaJuego;
+	}
+
+	public void cambiarColorNave(Color blue) {
+
+	}
+
+	public Color getColorNave() {
+		return colorNave;
 	}
 }
 

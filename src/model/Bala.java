@@ -1,6 +1,8 @@
 package model;
 
-public class Bala {
+import java.util.Observable;
+
+public class Bala extends Observable {
     private Coordenada coord;
     private int idNave;
 

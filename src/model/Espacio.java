@@ -36,8 +36,11 @@ public class Espacio {
 	}
 
 	public boolean esCoordenadaValida(int x, int y) {
-		//en el eje X, añadimos un margen de -1 a +1 para permitir que la nave salga por el otro lado
 		return x < this.hDim && y < this.vDim && x >= 0 && y >= 0;
+	}
+
+	public boolean puedeDisparar(int x, int y) {
+		return x < this.hDim && y < this.vDim + 1 && x >= 0 && y >= 0;
 	}
 
 	/**
@@ -47,15 +50,8 @@ public class Espacio {
 	 */
 	public void anadirNave(String pColor, Coordenada pCoord) {
 
-		ListaNaves.getListaNaves().anadirNave(pId, pTipo, pCoord);
+		ListaNaves.getListaNaves().anadirNave(pColor, pCoord);
 		matriz[55][50].cambiarObjeto("Nave");
-		/* NAVE DE + DE 1 PIXEL
-		for(int i = 55 - cX; i<= 55 + cX; i++) {
-			for(int j = 50 - cY; j<= 50 + cY; j++) {
-				matriz[i][j].cambiarColor(nave[55 - i][50 - j]);
-			}
-		}
-		*/
 	}
 
 	/**
@@ -108,6 +104,12 @@ public class Espacio {
 			matriz[coordBala.getX()][coordBala.getY()].cambiarObjeto("Bala");
 		}
 	}
+
+	/**
+	 * Primero vaciamos las casillas que tenian las balas y luego delegamos a la lista de balas de las naves el movimiento (que actualiza las coordenadas internamente)
+	 * 	y finalmente dibujamos las balas en sus nuevas posiciones.
+	 * 	Usamos getObjeto() de Casilla para saber que tiene en cada momento
+	 */
 	public void moverBalas() {
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
 		for (int i = 0; i < numNaves; i++) {
@@ -124,15 +126,6 @@ public class Espacio {
 			}
 		}
 
-		// Mover las balas en la lista (actualiza coordenadas internamente)
-		ListaBalas.getListaBalas().moverBalas();
-
-		// Dibujar las balas en sus nuevas posiciones
-		num = ListaBalas.getListaBalas().getNumBalas();
-		for (int i = 0; i < num; i++) {
-			Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(i);
-			matriz[coordBala.getX()][coordBala.getY()].cambiarObjeto("Bala");
-		}
 	}
 
 	/**
@@ -147,14 +140,14 @@ public class Espacio {
 			}
 			ListaNaves.getListaNaves().borrarBalasNave(i);
 		}
-		ListaBalas.getListaBalas().borrarListaBalas();
+
 	}
 
 	//Creación y movimiento de Enemigos
-	public void anadirEnemigos(int idEnemigo, Coordenada cord) {
-		if (esCoordenadaValida(cord.getX(), cord.getY())) {
-			ListaEnemigos.getListaEnemigos().anadirEnemigo(idEnemigo, cord);
-			matriz[cord.getX()][cord.getY()].cambiarObjeto("Enemigo");
+	public void anadirEnemigos(int idEnemigo, Coordenada coord) {
+		if (esCoordenadaValida(coord.getX(), coord.getY())) {
+			ListaEnemigos.getListaEnemigos().anadirEnemigo(idEnemigo, coord);
+			matriz[coord.getX()][coord.getY()].cambiarObjeto("Enemigo");
 		}
 	}
 	public void moverEnemigos() {

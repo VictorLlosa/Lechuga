@@ -32,21 +32,12 @@ public class ListaNaves {
 
     /**
      * anade una nave a ListaNaves
-     * @param pId
-     * @param pTipo
+     * @param pColor
      * @param pCoord
      */
-    public void anadirNave(int pId, String pTipo, Coordenada pCoord) {
-        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo);
+    public void anadirNave(String pColor, Coordenada pCoord) {
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal",pColor, pCoord);
         listaNaves.add(nave);
-    }
-
-    public String getColorNave(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null){
-            return nave.getTipo();
-        }
-        return null;
     }
 
     public Coordenada getCoordNave(int pIdNave) {
@@ -81,8 +72,8 @@ public class ListaNaves {
     }
 
     private NaveAbstracta findNave(int idNave){
-        for(int i = 0; i<listaNaves.size(); i++){
-            if(listaNaves.get(i).tienesId(idNave)) return listaNaves.get(i);
+        for (NaveAbstracta nave : listaNaves) {
+            if (nave.tienesId(idNave)) return nave;
         }
         return null;
     }
@@ -103,4 +94,12 @@ public class ListaNaves {
         else return null;
     }
 
+    public void moverBalasNave(int pIdNave) {
+        if(existeNave(pIdNave)) findNave(pIdNave).moverBalas();
+
+    }
+
+    public void borrarBalasNave(int pIdNave) {
+        if(existeNave(pIdNave)) findNave(pIdNave).borrarBalas();
+    }
 }

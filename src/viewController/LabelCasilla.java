@@ -35,7 +35,7 @@ public class LabelCasilla extends JLabel implements Observer{
 				this.setBackground(Color.BLACK);
 			break;
 			case "Nave":
-				this.setBackground(Color.BLUE);
+				this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
 			break;
 			case "Bala":
 				this.setBackground(Color.WHITE);

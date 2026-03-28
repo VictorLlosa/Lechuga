@@ -1,7 +1,8 @@
 package model;
 import java.awt.Color;
+import java.util.Observable;
 
-public class Enemigo {
+public class Enemigo extends Observable {
     private final int idEnemigo;
     private Coordenada coord;
     private Coordenada centro;
