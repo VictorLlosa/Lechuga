@@ -19,7 +19,7 @@ public abstract class NaveAbstracta extends Observable {
     protected NaveAbstracta(){
         this.disparo = new DisparoPixel();
         this.id++;
-        listaBalas = new ListaBalas();
+        listaBalas =new ListaBalas();
     }
 
     protected void setCannon(int pX, int pY) {
@@ -58,7 +58,7 @@ public abstract class NaveAbstracta extends Observable {
     }
 
     public void borrarBala() {
-        //TODO
+        //TODO le tiene que avisar a la casilla
     }
 
 }

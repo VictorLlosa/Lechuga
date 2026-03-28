@@ -55,10 +55,10 @@ public class Espacio {
 	}
 
 	/**
-	 * Si no existe la nave (listaNaves.lenght()!=0), no haremos nada
+	 * Mueve SOLO EL CENTRO de la nave
 	 * @param idNave
-	 * @param dx
-	 * @param dy
+	 * @param dx debe ser valida (por un margen de 1)
+	 * @param dy debe ser valida
 	 */
 	public void moverNave(int idNave, int dx, int dy) {
 		if(!ListaNaves.getListaNaves().existeNave(idNave)) return;
@@ -70,10 +70,13 @@ public class Espacio {
 		int nx = cX + dx;
 		int ny = cY + dy;
 		if (esCoordenadaValida(nx, ny)) {
-			matriz[cX][cY].vaciar();
-			matriz[nx][ny].cambiarObjeto("Nave");
-			ListaNaves.getListaNaves().setCoordNave(idNave, nx, ny);
-		}else{
+			if (!this.comprobarColEnemigoNave(idNave,coordNave)) { //si no hay colision, movemos la nave
+				matriz[cX][cY].vaciar();
+				matriz[nx][ny].cambiarObjeto("Nave");
+				ListaNaves.getListaNaves().setCoordNave(idNave, nx, ny);
+			}
+		}
+		else {
 			if(nx > this.hDim - 1){
 				matriz[cX][cY].vaciar();
 				matriz[0][ny].cambiarObjeto("Nave");
@@ -150,6 +153,8 @@ public class Espacio {
 			matriz[coord.getX()][coord.getY()].cambiarObjeto("Enemigo");
 		}
 	}
+
+	//TODO hay que cambiar este metodo por el cambio en colisiones
 	public void moverEnemigos() {
 		int num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
@@ -177,27 +182,33 @@ public class Espacio {
 		ListaEnemigos.getListaEnemigos().borrarListaEnemigos();
 	}
 
+	/*
 	public void comprobarColisiones() {
 		//Balas vs Enemigos
 		comprobarColBalaEnemigo();
 		//Enemigos vs Nave
 		comprobarColEnemigoNave(0);
 	}
+	*/
 
 	/**
 	 * Recorremos toda la longitud de la lista de Naves y en cada iteracion, obtenemos la coordenada en la que esta la nave.
+	 * Devuelve (true) si ha habido colision de alguno de los enemigos  con alguna de las Naves
+	 * @param pId
+	 * @param coordNave se la pasamos de parametro (usado en el metodo de MoverNave)
 	 */
-	private void comprobarColEnemigoNave(int pId) {
-		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(pId);
+
+	private boolean comprobarColEnemigoNave(int pId, Coordenada coordNave) {
 		for(int j = ListaEnemigos.getListaEnemigos().getNumEnemigos() - 1; j>=0; j--) {
 			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(j);
 			if(coordNave.equals(coordEnem)) {
 				matriz[coordNave.getX()][coordNave.getY()].vaciar();
 				ListaNaves.getListaNaves().eliminarNave(pId);
 				ListaEnemigos.getListaEnemigos().eliminarEnemigo(j);
-				break; // si la nave ya ha sido eliminada no hay que seguir
+				return true; // si la nave ya ha sido eliminada no hay que seguir
 			}
 		}
+		return false;
 	}
 
 

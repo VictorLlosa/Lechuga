@@ -103,6 +103,7 @@ public class GestorPartida extends Observable {
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
 
+		//TODO va a haber que quitar esto de aqui
 		comprobarColisiones();
 	}
 
@@ -148,10 +149,16 @@ public class GestorPartida extends Observable {
 		Espacio.getEspacio().moverNave(idNave, dx, dy);
 	}
 
+	//TODO este metodo va a haber que cambiarlo
 	private void comprobarColisiones() {
 		Espacio.getEspacio().comprobarColisiones();
 	}
 
+	/**
+	 * La partida se pierde cuando no "getEspacio.quedanNaves()" o el ".enemigoGana()"
+	 * porque ha llegado abajo
+	 * @return
+	 */
 	private boolean esFinPartida() {
 		if(!Espacio.getEspacio().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "ganado";
