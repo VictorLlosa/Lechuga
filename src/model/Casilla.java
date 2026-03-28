@@ -6,7 +6,9 @@ import java.util.Observer;
 
 @SuppressWarnings("deprecation")
 /**
- * Es parte del espacio. La casilla nos sirve para saber de qué color pintar su jframe.
+ * Es parte del espacio. La casilla es Observable de LabelCasilla.
+ * Es Observer del objeto que esta representando. Desde Bala,Enemigo o nave tenemos un Eliminar, que le
+ * avisa a esta clase de que esta vacia
  */
 public class Casilla extends Observable{
 	private String objeto;

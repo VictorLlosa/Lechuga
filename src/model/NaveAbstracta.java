@@ -3,7 +3,7 @@ package model;
 import Strategy.DisparoStrategy;
 
 /**
- *
+ * id Empieza en 0, es un atributo autoincremental
  */
 public abstract class NaveAbstracta {
 
@@ -37,4 +37,24 @@ public abstract class NaveAbstracta {
     public boolean tienesId(int idNave) {
         return this.id == idNave;
     }
+
+    public void changeStrategy(DisparoStrategy pSt){
+        this.disparo = pSt;
+    }
+
+    public void moverBalas(){
+        int num = listaBalas.getNumBalas();
+        for (int i = 0; i < num; i++) {
+            Coordenada coordBala = listaBalas.getCoordBala(i);
+        }
+    }
+
+    public ArrayList<Coordenada> getCoordBalas() {
+        return listaBalas.getCoordBalas();
+    }
+
+    public void borrarBala() {
+        //TODO
+    }
+
 }

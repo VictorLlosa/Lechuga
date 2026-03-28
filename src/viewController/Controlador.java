@@ -25,6 +25,13 @@ public class Controlador implements KeyListener {
 	private volatile boolean rightPressed = false;
 	private volatile boolean spacePressed = false;
 
+	//cambio de modo de disparo
+	private volatile boolean cambioDisparo = false;
+
+	//nave seleccionada
+	private String colorNave;
+
+
 	private int contDisparo = 0; // contador para limitar velocidad de disparo
 	private final int CADENCIA = 5; // ajustar para controlar cadencia de disparo (más bajo = más rápido)
 
@@ -70,7 +77,23 @@ public class Controlador implements KeyListener {
 		switch (SpaceInvaders.getSpaceInvaders().pantallaActual) {
 			case("Inicio"):
 				//ENTER
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) GestorPartida.getGestorPartida().iniciarPartida();
+				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					//Dependiendo de la tecla pulsada, la Nave es de un Color
+					GestorPartida.getGestorPartida().iniciarPartida(colorNave);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_A){
+					this.colorNave="azul";
+					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_R){
+					this.colorNave="rojo";
+					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
+				}
+				else if(e.getKeyCode() == KeyEvent.VK_V){
+					this.colorNave="verde";
+					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
+				}
+
 			break;
 			case("Juego"):
 				setTecla(e.getKeyCode(),true);
@@ -93,10 +116,11 @@ public class Controlador implements KeyListener {
 		leftPressed = false;
 		rightPressed = false;
 		spacePressed = false;
+		cambioDisparo = false;
 	}
 
 	/**
-	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false
+	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false (y la M)
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -118,6 +142,7 @@ public class Controlador implements KeyListener {
 			case KeyEvent.VK_A: leftPressed = pressed; break;
 			case KeyEvent.VK_D: rightPressed = pressed; break;
 			case KeyEvent.VK_SPACE: spacePressed = pressed; break;
+			case KeyEvent.VK_M: cambioDisparo = pressed; break;
 		}
 	}
 
@@ -129,7 +154,14 @@ public class Controlador implements KeyListener {
 		if (downPressed) dy += 1;
 		if (rightPressed) dx += 1;
 
-		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
+		GestorPartida.getGestorPartida().moverNave(0,dx,dy);y
 	}
 
+	/**
+	 * Llama a "toggleModoDisparo() de GestorPartida si se ha cambiado el modo de Disparo"
+	 * De momento, solo tenemos la nave de id 0.
+	 */
+	private void procesarModoDisparo(){
+		if (cambioDisparo) GestorPartida.getGestorPartida().alternarModoDisparo();
+	}
 }

@@ -44,9 +44,13 @@ public class GestorPartida extends Observable {
 		return MIN_ENEM + r.nextInt(MAX_ENEM - MIN_ENEM+1);
 	}
 
-	public void iniciarPartida(){
+	/**
+	 * Llama a this.anadirNaves con el parametro del tipo de la nave inciial
+	 * @param pColorNave establece el tipo de todas las naves
+	 */
+	public void iniciarPartida(String pColorNave){
 		//Añadir Nave
-		anadirNaves();
+		anadirNaves(pColorNave);
 		//Añadir Enegmigos
 		numeroEnemigosAleatorio();
 		anadirEnemigos();
@@ -102,8 +106,13 @@ public class GestorPartida extends Observable {
 		comprobarColisiones();
 	}
 
-	private void anadirNaves() {
-		Espacio.getEspacio().anadirNave(0, "roja", new Coordenada(55,50));
+	/**
+	 * Anadimos una nave de pid=0,"roja" y en la Coordenada (55,50)
+	 * Por defecto el id es 0. Es aqui donde se lo asignamos. De momento, solo
+	 * @param pColor Tipo de nave(s) que queremos iniciar
+	 */
+	private void anadirNaves(String pColor) {
+		Espacio.getEspacio().anadirNave(pColor, new Coordenada(55,50));
 	}
 
 	private void borrarNaves(){
@@ -170,4 +179,12 @@ public class GestorPartida extends Observable {
     public void disparar() {
 		Espacio.getEspacio().disparar(0);
     }
+
+	/**
+	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)
+	 * Ahora esta puesto por defecto a la nave 0
+	 */
+	public void alternarModoDisparo(){
+		ListaNaves.getListaNaves().alternarModoDisparo(0);
+	}
 }

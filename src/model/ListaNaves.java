@@ -21,6 +21,16 @@ public class ListaNaves {
     }
 
     /**
+     * buscamos la nave con id "pIdNave" y le hacemos .disparar()
+     * @param pIdNave
+     * @return
+     */
+    public Coordenada disparar(int pIdNave){
+        NaveAbstracta nave = findNave(pIdNave);
+        return nave.disparar();
+    }
+
+    /**
      * anade una nave a ListaNaves
      * @param pId
      * @param pTipo
@@ -79,6 +89,18 @@ public class ListaNaves {
 
     public boolean existeNave(int idNave) {
         return findNave(idNave) != null;
+    }
+
+    /**
+     *
+     */
+    public void alternarModoDisparo(int pIdNave){
+        this.findNave(pIdNave).changeStrategy();
+    }
+
+    public ArrayList<Coordenada> getCoordBalasNave(int pIdNave){
+        if(existeNave(pIdNave)) return listaNaves.get(pIdNave).getCoordBalas();
+        else return null;
     }
 
 }

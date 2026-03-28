@@ -26,4 +26,9 @@ public class Bala {
     public int getIdNave() {
         return idNave;
     }
+
+    public int eliminar(){
+        setChanged();
+        notify("vacio");
+    }
 }

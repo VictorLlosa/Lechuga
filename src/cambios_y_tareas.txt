@@ -1,0 +1,13 @@
+TAREAS
+- Aplicar el composite en Coordenada para hacer las Naves multipixel. (de momento solo naves)
+- Comprobar colisiones justo al mover
+- (en el futuro) poner que en la pantalla de inicio, aparezcan as tres naves; cuando te paras encima salen los dipasros que tiene y cuando clickas, la selecciona
+
+
+CAMBIOS
+- ahora listabalas no es mae. Cada nave tiene las coords de las balas
+- cada vez que  vayamos a crear una nave o un enemigo. Le pasamos tambien la Casilla donde se crea
+- LabelCasilla tiene un atributo estatico que es su color
+
+POR PREGUNTAR A ANDER
+- En Nave tener un array de estrategias y que cambiar estrategia no tenga como parametro estrategia

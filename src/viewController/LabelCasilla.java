@@ -10,6 +10,7 @@ import javax.swing.JLabel;
 /**
  * El label es observador de la casilla. Cuando la casilla cambia de color, notifica a su Label observador; y este,
  * en su update, cambia el volor de su background.
+ * Tiene un atributo estatico que guarda de que color es
  */
 public class LabelCasilla extends JLabel implements Observer{
 
