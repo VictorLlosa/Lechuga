@@ -61,8 +61,9 @@ public class GestorPartida extends Observable {
 		notifyObservers("jugar");
 	}
 
-	public void reiniciarPartida(){
+	public void reiniciarPartida(String pColorNave){
 		borrarEnemigos();
+		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "0"
 		borrarNaves();
 		borrarBalas();
 		//reiniciarTeclas();
@@ -197,4 +198,10 @@ public class GestorPartida extends Observable {
 		//ListaNaves.getListaNaves().alternarModoDisparo(0);
 	}
 
+	/**
+	 * LLama a naveAbstracta.reiniciarcontador naves
+	 */
+	private void reiniciarContadorNaves(){
+		ListaNaves.getListaNaves().reiniciarContadorNaves();
+	}
 }

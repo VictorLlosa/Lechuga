@@ -90,5 +90,9 @@ public abstract class NaveAbstracta extends Observable {
     public boolean estaMuerta() {
         return muerta;
     }
+
+    public void reinicianContadorNaves() {
+        id = -1;
+    }
 }
 

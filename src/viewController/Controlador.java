@@ -102,7 +102,7 @@ public class Controlador implements KeyListener {
 			break;
 			case("Fin"):
 				if (e.getKeyCode() == KeyEvent.VK_R){
-					GestorPartida.getGestorPartida().reiniciarPartida();
+					GestorPartida.getGestorPartida().reiniciarPartida(colorNave);
 					reiniciarTeclas();
 				}
 			break;

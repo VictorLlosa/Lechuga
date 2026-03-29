@@ -93,9 +93,14 @@ public class Espacio {
 		}
 
 	}
+
+	/**
+	 * el bucle empieza en -1 porque se ejecuta antes el metodo "reiniciarContadorNaves" y el Id de la nave creada pasa a ser -1
+	 * Y al dar la ultima vuelta del bucle, no existe ninguna nave con el id "naves.lenght()"
+	 */
 	public void borrarNaves(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i < ListaNaves.getListaNaves().getNumNaves();i++){
+		for (int i=-1;i < ListaNaves.getListaNaves().getNumNaves()-1;i++){
 			Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(i);
 			matriz[coordNave.getX()][coordNave.getY()].vaciar();
 		}
@@ -120,10 +125,12 @@ public class Espacio {
 	 * 	y finalmente dibujamos las balas en sus nuevas posiciones.
 	 * 	Usamos getObjeto() de Casilla para saber que tiene en cada momento.
 	 * 	Ya tenemos la casilla a donde queremos mover. Hay que mirar directamente que hay en la casilla.
+	 *
+	 * 	Como NaveAbstracta se autoincrementa
 	 */
 	public void moverBalas() {
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
-		for (int i = 0; i < numNaves; i++) {
+		for (int i=0; i < numNaves; i++) {
 			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)){
 				matriz[coordBala.getX()][coordBala.getY()].vaciar();
 			}

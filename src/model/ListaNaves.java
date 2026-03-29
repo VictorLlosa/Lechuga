@@ -138,4 +138,10 @@ public class ListaNaves {
         }
         return false;
     }
+
+    public void reiniciarContadorNaves(){
+        for (NaveAbstracta nave : listaNaves){
+            nave.reinicianContadorNaves();
+        }
+    }
 }
