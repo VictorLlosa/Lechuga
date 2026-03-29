@@ -87,10 +87,11 @@ public class ListaNaves {
         }
         return null;
     }
-
+    
     public boolean existeNave(int idNave) {
         return findNave(idNave) != null;
     }
+
 
 //TODO
     /*
@@ -98,14 +99,17 @@ public class ListaNaves {
         this.findNave(pIdNave).changeStrategy();
     }
 */
+    //el id de la nave es -1 ahora
     public ArrayList<Coordenada> getCoordBalasNave(int pIdNave) {
-        if (existeNave(pIdNave)) return listaNaves.get(pIdNave).getCoordBalas();
-        else return null;
+        System.out.println();
+        /*if (existeNave(pIdNave))*/ return listaNaves.get(pIdNave).getCoordBalas();
+        /*else return null;*/
+
     }
 
     public void moverBalasNave(int pIdNave) {
         if (existeNave(pIdNave)) findNave(pIdNave).moverBalas();
-
+        boolean aux = existeNave(pIdNave);
     }
 
     public void borrarBalasNave(int pIdNave) {

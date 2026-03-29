@@ -165,7 +165,7 @@ public class Espacio {
 	public void borrarBalas(){
 
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
-		for (int i = 0; i < numNaves; i++) {
+		for (int i = 0; i < numNaves; i++) { //el id es 0
 			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)) {
 				matriz[coordBala.getX()][coordBala.getY()].vaciar();
 			}

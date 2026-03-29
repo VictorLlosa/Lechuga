@@ -61,11 +61,15 @@ public class GestorPartida extends Observable {
 		notifyObservers("jugar");
 	}
 
+	/**
+	 * El orden de los metodos de esta funcion es lo que mas importa de cara al jeugo
+	 * @param pColorNave
+	 */
 	public void reiniciarPartida(String pColorNave){
 		borrarEnemigos();
-		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "0"
-		borrarNaves();
+		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "-1" de nuevo
 		borrarBalas();
+		borrarNaves();
 		//reiniciarTeclas();
 		numeroEnemigosAleatorio();
 		setChanged();
