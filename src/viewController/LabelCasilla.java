@@ -1,5 +1,7 @@
 package viewController;
 
+import model.Entidad;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -30,17 +32,17 @@ public class LabelCasilla extends JLabel implements Observer{
 	public void update(Observable o, Object arg) {
 		Object[] params = (Object[])arg;
 
-		switch ((String) params[0]){
-			case "Vacio":
+		switch ((Entidad) params[0]){
+			case Entidad.vacio:
 				this.setBackground(Color.BLACK);
 			break;
-			case "Nave":
+			case Entidad.nave:
 				this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
 			break;
-			case "Bala":
+			case Entidad.bala:
 				this.setBackground(Color.WHITE);
 			break;
-			case "Enemigo":
+			case Entidad.alien:
 				this.setBackground(Color.RED);
 			break;
 

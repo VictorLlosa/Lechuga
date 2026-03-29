@@ -4,7 +4,7 @@ import java.util.Observable;
 
 public class Enemigo extends Observable {
     private final int idEnemigo;
-    private Coordenada coord;
+    private static Coordenada coord;
     private Coordenada centro;
     private final Color color;
 
@@ -34,5 +34,9 @@ public class Enemigo extends Observable {
         if (coord == null) return null;
         // Devolver una copia para evitar que terceros modifiquen la coordenada directamente
         return new Coordenada(coord.getX(), coord.getY());
+    }
+
+    public static boolean estaEn(int cX, int cY){
+        return cX == coord.getX() && cY == coord.getY();
     }
 }

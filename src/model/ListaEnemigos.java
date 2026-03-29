@@ -21,7 +21,7 @@ public class ListaEnemigos {
         return miListaEnemigos;
     }
 
-    public synchronized void anadirEnemigo(int idEnemigo, Coordenada coord) {
+    public void anadirEnemigo(int idEnemigo, Coordenada coord) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
             Enemigo enemigo = new Enemigo(idEnemigo, coord);
             listaEnemigos.add(enemigo);
@@ -33,28 +33,29 @@ public class ListaEnemigos {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public synchronized void moverEnemigos() {
-       Iterator<Enemigo> it = listaEnemigos.iterator();
+    public void moverEnemigos() {
+        Iterator<Enemigo> it = listaEnemigos.iterator();
+
         while (it.hasNext()) {
-            Enemigo enemigo = it.next();
-            enemigo.actualizarPos();
-            Coordenada coord = enemigo.getCoord();
-            // si el enemigo ha llegado abajo (y > 60) eliminarlo y marcar el fin de la partida
+            Enemigo enem = it.next();
+            enem.actualizarPos();
+            Coordenada coord = enem.getCoord();
+
+            // si el enemigo ha llegado abajo eliminarlo y marcar fin
             if (coord.getY() > 59) {
-                it.remove();
+                it.remove();   // eliminar correctamente
                 enemigoHaLlegadoAbajo = true;
             }
         }
-
     }
 
-    public synchronized Coordenada getCoordEnemigos(int pPos) {
+    public Coordenada getCoordEnemigos(int pPos) {
         if (pPos >= 0 && pPos < listaEnemigos.size()) {
             return listaEnemigos.get(pPos).getCoord();
         }
         return null;
     }
-    public synchronized int getNumEnemigos() { return listaEnemigos.size(); }
+    public int getNumEnemigos() { return listaEnemigos.size(); }
 
     public void eliminarEnemigo(int posEnemigo) {
         if (posEnemigo >= 0 && posEnemigo < listaEnemigos.size()) {
@@ -66,6 +67,24 @@ public class ListaEnemigos {
     public boolean enemigoHaLLegadoAbajo() {
         return enemigoHaLlegadoAbajo;
     }
+
+    /**
+     *
+     * @param cX
+     * @param cY
+     */
+    public void eliminarEnemigoEn(int cX, int cY){
+        Enemigo en = this.findEnemigoEn(cX,cY);
+        if (en != null) this.eliminarEnemigo(en.getId());
+    }
+
+    private Enemigo findEnemigoEn(int cX, int cY){
+        for (Enemigo nave : listaEnemigos) {
+            if (Enemigo.estaEn(cX,cY)) return nave;
+        }
+        return null;
+    }
+
 
 }
 

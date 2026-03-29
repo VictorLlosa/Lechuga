@@ -11,36 +11,36 @@ import java.util.Observer;
  * avisa a esta clase de que esta vacia
  */
 public class Casilla extends Observable implements Observer{
-	private String objeto;
+	private Entidad entidad;
 
 
 	
 	public Casilla() {
-		objeto = "vacio";
+		entidad = Entidad.vacio;
 	}
 
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
 	
-	public void cambiarObjeto(String pObjeto) {
+	public void cambiarObjeto(Entidad pObjeto) {
 		// Notificar sólo si el color cambia (evitar repaints redundantes)
-		if (pObjeto.equals(this.objeto)) return;
-		objeto = pObjeto;
+		if (pObjeto.equals(this.entidad)) return;
+		entidad = pObjeto;
 		Object[] arg ={pObjeto};
 		setChanged();
 		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
 	}
 
 	public void vaciar() {
-		cambiarObjeto("vacio");
+		cambiarObjeto(Entidad.vacio);
 	}
 
 
-	public String getObjeto() {
-		return objeto;
+	public Entidad getObjeto() {
+		return entidad;
 	}
 	public void update(Observable o, Object arg){
-		objeto = (String)arg;
+		entidad = (Entidad)arg;
 	}
 }

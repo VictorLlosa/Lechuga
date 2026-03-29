@@ -4,6 +4,7 @@ import model.Factorias.FactoriaNave;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class ListaNaves {
     private ArrayList<NaveAbstracta> listaNaves;
@@ -13,8 +14,8 @@ public class ListaNaves {
         this.listaNaves = new ArrayList<>();
     }
 
-    public static ListaNaves getListaNaves(){
-        if(miListaNaves == null){
+    public static ListaNaves getListaNaves() {
+        if (miListaNaves == null) {
             miListaNaves = new ListaNaves();
         }
         return miListaNaves;
@@ -22,27 +23,30 @@ public class ListaNaves {
 
     /**
      * buscamos la nave con id "pIdNave" y le hacemos .disparar()
+     *
      * @param pIdNave
      * @return
      */
-    public Coordenada disparar(int pIdNave){
+    public Coordenada disparar(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        return nave.disparar();
+        if (nave != null) return nave.disparar();
+        else return null;
     }
 
     /**
      * anade una nave a ListaNaves
+     *
      * @param pColor
      * @param pCoord
      */
     public void anadirNave(String pColor, Coordenada pCoord) {
-        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal",pColor, pCoord);
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal", pColor, pCoord);
         listaNaves.add(nave);
     }
 
     public Coordenada getCoordNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null){
+        if (nave != null) {
             return nave.getCoord();
         }
         return null;
@@ -50,8 +54,8 @@ public class ListaNaves {
 
     public void setCoordNave(int pIdNave, int cX, int cY) {
         NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null){
-           nave.setCoord(cX, cY);
+        if (nave != null) {
+            nave.setCoord(cX, cY);
         }
     }
 
@@ -61,19 +65,27 @@ public class ListaNaves {
 
     public void eliminarNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null){
+        if (nave != null) {
             listaNaves.remove(nave);
         }
 
 
     }
+
     public void borrarListaNaves() {
-       listaNaves.clear();
+        listaNaves.clear();
     }
 
-    private NaveAbstracta findNave(int idNave){
+    private NaveAbstracta findNave(int idNave) {
         for (NaveAbstracta nave : listaNaves) {
             if (nave.tienesId(idNave)) return nave;
+        }
+        return null;
+    }
+
+    private NaveAbstracta findNaveEn(int cX,int cY){
+        for (NaveAbstracta nave : listaNaves) {
+            if (nave.estasEn(cX,cY)) return nave;
         }
         return null;
     }
@@ -82,24 +94,39 @@ public class ListaNaves {
         return findNave(idNave) != null;
     }
 
-    /**
-     *
-     */
-    public void alternarModoDisparo(int pIdNave){
+//TODO
+    /*
+    public void alternarModoDisparo(int pIdNave) {
         this.findNave(pIdNave).changeStrategy();
     }
-
-    public ArrayList<Coordenada> getCoordBalasNave(int pIdNave){
-        if(existeNave(pIdNave)) return listaNaves.get(pIdNave).getCoordBalas();
+*/
+    public ArrayList<Coordenada> getCoordBalasNave(int pIdNave) {
+        if (existeNave(pIdNave)) return listaNaves.get(pIdNave).getCoordBalas();
         else return null;
     }
 
     public void moverBalasNave(int pIdNave) {
-        if(existeNave(pIdNave)) findNave(pIdNave).moverBalas();
+        if (existeNave(pIdNave)) findNave(pIdNave).moverBalas();
 
     }
 
     public void borrarBalasNave(int pIdNave) {
-        if(existeNave(pIdNave)) findNave(pIdNave).borrarBalas();
+        if (existeNave(pIdNave)) findNave(pIdNave).borrarBalas();
+    }
+
+    private Iterator<NaveAbstracta> getItr() {
+        return listaNaves.iterator();
+    }
+
+
+    /**
+     * Le llama Espacio
+     *
+     * @param cX
+     * @param cY
+     */
+    public void eliminarNaveEn(int cX, int cY) {
+        NaveAbstracta nave = this.findNaveEn(cX,cY);
+        if ( nave != null) this.eliminarNave(nave.getId());
     }
 }

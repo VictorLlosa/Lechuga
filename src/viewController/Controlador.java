@@ -79,9 +79,10 @@ public class Controlador implements KeyListener {
 			case("Inicio"):
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
-					//Dependiendo de la tecla pulsada, la Nave es de un Color
+
 					GestorPartida.getGestorPartida().iniciarPartida(colorNave);
 				}
+				//Seleccion de nave. Dependiendo de la tecla pulsada, la Nave es de un Color
 				else if(e.getKeyCode() == KeyEvent.VK_A){
 					this.colorNave="azul";
 					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
@@ -155,7 +156,7 @@ public class Controlador implements KeyListener {
 		if (downPressed) dy += 1;
 		if (rightPressed) dx += 1;
 
-		GestorPartida.getGestorPartida().moverNave(0,dx,dy);y
+		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
 	}
 
 	/**

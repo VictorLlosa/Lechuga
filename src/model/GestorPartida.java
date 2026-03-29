@@ -104,7 +104,7 @@ public class GestorPartida extends Observable {
 		}
 
 		//TODO va a haber que quitar esto de aqui
-		comprobarColisiones();
+		/*comprobarColisiones();*/
 	}
 
 	/**
@@ -149,10 +149,11 @@ public class GestorPartida extends Observable {
 		Espacio.getEspacio().moverNave(idNave, dx, dy);
 	}
 
-	//TODO este metodo va a haber que cambiarlo
+/*
 	private void comprobarColisiones() {
 		Espacio.getEspacio().comprobarColisiones();
 	}
+*/
 
 	/**
 	 * La partida se pierde cuando no "getEspacio.quedanNaves()" o el ".enemigoGana()"
@@ -191,7 +192,8 @@ public class GestorPartida extends Observable {
 	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)
 	 * Ahora esta puesto por defecto a la nave 0
 	 */
+
 	public void alternarModoDisparo(){
-		ListaNaves.getListaNaves().alternarModoDisparo(0);
+		//ListaNaves.getListaNaves().alternarModoDisparo(0);
 	}
 }

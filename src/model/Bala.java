@@ -29,8 +29,4 @@ public class Bala extends Observable {
         return idNave;
     }
 
-    public int eliminar(){
-        setChanged();
-        notify("vacio");
-    }
 }

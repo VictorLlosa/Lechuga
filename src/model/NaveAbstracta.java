@@ -16,10 +16,12 @@ public abstract class NaveAbstracta extends Observable {
     private DisparoStrategy disparo;
     private ListaBalas listaBalas;
 
-    protected NaveAbstracta(){
+    protected NaveAbstracta(int pX, int pY){
         this.disparo = new DisparoPixel();
-        this.id++;
-        listaBalas =new ListaBalas();
+        id++;
+        coord = new Coordenada(pX, pY);
+        listaBalas = new ListaBalas();
+
     }
 
     protected void setCannon(int pX, int pY) {
@@ -41,6 +43,9 @@ public abstract class NaveAbstracta extends Observable {
     public boolean tienesId(int idNave) {
         return this.id == idNave;
     }
+    public boolean estasEn(int cX, int cY) {
+        return coord.equals(new Coordenada(cX,cY));
+    }
 
     public void changeStrategy(DisparoStrategy pSt){
         this.disparo = pSt;
@@ -57,8 +62,11 @@ public abstract class NaveAbstracta extends Observable {
         return listaBalas.getCoordBalas();
     }
 
-    public void borrarBala() {
-        //TODO le tiene que avisar a la casilla
+    public void borrarBalas() {
+        listaBalas.borrarListaBalas();
     }
 
+    public int getId() {
+        return id;
+    }
 }
