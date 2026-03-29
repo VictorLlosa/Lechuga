@@ -21,9 +21,9 @@ public class ListaEnemigos {
         return miListaEnemigos;
     }
 
-    public void anadirEnemigo(int idEnemigo, Coordenada coord) {
+    public void anadirEnemigo(Coordenada coord) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            Enemigo enemigo = new Enemigo(idEnemigo, coord);
+            Enemigo enemigo = new Enemigo(coord);
             listaEnemigos.add(enemigo);
         }
     }
@@ -49,19 +49,14 @@ public class ListaEnemigos {
         }
     }
 
-    public Coordenada getCoordEnemigos(int pPos) {
-        if (pPos >= 0 && pPos < listaEnemigos.size()) {
-            return listaEnemigos.get(pPos).getCoord();
-        }
-        return null;
+    public Coordenada getCoordEnemigo(int pPos) {
+        return listaEnemigos.get(pPos).getCoord();
     }
+
     public int getNumEnemigos() { return listaEnemigos.size(); }
 
-    public void eliminarEnemigo(int posEnemigo) {
-        if (posEnemigo >= 0 && posEnemigo < listaEnemigos.size()) {
-            listaEnemigos.remove(posEnemigo);
-        }
-
+    public void matarEnemigo(int pPos) {
+        listaEnemigos.get(pPos).matar();
     }
 
     public boolean enemigoHaLLegadoAbajo() {
@@ -73,18 +68,32 @@ public class ListaEnemigos {
      * @param cX
      * @param cY
      */
-    public void eliminarEnemigoEn(int cX, int cY){
-        Enemigo en = this.findEnemigoEn(cX,cY);
-        if (en != null) this.eliminarEnemigo(en.getId());
+    public void matarEnemigoEn(int cX, int cY){
+        Enemigo enem = this.findEnemigoEn(cX,cY);
+        if(enem != null) enem.matar();
     }
 
     private Enemigo findEnemigoEn(int cX, int cY){
-        for (Enemigo nave : listaEnemigos) {
-            if (Enemigo.estaEn(cX,cY)) return nave;
+        for (Enemigo enem : listaEnemigos) {
+            if (enem.estaEn(cX,cY)) return enem;
         }
         return null;
     }
 
 
-}
+    public boolean quedanEnemigos() {
+        for(Enemigo enem : listaEnemigos){
+            if(!enem.estaMuerto()) return true;
+        }
+        return false;
+    }
 
+    public void eliminarEnemigosMuertos() {
+        // Locura de java
+        listaEnemigos.removeIf(Enemigo::estaMuerto);
+    }
+
+    public boolean enemigoMuerto(int pPos) {
+        return listaEnemigos.get(pPos).estaMuerto();
+    }
+}

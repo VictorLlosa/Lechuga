@@ -30,7 +30,7 @@ public class Controlador implements KeyListener {
 	private volatile boolean cambioDisparo = false;
 
 	//nave seleccionada
-	private String colorNave;
+	private String colorNave = "rojo";
 
 
 	private int contDisparo = 0; // contador para limitar velocidad de disparo

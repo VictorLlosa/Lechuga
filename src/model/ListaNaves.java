@@ -63,13 +63,11 @@ public class ListaNaves {
         return listaNaves.size();
     }
 
-    public void eliminarNave(int pIdNave) {
+    public void matarNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) {
-            listaNaves.remove(nave);
+            nave.matar();
         }
-
-
     }
 
     public void borrarListaNaves() {
@@ -125,8 +123,19 @@ public class ListaNaves {
      * @param cX
      * @param cY
      */
-    public void eliminarNaveEn(int cX, int cY) {
+    public void matarNaveEn(int cX, int cY) {
         NaveAbstracta nave = this.findNaveEn(cX,cY);
-        if ( nave != null) this.eliminarNave(nave.getId());
+        if ( nave != null) this.matarNave(nave.getId());
+    }
+
+    /**
+     * Mira si TODAS las naves .estanMuertas()
+     * @return
+     */
+    public boolean quedanNaves() {
+        for(NaveAbstracta nave : listaNaves){
+            if(!nave.estaMuerta()) return true;
+        }
+        return false;
     }
 }

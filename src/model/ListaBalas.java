@@ -10,8 +10,8 @@ public class ListaBalas {
         this.listaBalas = new ArrayList<>();
     }
 
-    public synchronized void anadirBala(int idNave, Coordenada coord) {
-        Bala bala = new Bala(idNave, coord);
+    public synchronized void anadirBala(Coordenada coord) {
+        Bala bala = new Bala(coord);
         listaBalas.add(bala);
     }
 
@@ -63,6 +63,10 @@ public class ListaBalas {
         listaBalas.clear();
     }
 
+    /**
+     * Devuelve
+     * @return
+     */
     public ArrayList<Coordenada> getCoordBalas() {
         ArrayList<Coordenada> lista = new ArrayList<Coordenada>();
         for (Bala b : listaBalas){

@@ -91,6 +91,7 @@ public class GestorPartida extends Observable {
 	private void LoopJuego() {
 		contadorAcciones++;
 		if(contadorAcciones % 3 == 0) { // 30 ms
+			Espacio.getEspacio().eliminarEnemigosMuertos();
 			setChanged();
 			notifyObservers("repaint");
 		}
@@ -133,7 +134,7 @@ public class GestorPartida extends Observable {
 			}
 			while(!Espacio.getEspacio().esCoordenadaValida(random,5));
 
-			Espacio.getEspacio().anadirEnemigos(0,new Coordenada(random,5));
+			Espacio.getEspacio().anadirEnemigos(new Coordenada(random,5));
 		}
 	}
 
@@ -192,8 +193,8 @@ public class GestorPartida extends Observable {
 	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)
 	 * Ahora esta puesto por defecto a la nave 0
 	 */
-
 	public void alternarModoDisparo(){
 		//ListaNaves.getListaNaves().alternarModoDisparo(0);
 	}
+
 }

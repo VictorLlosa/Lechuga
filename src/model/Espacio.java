@@ -67,28 +67,28 @@ public class Espacio {
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
 
-		int nx = cX + dx;
-		int ny = cY + dy;
-		if (esCoordenadaValida(nx, ny)) {
-			Entidad objAnt = matriz[cX][cY].getObjeto();
+		int nX = cX + dx;
+		int nY = cY + dy;
+		if (esCoordenadaValida(nX, nY)) {
+			Entidad objAnt = matriz[nX][nY].getObjeto();
 			if (objAnt.equals(Entidad.alien)) {//si habia un enemigo eliminamos la nave
-				ListaNaves.getListaNaves().eliminarNave(idNave);
+				ListaNaves.getListaNaves().matarNave(idNave);
 			}else{ // si no hay colision o hay una bala, movemos la nave
 				matriz[cX][cY].vaciar();
-				matriz[nx][ny].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, nx, ny);
+				matriz[nX][nY].cambiarObjeto(Entidad.nave);
+				ListaNaves.getListaNaves().setCoordNave(idNave, nX, nY);
 			}
 		}
 		else {
-			if(nx > this.hDim - 1){//si se ha salido por el borde que aparezca por el otro lado
+			if(nX > this.hDim - 1){//si se ha salido por el borde que aparezca por el otro lado
 				matriz[cX][cY].vaciar();
-				matriz[0][ny].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, 0, ny);
+				matriz[0][nY].cambiarObjeto(Entidad.nave);
+				ListaNaves.getListaNaves().setCoordNave(idNave, 0, nY);
 			}
-			else if(nx<0){
+			else if(nX<0){
 				matriz[cX][cY].vaciar();
-				matriz[hDim-1][ny].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, hDim-1, ny);
+				matriz[hDim-1][nY].cambiarObjeto(Entidad.nave);
+				ListaNaves.getListaNaves().setCoordNave(idNave, hDim-1, nY);
 			}
 		}
 
@@ -102,6 +102,10 @@ public class Espacio {
 		ListaNaves.getListaNaves().borrarListaNaves();
 	}
 
+	/**
+	 *
+	 * @param pIdNave
+	 */
 	public void disparar(int pIdNave){
 		Coordenada coordNave =  ListaNaves.getListaNaves().getCoordNave(pIdNave);
 
@@ -115,7 +119,7 @@ public class Espacio {
 	 * Primero vaciamos las casillas que tenian las balas y luego delegamos a la lista de balas de las naves el movimiento (que actualiza las coordenadas internamente)
 	 * 	y finalmente dibujamos las balas en sus nuevas posiciones.
 	 * 	Usamos getObjeto() de Casilla para saber que tiene en cada momento.
-	 * 	Ya tenemos la casilla a donde queremos mover. Hay que mirar directamente que hay en la casilla
+	 * 	Ya tenemos la casilla a donde queremos mover. Hay que mirar directamente que hay en la casilla.
 	 */
 	public void moverBalas() {
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
@@ -130,13 +134,17 @@ public class Espacio {
 				Casilla casillaNueva = matriz[coordBala.getX()][coordBala.getY()];
 				Entidad objAnt = casillaNueva.getObjeto();
 				switch (objAnt) {
-				case Entidad.alien://si habia un alien lo eliminamos
-					ListaEnemigos.getListaEnemigos().eliminarEnemigoEn(coordBala.getX(), coordBala.getY());
-					casillaNueva.cambiarObjeto(Entidad.bala);
-				case Entidad.nave: 	//decidimos que se vea la nave si hay una bala en su misma posición
+				case Entidad.alien: // Si había un alien, lo eliminamos junto a la bala y vaciamos la casilla
+					ListaEnemigos.getListaEnemigos().matarEnemigoEn(coordBala.getX(), coordBala.getY());
+					//TODO: metodo en nave que mate/elimine una bala dandole la coordenada
+					casillaNueva.vaciar();
+					break;
+				case Entidad.nave: // Decidimos que se vea la nave si hay una bala en su misma posición
 					casillaNueva.cambiarObjeto(Entidad.nave);
-				default: //Si habia una bala o estaba vacio
+					break;
+				default: // Si había una bala o estaba vacío
 					casillaNueva.cambiarObjeto(Entidad.bala);
+					break;
 				}
 
 			}
@@ -160,9 +168,9 @@ public class Espacio {
 	}
 
 	//Creación y movimiento de Enemigos
-	public void anadirEnemigos(int idEnemigo, Coordenada coord) {
+	public void anadirEnemigos(Coordenada coord) {
 		if (esCoordenadaValida(coord.getX(), coord.getY())) {
-			ListaEnemigos.getListaEnemigos().anadirEnemigo(idEnemigo, coord);
+			ListaEnemigos.getListaEnemigos().anadirEnemigo(coord);
 			matriz[coord.getX()][coord.getY()].cambiarObjeto(Entidad.alien);
 		}
 	}
@@ -170,7 +178,8 @@ public class Espacio {
 	public void moverEnemigos() {
 		int num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
+			if(ListaEnemigos.getListaEnemigos().enemigoMuerto(i)) continue; //si el enemigo esta muerto no hacemos nada
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
 			matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
 		}
 
@@ -180,15 +189,16 @@ public class Espacio {
 		// Dibujar los enemigos en sus nuevas posiciones
 		num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
 		for (int i = 0; i < num; i++) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
+			if(ListaEnemigos.getListaEnemigos().enemigoMuerto(i)) continue;
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
 			Casilla casillaNueva = matriz[coordEnem.getX()][coordEnem.getY()];
 			Entidad objAnt = casillaNueva.getObjeto();
 			switch (objAnt){
 				case Entidad.bala: //Si habia una bala eliminamos al enemigo
-					ListaEnemigos.getListaEnemigos().eliminarEnemigoEn(coordEnem.getX(), coordEnem.getY());
+					ListaEnemigos.getListaEnemigos().matarEnemigoEn(coordEnem.getX(), coordEnem.getY());
 				break;
 				case Entidad.nave: //Si habia una nave, la eliminamos
-					ListaNaves.getListaNaves().eliminarNaveEn(coordEnem.getX(), coordEnem.getY());
+					ListaNaves.getListaNaves().matarNaveEn(coordEnem.getX(), coordEnem.getY());
 					matriz[coordEnem.getX()][coordEnem.getY()].cambiarObjeto(Entidad.alien);
 				break;
 				default: //Si habia otro alien o estaba vacio
@@ -201,7 +211,7 @@ public class Espacio {
 	public void borrarEnemigos(){
 		//los borraremos de la pantalla primero y despues de la lista
 		for (int i=0;i < ListaEnemigos.getListaEnemigos().getNumEnemigos();i++){
-			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
+			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
 			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
 		}
 		//ahora los borramos de la lista
@@ -209,62 +219,27 @@ public class Espacio {
 	}
 
 	/**
-	 * Recorremos toda la longitud de la lista de Naves y en cada iteracion, obtenemos la coordenada en la que esta la nave.
-	 * Devuelve (true) si ha habido colision de alguno de los enemigos  con alguna de las Naves
-	 * @param pId
-	 * @param coordNave se la pasamos de parametro (usado en el metodo de MoverNave)
+	 * Vamos enemigo por enemigo de la listaEnemigos para ver si .estanMuertos()
+	 * @return
 	 */
-/*
-	private boolean comprobarColEnemigoNave(int pId, Coordenada coordNave) {
-		for(int j = ListaEnemigos.getListaEnemigos().getNumEnemigos() - 1; j>=0; j--) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(j);
-			if(coordNave.equals(coordEnem)) {
-				matriz[coordNave.getX()][coordNave.getY()].vaciar();
-				ListaNaves.getListaNaves().eliminarNave(pId);
-				ListaEnemigos.getListaEnemigos().eliminarEnemigo(j);
-				return true; // si la nave ya ha sido eliminada no hay que seguir
-			}
-		}
-		return false;
-	}
-
-
-	private void comprobarColBalaEnemigo() {
-		// Iterar de atrás hacia adelante para evitar problemas con índices al eliminar
-		for (int i = ListaEnemigos.getListaEnemigos().getNumEnemigos() - 1; i >= 0; i--) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigos(i);
-
-			for (int j = ListaBalas.getListaBalas().getNumBalas() - 1; j >= 0; j--) {
-				Coordenada coordBala = ListaBalas.getListaBalas().getCoordBala(j);
-
-				if (coordEnem.equals(coordBala) || coordEnem.debajo(coordBala)) {
-					//Hay que tener en cuenta que si la bala y el enemigo estan en posiciones contiguas
-					//y se mueven a la vez, la bala va a quedar arriba y el enemigo abajo.
-
-					matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
-					matriz[coordBala.getX()][coordBala.getY()].vaciar();
-
-					// Eliminar bala y enemigo
-					ListaBalas.getListaBalas().eliminarBala(j);
-					ListaEnemigos.getListaEnemigos().eliminarEnemigo(i);
-
-					break; // Si el enemigo ya ha sido eliminado no hay que seguir
-				}
-			}
-		}
-	}
-*/
 	public boolean quedanEnemigos() {
-		return ListaEnemigos.getListaEnemigos().getNumEnemigos() > 0;
+		return ListaEnemigos.getListaEnemigos().quedanEnemigos();
 	}
 
 	public boolean enemigoGana() {
 		return ListaEnemigos.getListaEnemigos().enemigoHaLLegadoAbajo();
 	}
 
+	/**
+	 * Ve si todas las naves estan vivas; llama a listanaves.quedanNaves()
+	 * @return
+	 */
 	public boolean quedanNaves() {
-		return ListaNaves.getListaNaves().getNumNaves() > 0;
+		return ListaNaves.getListaNaves().quedanNaves();
 	}
 
 
+	public void eliminarEnemigosMuertos() {
+		ListaEnemigos.getListaEnemigos().eliminarEnemigosMuertos();
+	}
 }

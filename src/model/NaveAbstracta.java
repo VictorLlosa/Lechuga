@@ -15,12 +15,15 @@ public abstract class NaveAbstracta extends Observable {
     private static int id= -1;
     private DisparoStrategy disparo;
     private ListaBalas listaBalas;
+    private boolean muerta;
 
     protected NaveAbstracta(int pX, int pY){
         this.disparo = new DisparoPixel();
         id++;
         coord = new Coordenada(pX, pY);
+        cannon = new Coordenada(pX, pY);
         listaBalas = new ListaBalas();
+        muerta = false;
 
     }
 
@@ -36,8 +39,14 @@ public abstract class NaveAbstracta extends Observable {
         return coord;
     }
 
+    /**
+     * para disparar, tenemos que actualizar el cannon antes. hacemos "disparo.disparar(coords del disparo) y anadimos la Bala a la Lista de Balas.
+     * @return
+     */
     public Coordenada disparar(){
-        return disparo.disparar(cannon.getX(), cannon.getY());
+        Coordenada coordBala = disparo.disparar(coord.getX(), coord.getY());
+        listaBalas.anadirBala(coordBala);
+        return coordBala;
     }
 
     public boolean tienesId(int idNave) {
@@ -51,11 +60,11 @@ public abstract class NaveAbstracta extends Observable {
         this.disparo = pSt;
     }
 
+    /**
+     * Llama a listaBalas.moverBalas()
+     */
     public void moverBalas(){
-        int num = listaBalas.getNumBalas();
-        for (int i = 0; i < num; i++) {
-            Coordenada coordBala = listaBalas.getCoordBala(i);
-        }
+        listaBalas.moverBalas();
     }
 
     public ArrayList<Coordenada> getCoordBalas() {
@@ -69,4 +78,17 @@ public abstract class NaveAbstracta extends Observable {
     public int getId() {
         return id;
     }
+
+    public void matar() {
+        muerta = true;
+    }
+
+    /**
+     * Devuelve el valor del atributo "muerta"
+     * @return
+     */
+    public boolean estaMuerta() {
+        return muerta;
+    }
 }
+
