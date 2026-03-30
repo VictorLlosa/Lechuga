@@ -5,21 +5,13 @@ import java.util.Iterator;
 
 public class ListaBalas {
     private final ArrayList<Bala> listaBalas;
-    private static ListaBalas miListaBalas;
 
     public ListaBalas() {
         this.listaBalas = new ArrayList<>();
     }
 
-    public static ListaBalas getListaBalas(){
-        if(miListaBalas == null){
-            miListaBalas = new ListaBalas();
-        }
-        return miListaBalas;
-    }
-
-    public synchronized void anadirBala(int idNave, Coordenada coord) {
-        Bala bala = new Bala(idNave, coord);
+    public synchronized void anadirBala(Coordenada coord) {
+        Bala bala = new Bala(coord);
         listaBalas.add(bala);
     }
 
@@ -69,5 +61,53 @@ public class ListaBalas {
 
     public void borrarListaBalas() {
         listaBalas.clear();
+    }
+
+    /**
+     * Devuelve
+     * @return
+     */
+    public ArrayList<Coordenada> getCoordBalas() {
+        ArrayList<Coordenada> lista = new ArrayList<Coordenada>();
+        for (Bala b : listaBalas){
+            lista.add(b.getCoord());
+        }
+        return lista;
+    }
+
+    /**
+     * Se usa en borrarBalaPorCoord. Elimina la bala en las coordenadas cX cY.
+     * @param cX
+     * @param cY
+     * @return
+     */
+    public void eliminarBalaEn(int cX, int cY){
+        Bala bala = findBala(cX,cY);
+        if (bala !=null) listaBalas.remove(bala);
+    }
+
+
+    /**
+     * Se usa en borrarBala por coordenada. Devuelve la bala con coordenadas cX y cY
+     * @param cX
+     * @param cY
+     * @return
+     */
+    private Bala findBala(int cX,int cY){
+        for (Bala bala : listaBalas){
+            Coordenada coordBala = bala.getCoord();
+            if (coordBala.getX()==cX && coordBala.getY()==cY){
+                return bala;
+            }
+        }
+        return null;
+    }
+
+    public boolean existeBalaEn(int cX, int cY){
+        for (Bala bala : listaBalas){
+            Coordenada c = bala.getCoord();
+            if (c.getX() == cX && c.getY() == cY) return true;
+        }
+        return false;
     }
 }

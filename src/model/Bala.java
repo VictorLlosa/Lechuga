@@ -1,11 +1,11 @@
 package model;
 
-public class Bala {
-    private Coordenada coord;
-    private int idNave;
+import java.util.Observable;
 
-    public Bala(int idNave, Coordenada coord) {
-        this.idNave = idNave;
+public class Bala extends Observable {
+    private Coordenada coord;
+
+    public Bala(Coordenada coord) {
         this.coord = coord;
     }
 
@@ -23,7 +23,5 @@ public class Bala {
         coord.setCoord(coord.getX(), coord.getY() - 1);
     }
 
-    public int getIdNave() {
-        return idNave;
-    }
+
 }

@@ -1,25 +1,17 @@
 package model;
-import java.awt.Color;
 
 public class Enemigo {
-    private final int idEnemigo;
-    private Coordenada coord;
-    private Coordenada centro;
-    private final Color color;
+    private final Coordenada coord;
+    private boolean muerto;
+    private static int contadorId = 0; // Contador global para IDs
+    private int id; // ID único de cada instancia
 
-
-    public Enemigo (int pIdEnemigo, Coordenada pCoord) {
-        idEnemigo = pIdEnemigo;
+    public Enemigo (Coordenada pCoord) {
         coord = pCoord;
-        color = Color.blue;
+        muerto = false;
+        id = contadorId++;
     }
 
-    public Color getColor(){
-        return this.color;
-    }
-    public int getId() {
-        return idEnemigo;
-    }
     public void setCoord (int pX, int pY) {
         this.coord.setCoord(pX, pY);
     }
@@ -28,10 +20,29 @@ public class Enemigo {
         coord.setCoord(coord.getX(), coord.getY() + 1);
     }
 
-
     public Coordenada getCoord() {
         if (coord == null) return null;
         // Devolver una copia para evitar que terceros modifiquen la coordenada directamente
         return new Coordenada(coord.getX(), coord.getY());
+    }
+
+    public boolean estaEn(int cX, int cY){
+        return cX == coord.getX() && cY == coord.getY();
+    }
+
+    /**
+     * Devuelve el valor del atributo "muerto"
+     * @return
+     */
+    public boolean estaMuerto(){
+        return this.muerto;
+    }
+
+    public void matar() {
+        muerto = true;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }
