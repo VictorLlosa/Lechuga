@@ -2,16 +2,17 @@ package model;
 
 import model.Factorias.FactoriaNave;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListaNaves {
     private ArrayList<NaveAbstracta> listaNaves;
+    ArrayList<Integer> listaIds;
     private static ListaNaves miListaNaves;
 
     public ListaNaves() {
         this.listaNaves = new ArrayList<>();
+        this.listaIds = new ArrayList<>();
     }
 
     public static ListaNaves getListaNaves() {
@@ -42,36 +43,41 @@ public class ListaNaves {
     public void anadirNave(String pColor, Coordenada pCoord) {
         NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal", pColor, pCoord);
         listaNaves.add(nave);
+        listaIds.add(nave.getId());
     }
 
     public Coordenada getCoordNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) {
-            return nave.getCoord();
-        }
+        if (nave != null) return nave.getCoord();
         return null;
     }
 
     public void setCoordNave(int pIdNave, int cX, int cY) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) {
-            nave.setCoord(cX, cY);
-        }
+        if (nave != null) nave.setCoord(cX, cY);
+
     }
 
     public int getNumNaves() {
         return listaNaves.size();
     }
 
+    /**
+     * En vez de eliminar la nave la marcamos como muerta. Además, eliminamos su id de listaIds
+     * para que el espacio solo itere sobre las naves vivas
+     * @param pIdNave
+     */
     public void matarNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) {
             nave.matar();
+            listaIds.remove(nave.getId());
         }
     }
 
     public void borrarListaNaves() {
         listaNaves.clear();
+        listaIds.clear();
     }
 
     private NaveAbstracta findNave(int idNave) {
@@ -81,46 +87,44 @@ public class ListaNaves {
         return null;
     }
 
-    private NaveAbstracta findNaveEn(int cX,int cY){
+    private NaveAbstracta findNaveEn(int cX, int cY) {
         for (NaveAbstracta nave : listaNaves) {
-            if (nave.estasEn(cX,cY)) return nave;
+            if (nave.estasEn(cX, cY)) return nave;
         }
         return null;
     }
-    
+
     public boolean existeNave(int idNave) {
-        return findNave(idNave) != null;
+        return listaIds.contains(idNave);
     }
 
 
-//TODO
+    //TODO
     /*
     public void alternarModoDisparo(int pIdNave) {
         this.findNave(pIdNave).changeStrategy();
     }
-*/
-    //el id de la nave es -1 ahora
+    /*
+     */
     public ArrayList<Coordenada> getCoordBalasNave(int pIdNave) {
-        System.out.println();
-        /*if (existeNave(pIdNave))*/ return listaNaves.get(pIdNave).getCoordBalas();
-        /*else return null;*/
+        NaveAbstracta nave = findNave(pIdNave);
+        if (nave != null) return nave.getCoordBalas();
+        else return null;
 
     }
 
     public void moverBalasNave(int pIdNave) {
-        if (existeNave(pIdNave)) findNave(pIdNave).moverBalas();
-        boolean aux = existeNave(pIdNave);
+
+        NaveAbstracta nave = findNave(pIdNave);
+        if(nave != null) nave.moverBalas();
+
     }
 
     public void borrarBalasNave(int pIdNave) {
-        if (existeNave(pIdNave)) findNave(pIdNave).borrarBalas();
+        NaveAbstracta nave = findNave(pIdNave);
+        if(nave != null) nave.borrarBalas();
+
     }
-
-    private Iterator<NaveAbstracta> getItr() {
-        return listaNaves.iterator();
-    }
-
-
     /**
      * Le llama Espacio
      *
@@ -128,24 +132,53 @@ public class ListaNaves {
      * @param cY
      */
     public void matarNaveEn(int cX, int cY) {
-        NaveAbstracta nave = this.findNaveEn(cX,cY);
-        if ( nave != null) this.matarNave(nave.getId());
+        NaveAbstracta nave = this.findNaveEn(cX, cY);
+        if (nave != null) this.matarNave(nave.getId());
     }
 
     /**
      * Mira si TODAS las naves .estanMuertas()
+     *
      * @return
      */
     public boolean quedanNaves() {
-        for(NaveAbstracta nave : listaNaves){
-            if(!nave.estaMuerta()) return true;
-        }
-        return false;
+        return !listaIds.isEmpty();
     }
 
-    public void reiniciarContadorNaves(){
+    /**
+     * Como el id de las naves es un atributo estatico basta con modificarlo en una intancia
+     */
+    public void reiniciarContadorNaves() {
+        listaNaves.getFirst().reiniciarContadorNaves();
+    }
+
+    /**
+     * Devuelve una lista de id's (un ArrayList de enteros), para evitar tratar las "posiciones" de las naves en la ListaNaves,
+     * y asi las tratamos por su id directamente
+     * @return
+     */
+    public ArrayList<Integer> getListaIds() {
+        return listaIds;
+    }
+
+    /**
+     * Llama a eliminarBalaPorCoord de la naveAbstracta con el id que pasaos como parametro
+     */
+    public void eliminarBalaPorCoord(int pIdNave, int cX,int cY){
+        NaveAbstracta nave = findNave(pIdNave);
+        if (nave != null) nave.eliminarBalaPorCoord(cX, cY);
+    }
+
+    /**
+     * Aqui no pasamos el id de la nave como parametro. Tenemos que ir nave por nave buscando la que tenga una
+     * bala en las componentes de coordenadna dadas
+     * @param cX
+     * @param cY
+     */
+    public void eliminarBalaPorCoord(int cX,int cY){
         for (NaveAbstracta nave : listaNaves){
-            nave.reinicianContadorNaves();
+            nave.eliminarBalaPorCoord(cX, cY);
         }
+
     }
 }

@@ -1,6 +1,7 @@
 TAREAS
-- Comprobar colisiones justo al mover
 - Aplicar el composite en Coordenada para hacer las Naves multipixel. (de momento solo naves)
+- Unir el Strategy con el Composite para hacer los modos de disparo
+- Meter el patron State para manejar la municion (no ammo)
 - (en el futuro) poner que en la pantalla de inicio, aparezcan as tres naves; cuando te paras encima salen los dipasros que tiene y cuando clickas, la selecciona
 
 
@@ -12,6 +13,8 @@ CAMBIOS
 - Para mover balas, iteramos sobre las ListaNaves. Sobre cada navve iteramos por las Coordenadas de sus Balas. Vaciamos la casilla donde estaba, luego le decimos a la nave
 que mueva las balas y despues volvemos a iterar sobre la lista de balas y vemos si en la posicion nueva habia un objeto antes en esa coordenada. Solo tenemos la coordenada dodne esta el enemigo
 - Entidad es un tipo enumerado, que es bala,nave,enemigo o vacio
+- hemos anadido el atributo id a Enemigo (NaveAbstracta ya lo tenia, pero se usaba mal pq se iteraba en Espacio con la posicion de la nave en lugar de el id)
+- Ahra en Espacio se itera sobre la lista de ID's (de enemigo o naves) que siguen vivos
 
 POR PREGUNTAR A ANDER
 - En Nave tener un array de estrategias y que cambiar estrategia no tenga como parametro estrategia

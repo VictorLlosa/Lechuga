@@ -3,10 +3,13 @@ package model;
 public class Enemigo {
     private final Coordenada coord;
     private boolean muerto;
+    private static int contadorId = 0; // Contador global para IDs
+    private int id; // ID único de cada instancia
 
     public Enemigo (Coordenada pCoord) {
         coord = pCoord;
         muerto = false;
+        id = contadorId++;
     }
 
     public void setCoord (int pX, int pY) {
@@ -37,5 +40,9 @@ public class Enemigo {
 
     public void matar() {
         muerto = true;
+    }
+
+    public Integer getId() {
+        return id;
     }
 }

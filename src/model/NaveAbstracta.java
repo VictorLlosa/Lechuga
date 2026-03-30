@@ -12,19 +12,19 @@ public abstract class NaveAbstracta extends Observable {
 
     private Coordenada coord;
     private  Coordenada cannon;
-    private static int id= -1;
+    private static int contadorId = 0; // Contador global para IDs
+    private int id; // ID único de cada instancia
     private DisparoStrategy disparo;
     private ListaBalas listaBalas;
     private boolean muerta;
 
     protected NaveAbstracta(int pX, int pY){
         this.disparo = new DisparoPixel();
-        id++;
+        this.id = contadorId++; // Asignar ID único y luego incrementar el contador
         coord = new Coordenada(pX, pY);
         cannon = new Coordenada(pX, pY);
         listaBalas = new ListaBalas();
         muerta = false;
-
     }
 
     protected void setCannon(int pX, int pY) {
@@ -76,7 +76,7 @@ public abstract class NaveAbstracta extends Observable {
     }
 
     public int getId() {
-        return id;
+        return id; // Devolver el ID único de la instancia
     }
 
     public void matar() {
@@ -84,15 +84,34 @@ public abstract class NaveAbstracta extends Observable {
     }
 
     /**
-     * Devuelve el valor del atributo "muerta"
-     * @return
+     *
+     * @return Devuelve el valor del atributo "muerta"
      */
     public boolean estaMuerta() {
         return muerta;
     }
 
-    public void reinicianContadorNaves() {
-        id = -1;
+    public void reiniciarContadorNaves() {
+        contadorId = 0; // Reiniciar el contador global
     }
-}
 
+    /**
+     * Solo elimina la bala si la nave la tiene. Lo usamos en ListaNaves (eliminarbala por coord)
+     * @param cX
+     * @param cY
+     */
+    public void eliminarBalaPorCoord(int cX,int cY){
+        if(tieneBalaEnCoord(cX,cY)) listaBalas.eliminarBalaEn(cX, cY);
+    }
+
+    /**
+     * Se usa en eliminarBalaPorCoord(x,y)
+     * @param cX
+     * @param cY
+     * @return
+     */
+    public boolean tieneBalaEnCoord(int cX, int cY){
+       return listaBalas.existeBalaEn(cX, cY);
+    }
+
+}

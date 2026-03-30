@@ -1,6 +1,6 @@
 package model;
 
-import java.awt.Color;
+import java.util.ArrayList;
 import java.util.Observer;
 
 
@@ -66,6 +66,7 @@ public class Espacio {
 
 		int cX = coordNave.getX();
 		int cY = coordNave.getY();
+		matriz[cX][cY].vaciar();
 
 		int nX = cX + dx;
 		int nY = cY + dy;
@@ -74,7 +75,6 @@ public class Espacio {
 			if (objAnt.equals(Entidad.alien)) {//si habia un enemigo eliminamos la nave
 				ListaNaves.getListaNaves().matarNave(idNave);
 			}else{ // si no hay colision o hay una bala, movemos la nave
-				matriz[cX][cY].vaciar();
 				matriz[nX][nY].cambiarObjeto(Entidad.nave);
 				ListaNaves.getListaNaves().setCoordNave(idNave, nX, nY);
 			}
@@ -95,13 +95,14 @@ public class Espacio {
 	}
 
 	/**
-	 * el bucle empieza en -1 porque se ejecuta antes el metodo "reiniciarContadorNaves" y el Id de la nave creada pasa a ser -1
-	 * Y al dar la ultima vuelta del bucle, no existe ninguna nave con el id "naves.lenght()"
+	 * Borramos de la pantalla las naves que siguen vivas. SI estan muertas ya no aparecen por lo que
+	 * no hace fala eliminarla se casilla.
 	 */
 	public void borrarNaves(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=-1;i < ListaNaves.getListaNaves().getNumNaves()-1;i++){
-			Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(i);
+		ArrayList<Integer> listaIds = ListaNaves.getListaNaves().getListaIds();
+		for (int idNave : listaIds){
+			Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
 			matriz[coordNave.getX()][coordNave.getY()].vaciar();
 		}
 		ListaNaves.getListaNaves().borrarListaNaves();
@@ -126,25 +127,26 @@ public class Espacio {
 	 * 	Usamos getObjeto() de Casilla para saber que tiene en cada momento.
 	 * 	Ya tenemos la casilla a donde queremos mover. Hay que mirar directamente que hay en la casilla.
 	 *
-	 * 	Como NaveAbstracta se autoincrementa
+	 * 	Pedimos los ids de las naves que siguen vivas para iterar sobre sus balas y eliminarlas
 	 */
 	public void moverBalas() {
-		int numNaves = ListaNaves.getListaNaves().getNumNaves();
-		for (int i=0; i < numNaves; i++) {
-			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)){
+		ArrayList<Integer> listaIdsNave = ListaNaves.getListaNaves().getListaIds();
+		for (int idNave : listaIdsNave) {
+			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
 				matriz[coordBala.getX()][coordBala.getY()].vaciar();
 			}
 
-			ListaNaves.getListaNaves().moverBalasNave(i);
+			ListaNaves.getListaNaves().moverBalasNave(idNave);
 
-			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)){
+			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
 				Casilla casillaNueva = matriz[coordBala.getX()][coordBala.getY()];
 				Entidad objAnt = casillaNueva.getObjeto();
 				switch (objAnt) {
 				case Entidad.alien: // Si había un alien, lo eliminamos junto a la bala y vaciamos la casilla
 					ListaEnemigos.getListaEnemigos().matarEnemigoEn(coordBala.getX(), coordBala.getY());
-					//TODO: metodo en nave que mate/elimine una bala dandole la coordenada
-					casillaNueva.vaciar();
+					ListaNaves.getListaNaves().eliminarBalaPorCoord(idNave, coordBala.getX(), coordBala.getY());
+					casillaNueva.cambiarObjeto(Entidad.vacio
+					);
 					break;
 				case Entidad.nave: // Decidimos que se vea la nave si hay una bala en su misma posición
 					casillaNueva.cambiarObjeto(Entidad.nave);
@@ -182,11 +184,13 @@ public class Espacio {
 		}
 	}
 
+	/**
+	 * Iteramos sobre los enemigos que siguen vivos
+	 */
 	public void moverEnemigos() {
-		int num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
-		for (int i = 0; i < num; i++) {
-			if(ListaEnemigos.getListaEnemigos().enemigoMuerto(i)) continue; //si el enemigo esta muerto no hacemos nada
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
+		ArrayList<Integer> listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
+		for (int idEnem : listaIdsEnem) {
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
 		}
 
@@ -194,31 +198,36 @@ public class Espacio {
 		ListaEnemigos.getListaEnemigos().moverEnemigos();
 
 		// Dibujar los enemigos en sus nuevas posiciones
-		num = ListaEnemigos.getListaEnemigos().getNumEnemigos();
-		for (int i = 0; i < num; i++) {
-			if(ListaEnemigos.getListaEnemigos().enemigoMuerto(i)) continue;
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
+		listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
+		for (int idEnem : listaIdsEnem) {
+			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			Casilla casillaNueva = matriz[coordEnem.getX()][coordEnem.getY()];
 			Entidad objAnt = casillaNueva.getObjeto();
 			switch (objAnt){
-				case Entidad.bala: //Si habia una bala eliminamos al enemigo
+				case Entidad.bala: //Si habia una bala eliminamos al enemigo, la bala y ponemos vacio en la casilla
 					ListaEnemigos.getListaEnemigos().matarEnemigoEn(coordEnem.getX(), coordEnem.getY());
+					ListaNaves.getListaNaves().eliminarBalaPorCoord(coordEnem.getX(), coordEnem.getY());
+					casillaNueva.cambiarObjeto(Entidad.vacio);
 				break;
-				case Entidad.nave: //Si habia una nave, la eliminamos
+				case Entidad.nave: //Si habia una nave, la eliminamos, pero el alien SE QUEDA (lo dejamos, no hay que repintarlo)
 					ListaNaves.getListaNaves().matarNaveEn(coordEnem.getX(), coordEnem.getY());
-					matriz[coordEnem.getX()][coordEnem.getY()].cambiarObjeto(Entidad.alien);
 				break;
 				default: //Si habia otro alien o estaba vacio
-					matriz[coordEnem.getX()][coordEnem.getY()].cambiarObjeto(Entidad.alien);
+					casillaNueva.cambiarObjeto(Entidad.alien);
 				break;
 			}
 
 		}
 	}
+
+	/**
+	 * Si un enemigo y la nave chocan, el enemigo no debe morir (no debe desaparecer el id de la lista de id's)
+	 */
 	public void borrarEnemigos(){
 		//los borraremos de la pantalla primero y despues de la lista
-		for (int i=0;i < ListaEnemigos.getListaEnemigos().getNumEnemigos();i++){
-			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigo(i);
+		ArrayList<Integer> listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
+		for (int idEnem : listaIdsEnem){
+			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
 		}
 		//ahora los borramos de la lista
@@ -243,10 +252,5 @@ public class Espacio {
 	 */
 	public boolean quedanNaves() {
 		return ListaNaves.getListaNaves().quedanNaves();
-	}
-
-
-	public void eliminarEnemigosMuertos() {
-		ListaEnemigos.getListaEnemigos().eliminarEnemigosMuertos();
 	}
 }

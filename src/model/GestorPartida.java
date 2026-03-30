@@ -96,7 +96,6 @@ public class GestorPartida extends Observable {
 	private void LoopJuego() {
 		contadorAcciones++;
 		if(contadorAcciones % 3 == 0) { // 30 ms
-			Espacio.getEspacio().eliminarEnemigosMuertos();
 			setChanged();
 			notifyObservers("repaint");
 		}

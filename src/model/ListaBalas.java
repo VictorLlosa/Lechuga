@@ -74,4 +74,40 @@ public class ListaBalas {
         }
         return lista;
     }
+
+    /**
+     * Se usa en borrarBalaPorCoord. Elimina la bala en las coordenadas cX cY.
+     * @param cX
+     * @param cY
+     * @return
+     */
+    public void eliminarBalaEn(int cX, int cY){
+        Bala bala = findBala(cX,cY);
+        if (bala !=null) listaBalas.remove(bala);
+    }
+
+
+    /**
+     * Se usa en borrarBala por coordenada. Devuelve la bala con coordenadas cX y cY
+     * @param cX
+     * @param cY
+     * @return
+     */
+    private Bala findBala(int cX,int cY){
+        for (Bala bala : listaBalas){
+            Coordenada coordBala = bala.getCoord();
+            if (coordBala.getX()==cX && coordBala.getY()==cY){
+                return bala;
+            }
+        }
+        return null;
+    }
+
+    public boolean existeBalaEn(int cX, int cY){
+        for (Bala bala : listaBalas){
+            Coordenada c = bala.getCoord();
+            if (c.getX() == cX && c.getY() == cY) return true;
+        }
+        return false;
+    }
 }
