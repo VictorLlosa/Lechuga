@@ -39,6 +39,11 @@ public class Espacio {
 		matriz[pX][pY].asignarObserver(o);
 	}
 
+	/**
+	 * Tiene en cuenta tanto si es una coordenada como si son muchas, para ver si es/son valida(s)
+	 * @param pCoord
+	 * @return
+	 */
 	public boolean esCoordenadaValida(Coordenada pCoord) {
 		return pCoord.estasEnIntervalo(0,hDim-1,0,vDim-1);
 	}
@@ -67,6 +72,7 @@ public class Espacio {
 	 * @param dy debe ser valida
 	 */
 	public void moverNave(int idNave, int dx, int dy) {
+		/*
 		boolean movValido = true;
 
 		if(!ListaNaves.getListaNaves().existeNave(idNave)) return;
@@ -106,6 +112,7 @@ public class Espacio {
 				}
 			}
 		}
+*/
 
 	}
 

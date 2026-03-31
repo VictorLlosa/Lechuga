@@ -44,7 +44,7 @@ public abstract class NaveAbstracta extends Observable {
         coord.addComponent(new Pixel(cX+1,cY)); //derecha
 
 
-        /*
+        /* ESTO ES LA FORMA DE LA BALA ROMBO, NO BORRAR
         coord.addComponent(new Pixel(cX,cY)); //centro
         coord.addComponent(new Pixel(cX,cY-1)); //arriba
         coord.addComponent(new Pixel(cX-1,cY)); //izq
@@ -104,13 +104,9 @@ public abstract class NaveAbstracta extends Observable {
     /**
      * Llama a listaBalas.moverBalas()
      */
-    public void moverBalas(){
-        listaBalas.moverBalas();
-    }
+    public void moverBalas(){listaBalas.moverBalas();}
 
-    public ArrayList<Pixel> getCoordBalas() {
-        return listaBalas.getCoordBalas();
-    }
+    public ArrayList<Pixel> getCoordBalas() { return listaBalas.getCoordBalas();}
 
     public void borrarBalas() {
         listaBalas.borrarListaBalas();
@@ -156,12 +152,13 @@ public abstract class NaveAbstracta extends Observable {
     }
 
     /**
-     * Controlador llama a este metodo cuando se pulsa un boton para mover la nave
+     * Controlador llama a este metodo cuando se pulsa un boton para mover la nave.
+     * WIP ahora el CompositeCoordenada debe llamar a Espacio
      * @param dx
      * @param dy
      */
     public void actualizarCoord(int dx, int dy) {
-        Espacio.getEspacio().vaciarCasillas(coord);
+        Espacio.getEspacio().vaciarCasillas(coord); //TODO esto hay que quitarlo por el metodo moverNave que usa el de Composite
         coord.actualizarCoord(dx,dy);
         if(!Espacio.getEspacio().esCoordenadaValida(coord)){
             coord.actualizarCoord(-dx,-dy);
@@ -174,5 +171,14 @@ public abstract class NaveAbstracta extends Observable {
 
     public CompositeCoordenada getForma() {
         return coord;
+    }
+
+    /**
+     * WIP; llama al metodo moverNave de Composite
+     * @param dx
+     * @param dy
+     */
+    public void moverNave(int dx, int dy) {
+        coord.moverNave(dx,dy);
     }
 }

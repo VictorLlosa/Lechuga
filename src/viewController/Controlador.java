@@ -149,6 +149,7 @@ public class Controlador implements KeyListener {
 		}
 	}
 
+	//WIP
 	private void procesarMovimiento() {
 		int dx = 0, dy = 0;
 

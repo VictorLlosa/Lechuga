@@ -151,12 +151,7 @@ public class GestorPartida extends Observable {
 		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
 
-	public void moverNave(int idNave, int dx, int dy) {
-		Espacio.getEspacio().moverNave(idNave, dx, dy);
-	}
-
-/*
-	private void comprobarColisiones() {
+	public void moverNave(int idNave, int dx, int dy) { //TODO mirar si esto se usa o no y si no borrarlo (una vez implementado todo)
 		Espacio.getEspacio().comprobarColisiones();
 	}
 */
@@ -208,4 +203,6 @@ public class GestorPartida extends Observable {
 	private void reiniciarContadorNaves(){
 		ListaNaves.getListaNaves().reiniciarContadorNaves();
 	}
+
+
 }
