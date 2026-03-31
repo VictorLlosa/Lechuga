@@ -3,9 +3,12 @@ TAREAS
 - Unir el Strategy con el Composite para hacer los modos de disparo
 - Meter el patron State para manejar la municion (no ammo)
 - (en el futuro) poner que en la pantalla de inicio, aparezcan as tres naves; cuando te paras encima salen los dipasros que tiene y cuando clickas, la selecciona
+- (en el futuro) poner niveles de enemigos
 
+- Hacer que controlador llame a nave para mover. Nave actualiza sus coordenadas y le dice a espacio que vacie/lene las casillas
 
 CAMBIOS
+
 - ahora listabalas no es mae. Cada nave tiene las coords de las balas
 - cada vez que  vayamos a crear una nave o un enemigo. Le pasamos tambien la Casilla donde se crea
 - LabelCasilla tiene un atributo estatico que es su color
@@ -15,6 +18,10 @@ que mueva las balas y despues volvemos a iterar sobre la lista de balas y vemos 
 - Entidad es un tipo enumerado, que es bala,nave,enemigo o vacio
 - hemos anadido el atributo id a Enemigo (NaveAbstracta ya lo tenia, pero se usaba mal pq se iteraba en Espacio con la posicion de la nave en lugar de el id)
 - Ahra en Espacio se itera sobre la lista de ID's (de enemigo o naves) que siguen vivos
+- Lo que se llamaba antes 'Coordenada', se llama 'Pixel' ahora
+-
 
 POR PREGUNTAR A ANDER
 - En Nave tener un array de estrategias y que cambiar estrategia no tenga como parametro estrategia
+- Preguntar si el esPixel() es legal
+- Preguntar si el composite debe ser Coord o Casilla, explicandole con MoverNave()

@@ -1,6 +1,7 @@
 package model;
 
-import java.awt.Color;
+import model.Composite.Pixel;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -118,7 +119,7 @@ public class GestorPartida extends Observable {
 	 * @param pColor Tipo de nave(s) que queremos iniciar
 	 */
 	private void anadirNaves(String pColor) {
-		Espacio.getEspacio().anadirNave(pColor, new Coordenada(55,50));
+		Espacio.getEspacio().anadirNave(pColor, new Pixel(55,50));
 	}
 
 	private void borrarNaves(){
@@ -136,9 +137,9 @@ public class GestorPartida extends Observable {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
 			}
-			while(!Espacio.getEspacio().esCoordenadaValida(random,5));
+			while(!Espacio.getEspacio().esCoordenadaValida(new Pixel(random,5)));
 
-			Espacio.getEspacio().anadirEnemigos(new Coordenada(random,5));
+			Espacio.getEspacio().anadirEnemigos(new Pixel(random,5));
 		}
 	}
 

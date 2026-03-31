@@ -1,9 +1,11 @@
 package model;
 
+import model.Composite.CompositeCoordenada;
+import model.Composite.Coordenada;
+import model.Composite.Pixel;
 import model.Factorias.FactoriaNave;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ListaNaves {
     private ArrayList<NaveAbstracta> listaNaves;
@@ -28,7 +30,7 @@ public class ListaNaves {
      * @param pIdNave
      * @return
      */
-    public Coordenada disparar(int pIdNave) {
+    public CompositeCoordenada disparar(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.disparar();
         else return null;
@@ -40,23 +42,33 @@ public class ListaNaves {
      * @param pColor
      * @param pCoord
      */
-    public void anadirNave(String pColor, Coordenada pCoord) {
+    public CompositeCoordenada anadirNave(String pColor, Pixel pCoord) {
         NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal", pColor, pCoord);
         listaNaves.add(nave);
         listaIds.add(nave.getId());
+        return nave.getForma();
     }
 
-    public Coordenada getCoordNave(int pIdNave) {
+    public CompositeCoordenada getCoordNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.getCoord();
         return null;
     }
 
+    public Coordenada getCannonNave(int pIdNave) {
+        NaveAbstracta nave = findNave(pIdNave);
+        if (nave != null) return nave.getCannon();
+        return null;
+    }
+
+    /* //TODO
     public void setCoordNave(int pIdNave, int cX, int cY) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) nave.setCoord(cX, cY);
 
     }
+    */
+
 
     public int getNumNaves() {
         return listaNaves.size();
@@ -106,7 +118,7 @@ public class ListaNaves {
     }
     /*
      */
-    public ArrayList<Coordenada> getCoordBalasNave(int pIdNave) {
+    public ArrayList<Pixel> getCoordBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.getCoordBalas();
         else return null;
@@ -180,5 +192,16 @@ public class ListaNaves {
             nave.eliminarBalaPorCoord(cX, cY);
         }
 
+    }
+
+    /**
+     * Se usa en Espacio para mover la nave a las coordenadas seleccionadas. Actualiza cada coordenada que compone a la nave
+     * @param pIdNave
+     * @param dx
+     * @param dy
+     */
+    public void actualizarCoordNave(int pIdNave, int dx, int dy) {
+        NaveAbstracta nave = findNave(pIdNave);
+        if (nave != null) nave.actualizarCoord(dx, dy);
     }
 }

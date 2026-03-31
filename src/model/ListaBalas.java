@@ -1,5 +1,8 @@
 package model;
 
+import model.Composite.Coordenada;
+import model.Composite.Pixel;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,7 +23,7 @@ public class ListaBalas {
         while (it.hasNext()) {
             Bala bala = it.next();
             bala.actualizarPos();
-            Coordenada coord = bala.getCoord();
+            Pixel coord = bala.getCoord();
             // si la bala salió por encima (y < 0) eliminarla
             if (coord.getY() < 0) {
                 it.remove();
@@ -33,7 +36,7 @@ public class ListaBalas {
         Bala bala =listaBalas.get(pPos);
         bala.actualizarPos();
 
-        Coordenada coord = bala.getCoord();
+        Pixel coord = bala.getCoord();
         // si la bala salió por encima (y < 0) eliminarla
         if (coord.getY() < 0) {
             listaBalas.remove(bala);
@@ -41,7 +44,7 @@ public class ListaBalas {
     }
 
 
-    public synchronized Coordenada getCoordBala(int pPos) {
+    public synchronized Pixel getCoordBala(int pPos) {
         if (pPos >= 0 && pPos < listaBalas.size()) {
             return listaBalas.get(pPos).getCoord();
 
@@ -67,8 +70,8 @@ public class ListaBalas {
      * Devuelve
      * @return
      */
-    public ArrayList<Coordenada> getCoordBalas() {
-        ArrayList<Coordenada> lista = new ArrayList<Coordenada>();
+    public ArrayList<Pixel> getCoordBalas() {
+        ArrayList<Pixel> lista = new ArrayList<Pixel>();
         for (Bala b : listaBalas){
             lista.add(b.getCoord());
         }
@@ -95,7 +98,7 @@ public class ListaBalas {
      */
     private Bala findBala(int cX,int cY){
         for (Bala bala : listaBalas){
-            Coordenada coordBala = bala.getCoord();
+            Pixel coordBala = bala.getCoord();
             if (coordBala.getX()==cX && coordBala.getY()==cY){
                 return bala;
             }
@@ -105,7 +108,7 @@ public class ListaBalas {
 
     public boolean existeBalaEn(int cX, int cY){
         for (Bala bala : listaBalas){
-            Coordenada c = bala.getCoord();
+            Pixel c = bala.getCoord();
             if (c.getX() == cX && c.getY() == cY) return true;
         }
         return false;

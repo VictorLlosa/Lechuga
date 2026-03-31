@@ -1,11 +1,14 @@
 package model;
 
+import model.Composite.Pixel;
+import model.Factorias.FactoriaEnemigo;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListaEnemigos {
     private final int MAX_ENEMIGOS_POSIBLES=8;
-    private ArrayList<Enemigo> listaEnemigos;
+    private ArrayList<EnemigoAbstracto> listaEnemigos;
     private ArrayList<Integer> listaIds;
     private boolean enemigoHaLlegadoAbajo;
     private static ListaEnemigos miListaEnemigos = null;
@@ -22,9 +25,9 @@ public class ListaEnemigos {
         return miListaEnemigos;
     }
 
-    public void anadirEnemigo(Coordenada coord) {
+    public void anadirEnemigo(Pixel pCentro, String pTipo) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            Enemigo enemigo = new Enemigo(coord);
+            Enemigo enemigo = (Enemigo) FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
             listaEnemigos.add(enemigo);
             listaIds.add(enemigo.getId());
         }
@@ -37,12 +40,12 @@ public class ListaEnemigos {
     }
 
     public void moverEnemigos() {
-        Iterator<Enemigo> it = listaEnemigos.iterator();
+        Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
 
         while (it.hasNext()) {
-            Enemigo enem = it.next();
+            EnemigoAbstracto enem = it.next();
             enem.actualizarPos();
-            Coordenada coord = enem.getCoord();
+            Pixel coord = enem.getCoord();
 
             // si el enemigo ha llegado abajo eliminarlo y marcar fin
             if (coord.getY() > 59) {
@@ -53,8 +56,8 @@ public class ListaEnemigos {
         }
     }
 
-    public Coordenada getCoordEnemigo(int pId) {
-        Enemigo enem = findEnemigo(pId);
+    public Pixel getCoordEnemigo(int pId) {
+        EnemigoAbstracto enem = findEnemigo(pId);
         if( enem != null) return enem.getCoord();
         else return null;
     }
@@ -75,15 +78,15 @@ public class ListaEnemigos {
      * @param cY
      */
     public void matarEnemigoEn(int cX, int cY){
-        Enemigo enem = this.findEnemigoEn(cX,cY);
+        EnemigoAbstracto enem = this.findEnemigoEn(cX,cY);
         if(enem != null) {
             enem.matar();
             listaIds.remove(enem.getId());
         }
     }
 
-    private Enemigo findEnemigoEn(int cX, int cY){
-        for (Enemigo enem : listaEnemigos) {
+    private EnemigoAbstracto findEnemigoEn(int cX, int cY){
+        for (EnemigoAbstracto enem : listaEnemigos) {
             if (enem.estaEn(cX,cY)) return enem;
         }
         return null;
@@ -96,7 +99,7 @@ public class ListaEnemigos {
 
     public void eliminarEnemigosMuertos() {
         // Locura de java
-        listaEnemigos.removeIf(Enemigo::estaMuerto);
+        listaEnemigos.removeIf(EnemigoAbstracto::estaMuerto);
     }
 
     /**
@@ -105,7 +108,7 @@ public class ListaEnemigos {
      * @return devuelve si un enemigo esta muelto. si no existe, devuelve true.
      */
     public boolean enemigoMuerto(int pId) {
-        Enemigo enem = findEnemigo(pId);
+        EnemigoAbstracto enem = findEnemigo(pId);
         if( enem != null) return enem.estaMuerto();
         else return true;
     }
@@ -119,8 +122,8 @@ public class ListaEnemigos {
      * @param pIdEnem
      * @return
      */
-    public Enemigo findEnemigo(int pIdEnem){
-        for (Enemigo e : listaEnemigos){
+    public EnemigoAbstracto findEnemigo(int pIdEnem){
+        for (EnemigoAbstracto e : listaEnemigos){
             if (e.getId()==pIdEnem) return e;
         }
         return null;

@@ -1,6 +1,6 @@
 package model.Factorias;
 
-import model.Coordenada;
+import model.Composite.Pixel;
 import model.NaveAbstracta;
 import model.Nave;
 
@@ -23,7 +23,7 @@ public class FactoriaNave {
      * @param pTipo el color de la nave
      * @return
      */
-    public NaveAbstracta generar(String pTipo, String color, Coordenada pCoord){
+    public NaveAbstracta generar(String pTipo, String color, Pixel pCoord){
         Nave nave;
         switch(pTipo){
             case "normal":

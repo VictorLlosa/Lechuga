@@ -1,5 +1,8 @@
 package model;
 
+import model.Composite.CompositeCoordenada;
+import model.Composite.Coordenada;
+import model.Composite.Pixel;
 import model.Strategy.*;
 
 import java.util.ArrayList;
@@ -10,8 +13,8 @@ import java.util.Observable;
  */
 public abstract class NaveAbstracta extends Observable {
 
-    private Coordenada coord;
-    private  Coordenada cannon;
+    private CompositeCoordenada coord;
+    private Pixel cannon;
     private static int contadorId = 0; // Contador global para IDs
     private int id; // ID único de cada instancia
     private DisparoStrategy disparo;
@@ -21,30 +24,68 @@ public abstract class NaveAbstracta extends Observable {
     protected NaveAbstracta(int pX, int pY){
         this.disparo = new DisparoPixel();
         this.id = contadorId++; // Asignar ID único y luego incrementar el contador
-        coord = new Coordenada(pX, pY);
-        cannon = new Coordenada(pX, pY);
+        coord = new CompositeCoordenada();
+        crearForma(pX, pY);
         listaBalas = new ListaBalas();
         muerta = false;
+    }
+
+    /**
+     * Entra las coordenadas del centro
+     * @param cX
+     * @param cY
+     */
+    private void crearForma(int cX, int cY) {
+        cannon = new Pixel(cX, cY); //cannon de la nave
+        coord.addComponent(new Pixel(cX,cY)); //centro
+        coord.addComponent(new Pixel(cX,cY-1)); //arriba (tb el cannon)
+        cannon = new Pixel(cX,cY-1); //cannon de la nave
+        coord.addComponent(new Pixel(cX-1,cY)); //izq
+        coord.addComponent(new Pixel(cX+1,cY)); //derecha
+
+
+        /*
+        coord.addComponent(new Pixel(cX,cY)); //centro
+        coord.addComponent(new Pixel(cX,cY-1)); //arriba
+        coord.addComponent(new Pixel(cX-1,cY)); //izq
+        coord.addComponent(new Pixel(cX-1,cY-1)); //esquina noroeste
+        coord.addComponent(new Pixel(cX,cY+1)); //abajo
+        coord.addComponent(new Pixel(cX+1,cY)); //derecha
+        coord.addComponent(new Pixel(cX+1,cY-1)); //esquina noreste
+        coord.addComponent(new Pixel(cX+1,cY+1)); //esquina sudeste
+        coord.addComponent(new Pixel(cX-1,cY+1)); //esquina suroeste
+        coord.addComponent(new Pixel(cX,cY-2)); //punta superior
+        coord.addComponent(new Pixel(cX,cY+2)); //punta inferior
+        coord.addComponent(new Pixel(cX-2,cY)); //punta izquierda
+        coord.addComponent(new Pixel(cX+2,cY)); //punta derecha
+        */
     }
 
     protected void setCannon(int pX, int pY) {
         cannon.setCoord(pX,pY);
     }
 
+    /*
     protected void setCoord(int pX, int pY) {
         coord.setCoord(pX,pY);
     }
+    */
 
-    protected Coordenada getCoord() {
+
+    protected CompositeCoordenada getCoord() {
         return coord;
+    }
+
+    protected Coordenada getCannon() {
+        return cannon;
     }
 
     /**
      * para disparar, tenemos que actualizar el cannon antes. hacemos "disparo.disparar(coords del disparo) y anadimos la Bala a la Lista de Balas.
      * @return
      */
-    public Coordenada disparar(){
-        Coordenada coordBala = disparo.disparar(coord.getX(), coord.getY());
+    public CompositeCoordenada disparar(){
+        CompositeCoordenada coordBala = disparo.disparar(cannon.getX(), cannon.getY()); //TODO el disparar de cada nave
         listaBalas.anadirBala(coordBala);
         return coordBala;
     }
@@ -53,7 +94,7 @@ public abstract class NaveAbstracta extends Observable {
         return this.id == idNave;
     }
     public boolean estasEn(int cX, int cY) {
-        return coord.equals(new Coordenada(cX,cY));
+        return coord.equals(new Pixel(cX,cY));
     }
 
     public void changeStrategy(DisparoStrategy pSt){
@@ -67,7 +108,7 @@ public abstract class NaveAbstracta extends Observable {
         listaBalas.moverBalas();
     }
 
-    public ArrayList<Coordenada> getCoordBalas() {
+    public ArrayList<Pixel> getCoordBalas() {
         return listaBalas.getCoordBalas();
     }
 
@@ -114,4 +155,24 @@ public abstract class NaveAbstracta extends Observable {
        return listaBalas.existeBalaEn(cX, cY);
     }
 
+    /**
+     * Controlador llama a este metodo cuando se pulsa un boton para mover la nave
+     * @param dx
+     * @param dy
+     */
+    public void actualizarCoord(int dx, int dy) {
+        Espacio.getEspacio().vaciarCasillas(coord);
+        coord.actualizarCoord(dx,dy);
+        if(!Espacio.getEspacio().esCoordenadaValida(coord)){
+            coord.actualizarCoord(-dx,-dy);
+            Espacio.getEspacio().ponerNaveCasillas(coord);
+        }else{
+            Espacio.getEspacio().ponerNaveCasillas(coord);
+        }
+
+    }
+
+    public CompositeCoordenada getForma() {
+        return coord;
+    }
 }

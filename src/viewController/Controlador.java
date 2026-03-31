@@ -6,6 +6,7 @@ import java.awt.event.KeyListener;
 import java.util.Observer;
 
 import model.GestorPartida;
+import model.ListaNaves;
 
 import javax.swing.*;
 
@@ -156,7 +157,9 @@ public class Controlador implements KeyListener {
 		if (downPressed) dy += 1;
 		if (rightPressed) dx += 1;
 
-		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
+		if (dx != 0 || dy != 0) {
+			ListaNaves.getListaNaves().actualizarCoordNave(0, dx, dy);
+		}
 	}
 
 	/**

@@ -1,5 +1,9 @@
 package model;
 
+import model.Composite.CompositeCoordenada;
+import model.Composite.Coordenada;
+import model.Composite.Pixel;
+
 import java.util.ArrayList;
 import java.util.Observer;
 
@@ -35,8 +39,8 @@ public class Espacio {
 		matriz[pX][pY].asignarObserver(o);
 	}
 
-	public boolean esCoordenadaValida(int x, int y) {
-		return x < this.hDim && y < this.vDim && x >= 0 && y >= 0;
+	public boolean esCoordenadaValida(Coordenada pCoord) {
+		return pCoord.estasEnIntervalo(0,hDim-1,0,vDim-1);
 	}
 
 	public boolean puedeDisparar(int x, int y) {
@@ -44,14 +48,16 @@ public class Espacio {
 	}
 
 	/**
-	 * Anadimos una nave a listaNaves
+	 * Anadimos una nave a listaNaves. Hacemos un for con anadirNave, que devuelve cada coordenada que compone la nave
 	 * @param pColor
 	 * @param pCoord
 	 */
-	public void anadirNave(String pColor, Coordenada pCoord) {
-
-		ListaNaves.getListaNaves().anadirNave(pColor, pCoord);
-		matriz[55][50].cambiarObjeto(Entidad.nave);
+	public void anadirNave(String pColor, Pixel pCoord) {
+		CompositeCoordenada coord = ListaNaves.getListaNaves().anadirNave(pColor, pCoord);
+		for(Coordenada p : coord.getChildren()){
+			if(p.esPixel()) matriz[p.getX()][p.getY()].cambiarObjeto(Entidad.nave);
+		}
+		
 	}
 
 	/**
@@ -61,34 +67,43 @@ public class Espacio {
 	 * @param dy debe ser valida
 	 */
 	public void moverNave(int idNave, int dx, int dy) {
+		boolean movValido = true;
+
 		if(!ListaNaves.getListaNaves().existeNave(idNave)) return;
-		Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
+		CompositeCoordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
+		ArrayList<Coordenada> pixels = coordNave.getChildren();
 
-		int cX = coordNave.getX();
-		int cY = coordNave.getY();
-		matriz[cX][cY].vaciar();
+		for(Coordenada p : pixels) {
+			if(p.esPixel()) {
+				int cX = p.getX();
+				int cY = p.getY();
 
-		int nX = cX + dx;
-		int nY = cY + dy;
-		if (esCoordenadaValida(nX, nY)) {
-			Entidad objAnt = matriz[nX][nY].getObjeto();
-			if (objAnt.equals(Entidad.alien)) {//si habia un enemigo eliminamos la nave
-				ListaNaves.getListaNaves().matarNave(idNave);
-			}else{ // si no hay colision o hay una bala, movemos la nave
-				matriz[nX][nY].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, nX, nY);
+				int nX = cX + dx;
+				int nY = cY + dy;
+				movValido = esCoordenadaValida(nX, nY);
+				if (!movValido) break;
 			}
 		}
-		else {
-			if(nX > this.hDim - 1){//si se ha salido por el borde que aparezca por el otro lado
+		for(Coordenada p : pixels) {
+			if(p.esPixel()) {
+				int cX = p.getX();
+				int cY = p.getY();
 				matriz[cX][cY].vaciar();
-				matriz[0][nY].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, 0, nY);
 			}
-			else if(nX<0){
-				matriz[cX][cY].vaciar();
-				matriz[hDim-1][nY].cambiarObjeto(Entidad.nave);
-				ListaNaves.getListaNaves().setCoordNave(idNave, hDim-1, nY);
+		}
+		if(movValido) {
+			ListaNaves.getListaNaves().actualizarCoordNave(idNave, dx, dy);
+			pixels = coordNave.getChildren();
+			for(Coordenada p : pixels) {
+				if(p.esPixel()) {
+					Entidad objAnt = matriz[p.getX()][p.getY()].getObjeto();
+					if (objAnt.equals(Entidad.alien)) {//si habia un enemigo eliminamos la nave
+						ListaNaves.getListaNaves().matarNave(idNave);
+					} else { // si no hay colision o hay una bala, movemos la nave
+						matriz[p.getX()][p.getY()].cambiarObjeto(Entidad.nave);
+
+					}
+				}
 			}
 		}
 
@@ -102,22 +117,36 @@ public class Espacio {
 		//los borraremos de la pantalla primero y despues de la lista
 		ArrayList<Integer> listaIds = ListaNaves.getListaNaves().getListaIds();
 		for (int idNave : listaIds){
-			Coordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
-			matriz[coordNave.getX()][coordNave.getY()].vaciar();
+			CompositeCoordenada coordNave = ListaNaves.getListaNaves().getCoordNave(idNave);
+			ArrayList<Coordenada> pixeles = coordNave.getChildren();
+			for (Coordenada p: pixeles) {
+				int cX = p.getX();
+				int cY = p.getY();
+				matriz[cX][cY].vaciar();
+			}
 		}
 		ListaNaves.getListaNaves().borrarListaNaves();
 	}
 
 	/**
-	 *
+	 * Primero miramos si la casilla es una casilla vlida para disparar y en el caso de que sí, creamos una bala en esa posición.
 	 * @param pIdNave
 	 */
-	public void disparar(int pIdNave){
-		Coordenada coordNave =  ListaNaves.getListaNaves().getCoordNave(pIdNave);
+	public void disparar(int pIdNave) {
+		Coordenada cannonNave = ListaNaves.getListaNaves().getCannonNave(pIdNave);
 
-		if (puedeDisparar(coordNave.getX(), coordNave.getY())) {
-			Coordenada coordBala = ListaNaves.getListaNaves().disparar(pIdNave);
-			matriz[coordBala.getX()][coordBala.getY()].cambiarObjeto(Entidad.bala);
+		if (puedeDisparar(cannonNave.getX(), cannonNave.getY())) {
+			CompositeCoordenada coordBala = ListaNaves.getListaNaves().disparar(pIdNave);
+			ArrayList<Coordenada> pixels = coordBala.getChildren();
+
+			for (Coordenada p : pixels) {
+				if (p.esPixel()) {
+					Pixel pixel = (Pixel) p;
+					if (esCoordenadaValida(pixel.getX(), pixel.getY())) {
+						matriz[pixel.getX()][pixel.getY()].cambiarObjeto(Entidad.bala);
+					}
+				}
+			}
 		}
 	}
 
@@ -132,13 +161,13 @@ public class Espacio {
 	public void moverBalas() {
 		ArrayList<Integer> listaIdsNave = ListaNaves.getListaNaves().getListaIds();
 		for (int idNave : listaIdsNave) {
-			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
+			for (Pixel coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
 				matriz[coordBala.getX()][coordBala.getY()].vaciar();
 			}
 
 			ListaNaves.getListaNaves().moverBalasNave(idNave);
 
-			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
+			for (Pixel coordBala : ListaNaves.getListaNaves().getCoordBalasNave(idNave)){
 				Casilla casillaNueva = matriz[coordBala.getX()][coordBala.getY()];
 				Entidad objAnt = casillaNueva.getObjeto();
 				switch (objAnt) {
@@ -168,7 +197,7 @@ public class Espacio {
 
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
 		for (int i = 0; i < numNaves; i++) { //el id es 0
-			for (Coordenada coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)) {
+			for (Pixel coordBala : ListaNaves.getListaNaves().getCoordBalasNave(i)) {
 				matriz[coordBala.getX()][coordBala.getY()].vaciar();
 			}
 			ListaNaves.getListaNaves().borrarBalasNave(i);
@@ -177,9 +206,9 @@ public class Espacio {
 	}
 
 	//Creación y movimiento de Enemigos
-	public void anadirEnemigos(Coordenada coord) {
+	public void anadirEnemigos(Pixel coord) {
 		if (esCoordenadaValida(coord.getX(), coord.getY())) {
-			ListaEnemigos.getListaEnemigos().anadirEnemigo(coord);
+			ListaEnemigos.getListaEnemigos().anadirEnemigo(coord,"normal");
 			matriz[coord.getX()][coord.getY()].cambiarObjeto(Entidad.alien);
 		}
 	}
@@ -190,7 +219,7 @@ public class Espacio {
 	public void moverEnemigos() {
 		ArrayList<Integer> listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
 		for (int idEnem : listaIdsEnem) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
+			Pixel coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			matriz[coordEnem.getX()][coordEnem.getY()].vaciar();
 		}
 
@@ -200,7 +229,7 @@ public class Espacio {
 		// Dibujar los enemigos en sus nuevas posiciones
 		listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
 		for (int idEnem : listaIdsEnem) {
-			Coordenada coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
+			Pixel coordEnem = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			Casilla casillaNueva = matriz[coordEnem.getX()][coordEnem.getY()];
 			Entidad objAnt = casillaNueva.getObjeto();
 			switch (objAnt){
@@ -227,7 +256,7 @@ public class Espacio {
 		//los borraremos de la pantalla primero y despues de la lista
 		ArrayList<Integer> listaIdsEnem = ListaEnemigos.getListaEnemigos().getListaIds();
 		for (int idEnem : listaIdsEnem){
-			Coordenada coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
+			Pixel coordEnemigo = ListaEnemigos.getListaEnemigos().getCoordEnemigo(idEnem);
 			matriz[coordEnemigo.getX()][coordEnemigo.getY()].vaciar();
 		}
 		//ahora los borramos de la lista
@@ -252,5 +281,10 @@ public class Espacio {
 	 */
 	public boolean quedanNaves() {
 		return ListaNaves.getListaNaves().quedanNaves();
+	}
+
+	public void vaciarCasillas(CompositeCoordenada coord) {
+		//Hay que iterar sobre los pixeles de coord (getchilds) y hacer matriz[pixel.getx()][].vaciar()
+
 	}
 }
