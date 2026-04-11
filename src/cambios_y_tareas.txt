@@ -19,7 +19,7 @@ que mueva las balas y despues volvemos a iterar sobre la lista de balas y vemos 
 - hemos anadido el atributo id a Enemigo (NaveAbstracta ya lo tenia, pero se usaba mal pq se iteraba en Espacio con la posicion de la nave en lugar de el id)
 - Ahra en Espacio se itera sobre la lista de ID's (de enemigo o naves) que siguen vivos
 - Lo que se llamaba antes 'Coordenada', se llama 'Pixel' ahora
--EL COMPOSITE TIENE QUE COMPROBAR Y LUEGO MOVER
+-EL COMPOSITE TIENE QUE COMPROBAR Y LUEGO MOVER. Coordenada puede ser o un CompositeCoordenada o un Pixel
 
 POR PREGUNTAR A ANDER
 - En Nave tener un array de estrategias y que cambiar estrategia no tenga como parametro estrategia

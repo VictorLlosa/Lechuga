@@ -3,10 +3,10 @@ package viewController;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Observer;
 
 import model.GestorPartida;
 import model.ListaNaves;
+import model.TipoNave;
 
 import javax.swing.*;
 
@@ -31,7 +31,7 @@ public class Controlador implements KeyListener {
 	private volatile boolean cambioDisparo = false;
 
 	//nave seleccionada
-	private String colorNave = "rojo";
+	private TipoNave tipoNave = TipoNave.red;
 
 
 	private int contDisparo = 0; // contador para limitar velocidad de disparo
@@ -48,7 +48,7 @@ public class Controlador implements KeyListener {
 			if (spacePressed) {
 				contDisparo++;
 				if (contDisparo >= CADENCIA) {
-					GestorPartida.getGestorPartida().disparar();
+					ListaNaves.getListaNaves().disparar(0);
 					contDisparo = 0;
 				}
 			} else {
@@ -81,19 +81,19 @@ public class Controlador implements KeyListener {
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
 
-					GestorPartida.getGestorPartida().iniciarPartida(colorNave);
+					GestorPartida.getGestorPartida().iniciarPartida(tipoNave);
 				}
 				//Seleccion de nave. Dependiendo de la tecla pulsada, la Nave es de un Color
 				else if(e.getKeyCode() == KeyEvent.VK_A){
-					this.colorNave="azul";
+					this.tipoNave = TipoNave.blue;
 					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_R){
-					this.colorNave="rojo";
+					this.tipoNave =TipoNave.red;
 					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
 				}
 				else if(e.getKeyCode() == KeyEvent.VK_V){
-					this.colorNave="verde";
+					this.tipoNave =TipoNave.green;
 					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
 				}
 
@@ -103,7 +103,7 @@ public class Controlador implements KeyListener {
 			break;
 			case("Fin"):
 				if (e.getKeyCode() == KeyEvent.VK_R){
-					GestorPartida.getGestorPartida().reiniciarPartida(colorNave);
+					GestorPartida.getGestorPartida().reiniciarPartida();
 					reiniciarTeclas();
 				}
 			break;

@@ -1,5 +1,6 @@
 package model;
 
+import model.Composite.Coordenada;
 import model.Composite.Pixel;
 import model.Factorias.FactoriaEnemigo;
 
@@ -25,12 +26,26 @@ public class ListaEnemigos {
         return miListaEnemigos;
     }
 
-    public void anadirEnemigo(Pixel pCentro, String pTipo) {
+    /**
+     * Crea un enemigo a partir de su centro, usa el metodo "esCoordValidaAlCrear(enemigo.getCoord() )"
+     * @param pCentro
+     * @param pTipo
+     * @return Coordenada del enemigo o null si no ha podido crearlo
+     */
+    public Coordenada anadirEnemigo(Pixel pCentro, String pTipo) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
             Enemigo enemigo = (Enemigo) FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
-            listaEnemigos.add(enemigo);
-            listaIds.add(enemigo.getId());
+            if(Espacio.getEspacio().esCoordValidaAlCrear(enemigo.getCoord())){
+                listaEnemigos.add(enemigo);
+                listaIds.add(enemigo.getId());
+                return enemigo.getCoord();
+            }else{
+                return null;
+            }
+        }else{
+            return null;
         }
+
     }
 
     public void borrarListaEnemigos(){
@@ -73,21 +88,18 @@ public class ListaEnemigos {
     }
 
     /**
-     *
-     * @param cX
-     * @param cY
      */
-    public void matarEnemigoEn(int cX, int cY){
-        EnemigoAbstracto enem = this.findEnemigoEn(cX,cY);
+    public void matarEnemigoEn(Coordenada pCoord){
+        EnemigoAbstracto enem = this.findEnemigoEn(pCoord);
         if(enem != null) {
             enem.matar();
             listaIds.remove(enem.getId());
         }
     }
 
-    private EnemigoAbstracto findEnemigoEn(int cX, int cY){
+    private EnemigoAbstracto findEnemigoEn(Coordenada pCoord){
         for (EnemigoAbstracto enem : listaEnemigos) {
-            if (enem.estaEn(cX,cY)) return enem;
+            if (enem.estaEn(pCoord)) return enem;
         }
         return null;
     }

@@ -1,68 +1,113 @@
 package model.Composite;
 
+import model.Entidad;
 import model.Espacio;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 
 
-public class CompositeCoordenada implements Coordenada{
+public class CompositeCoordenada implements Coordenada {
     ArrayList<Coordenada> components;
 
-    public CompositeCoordenada(){
+    public CompositeCoordenada() {
         components = new ArrayList<>();
     }
-    public void addComponent(Coordenada pC){
+
+    public void addComponent(Coordenada pC) {
         components.add(pC);
     }
 
-    public void deleteComponent(Coordenada pC){
+    public void deleteComponent(Coordenada pC) {
         components.remove(pC);
     }
 
-    public ArrayList<Coordenada> getChildren(){
+    public ArrayList<Coordenada> getChildren() {
         return components;
     }
+
     @Override
     public void actualizarCoord(int dx, int dy) {
-        for(Coordenada comp : components ){
+        for (Coordenada comp : components) {
             comp.actualizarCoord(dx, dy);
         }
     }
 
+    /**
+     * Pasamos del arrayList de coordenadas a un ArrayList de Pixel. Recursivamente, iteramos las listas para convertir los composites en arraylists de pixel
+     * @return
+     */
     @Override
-    public boolean esPixel() {
-        return false;
+    public ArrayList<Pixel> getPixeles() {
+        ArrayList<Pixel> pixeles = new ArrayList<Pixel>();
+        for(Coordenada c : components){
+            pixeles.addAll(c.getPixeles());//te añade cada elemento de la coleccion 'c.getPixeles()' a la lista 'pixeles'
+        }
+        return pixeles;
     }
 
     @Override
     public boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1) {
         boolean esta = true;
-        for(Coordenada coord : components){
+        for (Coordenada coord : components) {
             esta = coord.estasEnIntervalo(pX0, pX1, pY0, pY1);
-            if(!esta) return false;
+            if (!esta) return false;
         }
         return esta;
     }
 
+    private Iterator<Coordenada> getIterator(){
+        return components.iterator();
+    }
     /**
-     * Llama a Espacio. Despues el espacio comprueba que la coordenada nueva sea valida con todos los componentes de 'components'. El Espacio devuelve la coordenada nueva
-     * y (si esta es valida) CompositeCoordenada actualiza la(s) coordenada(s) que haga(n) falta. Por ultimo, este metodo tb llama
-     * a Espacio ppara actualizar la nueva coordenada en el.
-     * @param dx
-     * @param dy
+     * Actualizamos las coordendas en .this, si las nuevas son validas, vaciamos las coord iniciales con esp.vaciarCasillas(compAnterior)
+     * y pintamos la nueva entidad pasandosela como parametro en: esp.colocarEntidad(components, pEnt);
+     * @param pEnt Es el tipo de entidad (nave,enemigo o bala) que queremos mover
+     * @param dx comp x a donde queremos mover la entidad
+     * @param dy comp y a donde queremos mover la entidad
      */
-    public void moverNave(int dx, int dy){
-        boolean todasCoordValidas = true;
-        Espacio esp = Espacio.getEspacio(); //esto lo ponemos porque usamos mucho "Espacio.getEspacio()"
-        Iterator<Coordenada> itr = components.iterator();
-        while (itr.hasNext() && todasCoordValidas) {
-            Coordenada c = itr.next();
-            if (!esp.esCoordenadaValida(c)) {
-                todasCoordValidas= false;
-            }
-            else {
-                esp.getCordenada
+    public void moverEnEspacio(int dx, int dy, Entidad pEnt) {
+        Espacio esp = Espacio.getEspacio();
+        CompositeCoordenada nuevasCoord = (CompositeCoordenada) this.generarNuevaCoord(dx, dy);
+        Iterator<Coordenada> itr = nuevasCoord.getIterator();
+        while (itr.hasNext()) {
+            if (!esp.esCoordenadaValida(itr.next())) {
+                return;
             }
         }
+        esp.vaciarCasillas(this);
+        this.components = nuevasCoord.getChildren(); //asignamos los componenetes de las nuevas coordenadas a los del .this
+        esp.colocarEntidad(this, pEnt);
     }
+
+    @Override
+    public Coordenada generarNuevaCoord(int dx, int dy) {
+        CompositeCoordenada nuevas = new CompositeCoordenada();
+        for (Coordenada c : components) {
+            nuevas.addComponent(c.generarNuevaCoord(dx, dy));
+        }
+        return nuevas;
+    }
+
+    /**
+     * Mira si todas las coordenadas coinciden con el objeto que le hemos pasdao. Este metodo se usa en 'EstasEn' de Bala, que se usa en findBala y en
+     * existebalaEn, para eliminar las balas de una nave, por ejemplo
+     * @param o El CompositeCoordenada con el que queremos comparar los elementos
+     * @return
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        CompositeCoordenada that = (CompositeCoordenada) o;
+        ArrayList<Pixel> misPixeles = this.getPixeles();
+        ArrayList<Pixel> susPixeles = that.getPixeles();
+        return misPixeles.containsAll(susPixeles) && susPixeles.containsAll(misPixeles);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPixeles());
+    }
+
+}

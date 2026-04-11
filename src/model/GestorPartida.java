@@ -47,11 +47,11 @@ public class GestorPartida extends Observable {
 
 	/**
 	 * Llama a this.anadirNaves con el parametro del tipo de la nave inciial
-	 * @param pColorNave establece el tipo de todas las naves
+	 * @param pTipoNave establece el tipo de todas las naves
 	 */
-	public void iniciarPartida(String pColorNave){
+	public void iniciarPartida(TipoNave pTipoNave){
 		//Añadir Nave
-		anadirNaves(pColorNave);
+		anadirNaves(pTipoNave);
 		//Añadir Enegmigos
 		numeroEnemigosAleatorio();
 		anadirEnemigos();
@@ -64,9 +64,8 @@ public class GestorPartida extends Observable {
 
 	/**
 	 * El orden de los metodos de esta funcion es lo que mas importa de cara al jeugo
-	 * @param pColorNave
 	 */
-	public void reiniciarPartida(String pColorNave){
+	public void reiniciarPartida(){
 		borrarEnemigos();
 		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "-1" de nuevo
 		borrarBalas();
@@ -116,10 +115,10 @@ public class GestorPartida extends Observable {
 	/**
 	 * Anadimos una nave de pid=0,"roja" y en la Coordenada (55,50)
 	 * Por defecto el id es 0. Es aqui donde se lo asignamos. De momento, solo
-	 * @param pColor Tipo de nave(s) que queremos iniciar
+	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
-	private void anadirNaves(String pColor) {
-		Espacio.getEspacio().anadirNave(pColor, new Pixel(55,50));
+	private void anadirNaves(TipoNave pTipo) {
+		Espacio.getEspacio().anadirNave(pTipo, new Pixel(55,50));
 	}
 
 	private void borrarNaves(){
@@ -130,6 +129,7 @@ public class GestorPartida extends Observable {
 		Espacio.getEspacio().borrarBalas();
 	}
 
+
 	private void anadirEnemigos() {
 		int random = 5;
 		int numEnemigos = numeroEnemigosAleatorio();
@@ -137,9 +137,7 @@ public class GestorPartida extends Observable {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
 			}
-			while(!Espacio.getEspacio().esCoordenadaValida(new Pixel(random,5)));
-
-			Espacio.getEspacio().anadirEnemigos(new Pixel(random,5));
+			while(!Espacio.getEspacio().anadirEnemigos(new Pixel(random,5)));
 		}
 	}
 
@@ -150,12 +148,6 @@ public class GestorPartida extends Observable {
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
 		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
-
-	public void moverNave(int idNave, int dx, int dy) { //TODO mirar si esto se usa o no y si no borrarlo (una vez implementado todo)
-		Espacio.getEspacio().comprobarColisiones();
-	}
-*/
-
 	/**
 	 * La partida se pierde cuando no "getEspacio.quedanNaves()" o el ".enemigoGana()"
 	 * porque ha llegado abajo
@@ -184,10 +176,6 @@ public class GestorPartida extends Observable {
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
-
-    public void disparar() {
-		Espacio.getEspacio().disparar(0);
-    }
 
 	/**
 	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)

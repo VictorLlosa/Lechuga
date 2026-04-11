@@ -1,8 +1,7 @@
 package model.Strategy;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
-import model.Composite.Pixel;
+import model.Balas.BalaAbstracta;
+import model.Factorias.FactoriaBala;
 
 /**
  * Representa un disparo de una unica bala
@@ -15,11 +14,8 @@ public class DisparoPixel implements DisparoStrategy{
      * @return Devuelve el CompositeCoordenada en la que se ha creado la bala
      */
     @Override
-    public CompositeCoordenada disparar(int pX, int pY){
-        CompositeCoordenada coordBala = new CompositeCoordenada();
-        coordBala.addComponent(new Pixel(pX, pY - 1));
-        return coordBala;
-
+    public BalaAbstracta disparar(int pX, int pY){
+        return FactoriaBala.getFactoriaBala().generar("pixel", pX, pY);
     }
 
 

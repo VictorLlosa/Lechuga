@@ -1,5 +1,6 @@
 package model;
 
+import model.Composite.Coordenada;
 import model.Composite.Pixel;
 
 public abstract class EnemigoAbstracto {
@@ -29,8 +30,8 @@ public abstract class EnemigoAbstracto {
             return new Pixel(coord.getX(), coord.getY());
         }
 
-        public boolean estaEn(int cX, int cY){
-            return cX == coord.getX() && cY == coord.getY();
+        public boolean estaEn(Coordenada pCoord){
+            return coord.equals(pCoord);
         }
 
         /**

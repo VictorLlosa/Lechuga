@@ -1,65 +1,31 @@
 package model;
 
+import model.Balas.BalaAbstracta;
+import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
-import model.Composite.Pixel;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ListaBalas {
-    private final ArrayList<Bala> listaBalas;
+    private final ArrayList<BalaAbstracta> listaBalas;
 
     public ListaBalas() {
         this.listaBalas = new ArrayList<>();
     }
 
-    public synchronized void anadirBala(Coordenada coord) {
-        Bala bala = new Bala(coord);
-        listaBalas.add(bala);
+    public synchronized void anadirBala(BalaAbstracta pBala) {
+        listaBalas.add(pBala);
     }
 
+    //TODO
     public synchronized void moverBalas() {
-        Iterator<Bala> it = listaBalas.iterator();
-        while (it.hasNext()) {
-            Bala bala = it.next();
+        for (BalaAbstracta bala : listaBalas) {
             bala.actualizarPos();
-            Pixel coord = bala.getCoord();
-            // si la bala salió por encima (y < 0) eliminarla
-            if (coord.getY() < 0) {
-                it.remove();
-            }
         }
-    }
-
-    public synchronized void moverBala(int pPos) {
-
-        Bala bala =listaBalas.get(pPos);
-        bala.actualizarPos();
-
-        Pixel coord = bala.getCoord();
-        // si la bala salió por encima (y < 0) eliminarla
-        if (coord.getY() < 0) {
-            listaBalas.remove(bala);
-        }
-    }
-
-
-    public synchronized Pixel getCoordBala(int pPos) {
-        if (pPos >= 0 && pPos < listaBalas.size()) {
-            return listaBalas.get(pPos).getCoord();
-
-        }
-        return null;
     }
 
     public synchronized int getNumBalas() {
         return listaBalas.size();
-    }
-
-    public void eliminarBala(int posBala) {
-        if (posBala >= 0 && posBala < listaBalas.size()) {
-            listaBalas.remove(posBala);
-        }
     }
 
     public void borrarListaBalas() {
@@ -70,46 +36,42 @@ public class ListaBalas {
      * Devuelve
      * @return
      */
-    public ArrayList<Pixel> getCoordBalas() {
-        ArrayList<Pixel> lista = new ArrayList<Pixel>();
-        for (Bala b : listaBalas){
-            lista.add(b.getCoord());
+    public Coordenada getCoordBalas() {
+        CompositeCoordenada composite = new CompositeCoordenada();
+        for (BalaAbstracta b : listaBalas){
+            composite.addComponent(b.getCoord());
         }
-        return lista;
+        return composite;
     }
 
     /**
-     * Se usa en borrarBalaPorCoord. Elimina la bala en las coordenadas cX cY.
-     * @param cX
-     * @param cY
+     *
      * @return
      */
-    public void eliminarBalaEn(int cX, int cY){
-        Bala bala = findBala(cX,cY);
+    public void eliminarBalaEn(Coordenada pCoord){
+        BalaAbstracta bala = findBala(pCoord);
         if (bala !=null) listaBalas.remove(bala);
     }
 
 
     /**
-     * Se usa en borrarBala por coordenada. Devuelve la bala con coordenadas cX y cY
-     * @param cX
-     * @param cY
-     * @return
+     * para cada bala en la lista, hasta que demos con ella, le preguntamos si .estaEn(pCoord)
+     * @return null si no la encontramos
      */
-    private Bala findBala(int cX,int cY){
-        for (Bala bala : listaBalas){
-            Pixel coordBala = bala.getCoord();
-            if (coordBala.getX()==cX && coordBala.getY()==cY){
+    private BalaAbstracta findBala(Coordenada pCoord){
+        for (BalaAbstracta bala : listaBalas){
+            if (bala.estasEn(pCoord)){
                 return bala;
             }
         }
         return null;
     }
 
-    public boolean existeBalaEn(int cX, int cY){
-        for (Bala bala : listaBalas){
-            Pixel c = bala.getCoord();
-            if (c.getX() == cX && c.getY() == cY) return true;
+    public boolean existeBalaEn(Coordenada pCoord){
+        for (BalaAbstracta bala : listaBalas){
+            if (bala.estasEn(pCoord)){
+                return true;
+            }
         }
         return false;
     }

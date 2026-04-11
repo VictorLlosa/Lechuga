@@ -25,25 +25,23 @@ public class ListaNaves {
     }
 
     /**
-     * buscamos la nave con id "pIdNave" y le hacemos .disparar()
-     *
-     * @param pIdNave
-     * @return
+     * Llama al disparar() de la nave.
+     * @param pIdNave es el id de la nave
+     * @return devuelve un CompositeCoordenada (las coordenadas de la bala) o null si no se ha podido crear.
      */
-    public CompositeCoordenada disparar(int pIdNave) {
+    public void disparar(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) return nave.disparar();
-        else return null;
+        if (nave != null) nave.disparar();
     }
 
     /**
      * anade una nave a ListaNaves
      *
-     * @param pColor
+     * @param pTipo
      * @param pCoord
      */
-    public CompositeCoordenada anadirNave(String pColor, Pixel pCoord) {
-        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal", pColor, pCoord);
+    public CompositeCoordenada anadirNave(TipoNave pTipo, Pixel pCoord) {
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, pCoord);
         listaNaves.add(nave);
         listaIds.add(nave.getId());
         return nave.getForma();
@@ -55,7 +53,7 @@ public class ListaNaves {
         return null;
     }
 
-    public Coordenada getCannonNave(int pIdNave) {
+    public Pixel getCannonNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.getCannon();
         return null;
@@ -99,9 +97,9 @@ public class ListaNaves {
         return null;
     }
 
-    private NaveAbstracta findNaveEn(int cX, int cY) {
+    private NaveAbstracta findNaveEn(Coordenada pCoord) {
         for (NaveAbstracta nave : listaNaves) {
-            if (nave.estasEn(cX, cY)) return nave;
+            if (nave.estasEn(pCoord)) return nave;
         }
         return null;
     }
@@ -116,13 +114,18 @@ public class ListaNaves {
     public void alternarModoDisparo(int pIdNave) {
         this.findNave(pIdNave).changeStrategy();
     }
-    /*
+
      */
-    public ArrayList<Pixel> getCoordBalasNave(int pIdNave) {
+
+    /**
+     * Devuelve una Coordenada (ya sea pixel o composite) de la nave pIdNave
+     * @param pIdNave
+     * @return null si no existe la nave o no tiene balas
+     */
+    public Coordenada getCoordBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.getCoordBalas();
         else return null;
-
     }
 
     public void moverBalasNave(int pIdNave) {
@@ -139,12 +142,9 @@ public class ListaNaves {
     }
     /**
      * Le llama Espacio
-     *
-     * @param cX
-     * @param cY
      */
-    public void matarNaveEn(int cX, int cY) {
-        NaveAbstracta nave = this.findNaveEn(cX, cY);
+    public void matarNaveEn(Coordenada pCoord) {
+        NaveAbstracta nave = this.findNaveEn(pCoord);
         if (nave != null) this.matarNave(nave.getId());
     }
 
@@ -176,20 +176,19 @@ public class ListaNaves {
     /**
      * Llama a eliminarBalaPorCoord de la naveAbstracta con el id que pasaos como parametro
      */
-    public void eliminarBalaPorCoord(int pIdNave, int cX,int cY){
+    public void eliminarBalaPorCoord(int pIdNave, Coordenada pCoord){
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.eliminarBalaPorCoord(cX, cY);
+        if (nave != null) nave.eliminarBalaPorCoord(pCoord);
     }
 
     /**
      * Aqui no pasamos el id de la nave como parametro. Tenemos que ir nave por nave buscando la que tenga una
      * bala en las componentes de coordenadna dadas
-     * @param cX
-     * @param cY
+
      */
-    public void eliminarBalaPorCoord(int cX,int cY){
+    public void eliminarBalaPorCoord(Coordenada pCoord){
         for (NaveAbstracta nave : listaNaves){
-            nave.eliminarBalaPorCoord(cX, cY);
+            nave.eliminarBalaPorCoord(pCoord);
         }
 
     }
