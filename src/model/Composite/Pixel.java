@@ -61,4 +61,7 @@ public class Pixel implements Coordenada {
 		return Objects.hash(x, y);
 	}
 
+	public void moverEnEspacio(int dx, int dy, Entidad pEnt){
+
+	}
 }

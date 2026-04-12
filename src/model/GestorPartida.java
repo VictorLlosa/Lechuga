@@ -67,7 +67,7 @@ public class GestorPartida extends Observable {
 	 */
 	public void reiniciarPartida(){
 		borrarEnemigos();
-		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "-1" de nuevo
+		reiniciarContadorNaves();
 		borrarBalas();
 		borrarNaves();
 		//reiniciarTeclas();
@@ -101,15 +101,12 @@ public class GestorPartida extends Observable {
 		}
 		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
 		if (contadorAcciones % 5 == 0) { // 50 ms
-			Espacio.getEspacio().moverBalas();
+			ListaNaves.getListaNaves().moverBalas();
 		}
 		if (contadorAcciones % 20 == 0) { // 200 ms
 			Espacio.getEspacio().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
-
-		//TODO va a haber que quitar esto de aqui
-		/*comprobarColisiones();*/
 	}
 
 	/**

@@ -1,7 +1,6 @@
 package model;
 
-import model.Composite.Coordenada;
-import model.Composite.Pixel;
+import model.Composite.*;
 import model.Factorias.FactoriaEnemigo;
 
 import java.util.ArrayList;
@@ -54,9 +53,8 @@ public class ListaEnemigos {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public void moverEnemigos() {
+    public CompositeCoordenada moverEnemigos() {
         Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
-
         while (it.hasNext()) {
             EnemigoAbstracto enem = it.next();
             enem.actualizarPos();
@@ -77,6 +75,17 @@ public class ListaEnemigos {
         else return null;
     }
 
+    /**
+     * Devuelve un CompositeCoordenada con las coordenadas de todos los enemigos. Se usa en Espacio, para 'moverEnemigos()'
+     */
+    public CompositeCoordenada getCoordAllEnemigos() {
+        CompositeCoordenada coordsEnem = new CompositeCoordenada();
+        for(EnemigoAbstracto enem : listaEnemigos){
+            coordsEnem.addComponent(enem.getCoord());
+        }
+        return coordsEnem;
+    }
+
     public int getNumEnemigos() { return listaEnemigos.size(); }
 
     public void matarEnemigo(int pPos) {
@@ -88,13 +97,22 @@ public class ListaEnemigos {
     }
 
     /**
+     * se usa en MoverBalas. Una misma bala puede matar varios enemigos a la vez y por ello, necesitamos comprobar que
+     * mientras haya "partes" de un enemigo sin eliminar, tenemos que seguir iterando hasta eliminarlo entero
+     * @return las Coordenadas del/de los enemigo/enemigos que hemos matado.
      */
-    public void matarEnemigoEn(Coordenada pCoord){
-        EnemigoAbstracto enem = this.findEnemigoEn(pCoord);
-        if(enem != null) {
-            enem.matar();
-            listaIds.remove(enem.getId());
-        }
+    public Coordenada matarEnemigosEn(Coordenada pCoord) {
+        EnemigoAbstracto enem;
+        CompositeCoordenada coordEnems = new CompositeCoordenada();
+        do {
+            enem = this.findEnemigoEn(pCoord);
+            if (enem != null) {
+                enem.matar();//TODO: REVISAR LO DE MATAR, IGUAL NO HACE FALTA
+                listaIds.remove(enem.getId());
+                coordEnems.addComponent(enem.getCoord());
+            }
+        } while (enem != null);
+        return coordEnems;
     }
 
     private EnemigoAbstracto findEnemigoEn(Coordenada pCoord){
@@ -140,4 +158,5 @@ public class ListaEnemigos {
         }
         return null;
     }
+
 }

@@ -17,10 +17,13 @@ public class ListaBalas {
         listaBalas.add(pBala);
     }
 
-    //TODO
+    /**
+     * Si no ha podido mover una Bala, la elimina de la lista
+     * (//TODO (de momento)
+     */
     public synchronized void moverBalas() {
         for (BalaAbstracta bala : listaBalas) {
-            bala.actualizarPos();
+            bala.moverEnEspacio();
         }
     }
 
@@ -36,7 +39,7 @@ public class ListaBalas {
      * Devuelve
      * @return
      */
-    public Coordenada getCoordBalas() {
+    public CompositeCoordenada getCoordBalas() {
         CompositeCoordenada composite = new CompositeCoordenada();
         for (BalaAbstracta b : listaBalas){
             composite.addComponent(b.getCoord());

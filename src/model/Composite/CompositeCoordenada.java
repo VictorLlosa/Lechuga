@@ -60,25 +60,18 @@ public class CompositeCoordenada implements Coordenada {
     private Iterator<Coordenada> getIterator(){
         return components.iterator();
     }
+
+
     /**
      * Actualizamos las coordendas en .this, si las nuevas son validas, vaciamos las coord iniciales con esp.vaciarCasillas(compAnterior)
      * y pintamos la nueva entidad pasandosela como parametro en: esp.colocarEntidad(components, pEnt);
      * @param pEnt Es el tipo de entidad (nave,enemigo o bala) que queremos mover
      * @param dx comp x a donde queremos mover la entidad
      * @param dy comp y a donde queremos mover la entidad
+     * @return false si NO ha podido mover la Entidad
      */
-    public void moverEnEspacio(int dx, int dy, Entidad pEnt) {
-        Espacio esp = Espacio.getEspacio();
-        CompositeCoordenada nuevasCoord = (CompositeCoordenada) this.generarNuevaCoord(dx, dy);
-        Iterator<Coordenada> itr = nuevasCoord.getIterator();
-        while (itr.hasNext()) {
-            if (!esp.esCoordenadaValida(itr.next())) {
-                return;
-            }
-        }
-        esp.vaciarCasillas(this);
-        this.components = nuevasCoord.getChildren(); //asignamos los componenetes de las nuevas coordenadas a los del .this
-        esp.colocarEntidad(this, pEnt);
+    public boolean moverEnEspacio(int dx, int dy, Entidad pEnt) {
+        Espacio.getEspacio().moverEntidad(generarNuevaCoord(dx, dy), pEnt);
     }
 
     @Override

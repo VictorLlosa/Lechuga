@@ -3,10 +3,11 @@ package model.Balas;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Entidad;
+import model.Espacio;
 
 import java.util.Observable;
 
-public class BalaAbstracta extends Observable {
+public abstract class BalaAbstracta extends Observable {
     private CompositeCoordenada coord;
 
     public BalaAbstracta(CompositeCoordenada coord) {
@@ -28,9 +29,8 @@ public class BalaAbstracta extends Observable {
      * que componen la Bala
      * @return la nueva coordenada de la bala
      */
-    public Coordenada actualizarPos() {
+    public void moverEnEspacio() {
         coord.moverEnEspacio(0, -1, Entidad.bala);
-        return coord;
     }
 
     /**

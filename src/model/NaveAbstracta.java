@@ -61,9 +61,8 @@ public abstract class NaveAbstracta extends Observable {
      */
     public void disparar(){
         BalaAbstracta bala = disparo.disparar(cannon.getX(), cannon.getY());
-        Espacio.getEspacio().colocarEntidad(bala.getCoord(),Entidad.bala);
-        listaBalas.anadirBala(bala);
-        bala.getCoord();
+        boolean puesto = Espacio.getEspacio().colocarEntidad(bala.getCoord(),Entidad.bala);
+        if(puesto) listaBalas.anadirBala(bala);
     }
 
     public boolean tienesId(int idNave) {
@@ -83,9 +82,11 @@ public abstract class NaveAbstracta extends Observable {
     /**
      * Llama a listaBalas.moverBalas()
      */
-    public void moverBalas(){listaBalas.moverBalas();}
+    public void moverBalas(){
+        listaBalas.moverBalas();
+    }
 
-    public Coordenada getCoordBalas() { return listaBalas.getCoordBalas();}
+    public CompositeCoordenada getCoordBalas() { return listaBalas.getCoordBalas();}
 
     public void borrarBalas() {
         listaBalas.borrarListaBalas();
@@ -135,6 +136,8 @@ public abstract class NaveAbstracta extends Observable {
      */
     public void actualizarCoord(int dx, int dy) {
         coord.moverEnEspacio(dx,dy,Entidad.nave);
+        this.cannon.actualizarCoord(dx,dy);
+
     }
 
     public CompositeCoordenada getForma() {

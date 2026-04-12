@@ -122,17 +122,21 @@ public class ListaNaves {
      * @param pIdNave
      * @return null si no existe la nave o no tiene balas
      */
-    public Coordenada getCoordBalasNave(int pIdNave) {
+    public CompositeCoordenada getCoordBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null) return nave.getCoordBalas();
         else return null;
     }
 
-    public void moverBalasNave(int pIdNave) {
-
+    public void moverBalas(){
+        for(NaveAbstracta nave : listaNaves){
+            nave.moverBalas();
+        }
+    }
+    public CompositeCoordenada moverBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null) nave.moverBalas();
-
+        if(nave != null) return nave.moverBalas();
+        else return null;
     }
 
     public void borrarBalasNave(int pIdNave) {
