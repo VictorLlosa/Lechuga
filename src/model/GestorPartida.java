@@ -1,6 +1,9 @@
 package model;
 
 import model.Composite.Pixel;
+import model.Enemigos.ListaEnemigos;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoNave;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -104,7 +107,7 @@ public class GestorPartida extends Observable {
 			ListaNaves.getListaNaves().moverBalas();
 		}
 		if (contadorAcciones % 20 == 0) { // 200 ms
-			Espacio.getEspacio().moverEnemigos();
+			//TODO: ListaEnemigos.getListaEnemigos().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
 	}
@@ -179,7 +182,7 @@ public class GestorPartida extends Observable {
 	 * Ahora esta puesto por defecto a la nave 0
 	 */
 	public void alternarModoDisparo(){
-		//ListaNaves.getListaNaves().alternarModoDisparo(0);
+		ListaNaves.getListaNaves().alternarModoDisparo(0);
 	}
 
 	/**

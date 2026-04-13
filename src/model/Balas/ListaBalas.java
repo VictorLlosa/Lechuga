@@ -1,6 +1,5 @@
-package model;
+package model.Balas;
 
-import model.Balas.BalaAbstracta;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 

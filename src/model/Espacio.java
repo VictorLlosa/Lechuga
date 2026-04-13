@@ -3,13 +3,16 @@ package model;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
+import model.Enemigos.ListaEnemigos;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoEntidad;
+import model.Tipos.TipoEnem;
+import model.Tipos.TipoNave;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Observer;
+import java.util.*;
 
 
-public class Espacio {
+public class Espacio extends Observable {
 
 	private static Espacio miEspacio;
 	private final int hDim = 100;
@@ -24,6 +27,7 @@ public class Espacio {
 				matriz[i][j] = new Casilla();
 			}
 		}
+		this.addObserver(ListaNaves.getListaNaves());
 	}
 	public static Espacio getEspacio() {
 		if (miEspacio == null) {
@@ -69,7 +73,7 @@ public class Espacio {
 	public boolean noHayColisionAlCrear(Coordenada pCoord){
 		ArrayList<Pixel> pixeles = pCoord.getPixeles();
 		for(Pixel p : pixeles){ //como Coordenada puede ser una lista de Pixeles o un Composite, tenemos que hacer este bucle
-			if (matriz[p.getX()][p.getY()].getObjeto() != Entidad.vacio) return false;
+			if (matriz[p.getX()][p.getY()].getObjeto() != TipoEntidad.vacio) return false;
 		}
 		return true;
 	}
@@ -86,13 +90,8 @@ public class Espacio {
 	 * @param pCoord es un Pixel, el centro de la nave
 	 */
 	public void anadirNave(TipoNave pTipo, Pixel pCoord) {
-		CompositeCoordenada comp = ListaNaves.getListaNaves().anadirNave(pTipo, pCoord);
-		for(Coordenada coords : comp.getChildren()){
-			ArrayList<Pixel> pixeles = coords.getPixeles();
-			for(Pixel p : pixeles){
-				matriz[p.getX()][p.getY()].cambiarObjeto(Entidad.nave);
-			}
-		}
+		CompositeCoordenada coordNave = ListaNaves.getListaNaves().anadirNave(pTipo, pCoord);
+		colocarEntidad(coordNave, TipoEntidad.nave);
 	}
 
 	/**
@@ -101,7 +100,7 @@ public class Espacio {
 	 * @param pEnt
 	 * @return true si se ha podido colocar la Entidad. Lo usamos en .disparar() de NaveAbstracta (y por tanto en todas las naves)
 	 */
-	public boolean colocarEntidad(Coordenada coordenada, Entidad pEnt) {
+	public boolean colocarEntidad(Coordenada coordenada, TipoEntidad pEnt) {
 		ArrayList<Pixel> pixeles = coordenada.getPixeles();
 		boolean entero = true;
 		for (Pixel p : pixeles) {
@@ -134,60 +133,16 @@ public class Espacio {
 	}
 
 	/**
-	 * Primero vaciamos las casillas que tenian las balas y luego delegamos a la lista de balas de las naves el movimiento (que actualiza las coordenadas internamente)
-	 * 	y finalmente dibujamos las balas en sus nuevas posiciones.
-	 * 	Usamos getObjeto() de Casilla para saber que tiene en cada momento.
-	 * 	Ya tenemos la casilla a donde queremos mover. Hay que mirar directamente que hay en la casilla.
-	 *
-	 * 	Pedimos los ids de las naves que siguen vivas para iterar sobre sus balas y eliminarlas.
-	 *
-	*/
-	public void moverBalas() {
-		ArrayList<Integer> listaIdsNave = ListaNaves.getListaNaves().getListaIds();
-		for (int idNave : listaIdsNave) {
-			CompositeCoordenada coordBalasNave = ListaNaves.getListaNaves().getCoordBalasNave(idNave);
-			colocarEntidad(coordBalasNave, Entidad.bala);
-
-			coordBalasNave = ListaNaves.getListaNaves().moverBalasNave(idNave);
-			ArrayList<Coordenada> listaCoordBalas = coordBalasNave.getChildren();
-			for(Coordenada coordBala : listaCoordBalas) {
-				HashSet<Entidad> colisiones = this.colision(coordBala);
-				for (Entidad objAnt : colisiones) {
-					switch (objAnt) {
-						case Entidad.alien: // Si había un alien/s, lo/s eliminamos ENTERO/S junto a la bala y vaciamos la casilla
-							Coordenada coordEnem = ListaEnemigos.getListaEnemigos().matarEnemigosEn(coordBala); //obtenemos las coords del /lo(s) enemigo(s) mueltos
-							ListaNaves.getListaNaves().eliminarBalaPorCoord(idNave, coordBala);
-							vaciarCasillas(coordBala); //quitamos la bala entera
-							vaciarCasillas(coordEnem); // " "  "  el enemigo entero
-							break;
-						case Entidad.nave: // Decidimos que se vea la nave si hay una bala en su misma posición. Hay que dibujar solo los pixeles de las balas
-							colocarEntidad(coordBala, Entidad.bala); //dibujamos primero la bala para que se dibuje entera
-							colocarEntidad(ListaNaves.getListaNaves().getCoordNave(idNave), Entidad.nave); //y ahora dibujamos la nave
-							break;
-						default: // Si había una bala o estaba vacío
-							colocarEntidad(coordBala, Entidad.bala);
-							break;
-					}
-				}
-			}
-		}
-
-	}
-
-	/**
 	 * Todos los píxeles que conforman la Coordenada pertencen al mismo tipo de Entidad. mira que había en las casillas donde ahora hay una Entidada
 	 * especifica (la que se le pasa como parametro)
 	 * @param pCoord las coordenadas de la bala o la Entidad que le pasemos
 	 * @return un hashSet de Entidad. Es un hashSet para que no se puedan repetir las referencias a los objetos (de ser varios) con los que ha colisionado
 	 */
-	private HashSet<Entidad> colision(Coordenada pCoord){
+	private boolean colision(Coordenada pCoord, TipoEntidad pEnt){
 		ArrayList<Pixel> pixeles = pCoord.getPixeles();
-		HashSet<Entidad> entColisionadas = new HashSet<>();
-		for(Pixel p : pixeles) {
-			Casilla casillaNueva = matriz[p.getX()][p.getY()];
-			entColisionadas.add(casillaNueva.getObjeto());
+		for(Pixel p : pixeles){
+			Casilla casilla = matriz[p.getX()][p.getY()];
 		}
-		return  entColisionadas;
 	}
 
 	/**
@@ -212,50 +167,16 @@ public class Espacio {
 	 * listaEnemigos que cree un enemigo con el centro que le demos
 	 */
 	public boolean anadirEnemigos(Pixel pCentro) {
-		Coordenada coordEnem = ListaEnemigos.getListaEnemigos().anadirEnemigo(pCentro,"normal");
+		Coordenada coordEnem = ListaEnemigos.getListaEnemigos().anadirEnemigo(pCentro, TipoEnem.normal);
 		if (coordEnem != null){ //Se ha podido crear
 			ArrayList<Pixel> pixeles = coordEnem.getPixeles();
 			for(Pixel p: pixeles){
-				matriz[p.getX()][p.getY()].cambiarObjeto(Entidad.alien);
+				matriz[p.getX()][p.getY()].cambiarObjeto(TipoEntidad.alien);
 			}
 			return true;
 		}else return false;
 	}
 
-	/**
-	 * Iteramos sobre los enemigos que siguen vivos: hacemos coords.getPixeles() e iteramos por los pixeles que conforman a un enemigo.
-	 */
-	public void moverEnemigos() {
-		Coordenada coords = ListaEnemigos.getListaEnemigos().getCoordAllEnemigos();
-		ArrayList<Pixel> pixelesEnem = coords.getPixeles();
-		for (Pixel p : pixelesEnem) {
-			matriz[p.getX()][p.getY()].vaciar();
-		}
-
-		// Mover los enemigos en la lista (actualiza coordenadas internamente)
-		ListaEnemigos.getListaEnemigos().moverEnemigos();
-
-		// Dibujar los enemigos en sus nuevas posiciones
-		coords = ListaEnemigos.getListaEnemigos().getCoordAllEnemigos();
-		pixelesEnem = coords.getPixeles();
-		for (Pixel p : pixelesEnem) {//TODO: HACER QUE CASILLA GUARDE ID DE ENTIDAD (+ tipo de entidad) ; PARA QUE AL EL ELIMINAR PODER HACERLO POR ID
-			Casilla casillaNueva = matriz[p.getX()][p.getY()];
-			Entidad objAnt = casillaNueva.getObjeto();
-			switch (objAnt){
-				case Entidad.bala: //Si habia una bala eliminamos al enemigo, la bala y ponemos vacio en la casilla
-					ListaEnemigos.getListaEnemigos().matarEnemigoEn(p);
-					ListaNaves.getListaNaves().eliminarBalaPorCoord(p);
-					casillaNueva.cambiarObjeto(Entidad.vacio);
-				break;
-				case Entidad.nave: //Si habia una nave, la eliminamos, pero el alien SE QUEDA (lo dejamos, no hay que repintarlo)
-					ListaNaves.getListaNaves().matarNaveEn(p);
-				break;
-				default: //Si habia otro alien o estaba vacio
-					casillaNueva.cambiarObjeto(Entidad.alien);
-				break;
-			}
-		}
-	}
 
 	/**
 	 * Si un enemigo y la nave chocan, el enemigo no debe morir (no debe desaparecer el id de la lista de id's)
@@ -298,37 +219,8 @@ public class Espacio {
 		}
 	}
 
-	/**
-	 *
-	 * @param pCoord las coordenadas nuevas (pueden ser varias) a donde nos vamos a mover
-	 * @param pEnt el tipo de entidad que estamos moviendo
-	 * @return true si no tienes que eliminar la entidad
-	 */
-	public boolean moverEntidad(Coordenada pCoord, Entidad pEnt){
-		HashSet<Entidad> colisiones = colision(pCoord);
-		switch (pEnt) {
-			case Entidad.nave:
-				if(!esCoordenadaValida(pCoord)) return true;//TODO poner lo de q aparezca al otro lado
-				for (Entidad ent : colisiones) {
-					switch (ent) {
-						case Entidad.nave:
-
-						break;
-						case Entidad.bala:
-
-						break;
-						case Entidad.alien:
-
-						break;
-					}
-				}
-				break;
-			case Entidad.bala:
-				if(!esCoordenadaValida(pCoord)) return false;
-			break;
-			case Entidad.alien:
-				if(!esCoordenadaValida(pCoord)) return false;
-			break;
-		}
+	public boolean moverEntidad(Coordenada pCoordAnt, Coordenada pCoordNueva, TipoEntidad pEnt){
+		colision(pCoordNueva, pEnt);
 	}
+
 }

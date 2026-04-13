@@ -22,6 +22,5 @@ que mueva las balas y despues volvemos a iterar sobre la lista de balas y vemos 
 -EL COMPOSITE TIENE QUE COMPROBAR Y LUEGO MOVER. Coordenada puede ser o un CompositeCoordenada o un Pixel
 
 POR PREGUNTAR A ANDER
-- En Nave tener un array de estrategias y que cambiar estrategia no tenga como parametro estrategia
-- Preguntar si el esPixel() es legal
-- Preguntar si el composite debe ser Coord o Casilla, explicandole con MoverNave()
+- como hacemos moverEntidad
+- los disparos limitados lo hacemos con un conador o con el State?

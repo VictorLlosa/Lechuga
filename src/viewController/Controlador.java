@@ -5,8 +5,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import model.GestorPartida;
-import model.ListaNaves;
-import model.TipoNave;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoNave;
 
 import javax.swing.*;
 
@@ -26,8 +26,6 @@ public class Controlador implements KeyListener {
 	private volatile boolean leftPressed = false;
 	private volatile boolean rightPressed = false;
 	private volatile boolean spacePressed = false;
-
-	//cambio de modo de disparo
 	private volatile boolean cambioDisparo = false;
 
 	//nave seleccionada
@@ -43,8 +41,7 @@ public class Controlador implements KeyListener {
 	 */
 	private Controlador() {
 		timer = new Timer(40, e -> {
-			procesarMovimiento();
-
+			procesarMovimientoNave();
 			if (spacePressed) {
 				contDisparo++;
 				if (contDisparo >= CADENCIA) {
@@ -99,7 +96,9 @@ public class Controlador implements KeyListener {
 
 			break;
 			case("Juego"):
-				setTecla(e.getKeyCode(),true);
+				if(e.getKeyCode() == KeyEvent.VK_M)
+					ListaNaves.getListaNaves().alternarModoDisparo(0);
+					else setTecla(e.getKeyCode(),true);
 			break;
 			case("Fin"):
 				if (e.getKeyCode() == KeyEvent.VK_R){
@@ -145,12 +144,11 @@ public class Controlador implements KeyListener {
 			case KeyEvent.VK_A: leftPressed = pressed; break;
 			case KeyEvent.VK_D: rightPressed = pressed; break;
 			case KeyEvent.VK_SPACE: spacePressed = pressed; break;
-			case KeyEvent.VK_M: cambioDisparo = pressed; break;
 		}
 	}
 
-	//WIP
-	private void procesarMovimiento() {
+
+	private void procesarMovimientoNave() {
 		int dx = 0, dy = 0;
 
 		if (upPressed) dy -= 1;
@@ -159,15 +157,9 @@ public class Controlador implements KeyListener {
 		if (rightPressed) dx += 1;
 
 		if (dx != 0 || dy != 0) {
-			ListaNaves.getListaNaves().actualizarCoordNave(0, dx, dy);
+			ListaNaves.getListaNaves().moverNave(0, dx, dy);
 		}
 	}
 
-	/**
-	 * Llama a "toggleModoDisparo() de GestorPartida si se ha cambiado el modo de Disparo"
-	 * De momento, solo tenemos la nave de id 0.
-	 */
-	private void procesarModoDisparo(){
-		if (cambioDisparo) GestorPartida.getGestorPartida().alternarModoDisparo();
-	}
+
 }

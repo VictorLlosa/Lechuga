@@ -1,10 +1,11 @@
-package model;
+package model.Enemigos;
 
 import model.Composite.*;
+import model.Espacio;
 import model.Factorias.FactoriaEnemigo;
+import model.Tipos.TipoEnem;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class ListaEnemigos {
     private final int MAX_ENEMIGOS_POSIBLES=8;
@@ -31,9 +32,9 @@ public class ListaEnemigos {
      * @param pTipo
      * @return Coordenada del enemigo o null si no ha podido crearlo
      */
-    public Coordenada anadirEnemigo(Pixel pCentro, String pTipo) {
+    public Coordenada anadirEnemigo(Pixel pCentro, TipoEnem pTipo) {
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            Enemigo enemigo = (Enemigo) FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
+            EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
             if(Espacio.getEspacio().esCoordValidaAlCrear(enemigo.getCoord())){
                 listaEnemigos.add(enemigo);
                 listaIds.add(enemigo.getId());
@@ -53,12 +54,13 @@ public class ListaEnemigos {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public CompositeCoordenada moverEnemigos() {
+    /*
+    //TODO: public CompositeCoordenada moverEnemigos() {
         Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
         while (it.hasNext()) {
             EnemigoAbstracto enem = it.next();
             enem.actualizarPos();
-            Pixel coord = enem.getCoord();
+            Coordenada coord = enem.getCoord();
 
             // si el enemigo ha llegado abajo eliminarlo y marcar fin
             if (coord.getY() > 59) {
@@ -69,7 +71,9 @@ public class ListaEnemigos {
         }
     }
 
-    public Pixel getCoordEnemigo(int pId) {
+     */
+
+    public Coordenada getCoordEnemigo(int pId) {
         EnemigoAbstracto enem = findEnemigo(pId);
         if( enem != null) return enem.getCoord();
         else return null;

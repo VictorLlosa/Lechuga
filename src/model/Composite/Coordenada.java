@@ -15,4 +15,6 @@ public interface Coordenada {
     ArrayList<Pixel> getPixeles();
 
     boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1);
+
+    boolean validarMovimiento(int dx, int dy);
 }

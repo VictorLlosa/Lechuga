@@ -1,17 +1,21 @@
-package model;
+package model.Naves;
 
 import model.Balas.BalaAbstracta;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
+import model.Entidad;
+import model.Espacio;
+import model.Balas.ListaBalas;
 import model.Strategy.*;
+import model.Tipos.TipoEntidad;
 
 import java.util.Observable;
 
 /**
  * id Empieza en 0, es un atributo autoincremental
  */
-public abstract class NaveAbstracta extends Observable {
+public abstract class NaveAbstracta extends Entidad {
 
     private CompositeCoordenada coord;
     private Pixel cannon;
@@ -23,29 +27,14 @@ public abstract class NaveAbstracta extends Observable {
     private ListaBalas listaBalas;
     private boolean muerta;
 
-    protected NaveAbstracta(int pX, int pY, DisparoStrategy[] pStrategies){
+    protected NaveAbstracta(){
         this.id = contadorId++; // Asignar ID único y luego incrementar el contador
-        coord = new CompositeCoordenada();
-        crearForma(pX, pY);
         listaBalas = new ListaBalas();
-        strategies = pStrategies;
         stratAct = 0;
         disparo = strategies[stratAct];
         muerta = false;
     }
 
-    /**
-     * Entra las coordenadas del centro
-     * @param cX
-     * @param cY
-     */
-    private void crearForma(int cX, int cY) {
-        coord.addComponent(new Pixel(cX,cY)); //centro
-        coord.addComponent(new Pixel(cX,cY-1)); //arriba (tb es el cannon)
-        cannon = new Pixel(cX,cY-1); //cannon de la nave
-        coord.addComponent(new Pixel(cX-1,cY)); //izq
-        coord.addComponent(new Pixel(cX+1,cY)); //derecha
-    }
 
     protected CompositeCoordenada getCoord() {
         return coord;
@@ -60,8 +49,8 @@ public abstract class NaveAbstracta extends Observable {
      * @return El composite de la bala o null si no se ha podido disparar.
      */
     public void disparar(){
-        BalaAbstracta bala = disparo.disparar(cannon.getX(), cannon.getY());
-        boolean puesto = Espacio.getEspacio().colocarEntidad(bala.getCoord(),Entidad.bala);
+        BalaAbstracta bala = disparo.disparar(cannon);
+        boolean puesto = Espacio.getEspacio().colocarEntidad(bala.getCoord(), TipoEntidad.bala);
         if(puesto) listaBalas.anadirBala(bala);
     }
 
@@ -129,18 +118,31 @@ public abstract class NaveAbstracta extends Observable {
     }
 
     /**
-     * Controlador llama a este metodo cuando se pulsa un boton para mover la nave.
-     * WIP ahora el CompositeCoordenada debe llamar a Espacio
+     * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
      * @param dx
      * @param dy
      */
-    public void actualizarCoord(int dx, int dy) {
-        coord.moverEnEspacio(dx,dy,Entidad.nave);
-        this.cannon.actualizarCoord(dx,dy);
+    public void moverNave(int dx, int dy) {
+        if(coord.validarMovimiento(dx,dy)) {//Si no se puede mover no hace nada
+            coord.moverEnEspacio(dx,dy, TipoEntidad.nave);
+            this.cannon.actualizarCoord(dx,dy);
+        }
 
     }
 
     public CompositeCoordenada getForma() {
         return coord;
+    }
+
+    protected void setStrategies(DisparoStrategy[] pStrategies) {
+        this.strategies = pStrategies;
+    }
+
+    protected void setCoord(CompositeCoordenada pCoordForma) {
+        this.coord = pCoordForma;
+    }
+
+    protected void setCannon(Pixel pCoordCannon) {
+        this.cannon = pCoordCannon;
     }
 }

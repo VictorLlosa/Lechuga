@@ -1,5 +1,7 @@
 package model.Composite;
 
+import model.Espacio;
+
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -46,6 +48,11 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
+	public boolean validarMovimiento(int dx, int dy) {
+		return Espacio.getEspacio().esCoordenadaValida(generarNuevaCoord(dx, dy));
+	}
+
+	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 
@@ -61,7 +68,9 @@ public class Pixel implements Coordenada {
 		return Objects.hash(x, y);
 	}
 
-	public void moverEnEspacio(int dx, int dy, Entidad pEnt){
+	/*
+	//TODO: public void moverEnEspacio(int dx, int dy, Entidad pEnt){
 
 	}
+	*/
 }

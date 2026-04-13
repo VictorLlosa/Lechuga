@@ -3,7 +3,8 @@ package model.Factorias;
 import model.Balas.*;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Pixel;
-import model.Espacio;
+import model.Tipos.TipoBala;
+
 
 public class FactoriaBala
 {
@@ -20,29 +21,69 @@ public class FactoriaBala
     }
 
     /**
-     * Aqui generamos las balas ya con su forma
+     * Aquí se les da forma a las balas, con coordForma
      * @param pTipo
-     * @param pX
-     * @param pY
+     * @param pCoordCentro
      * @return
      */
-    public BalaAbstracta generar(String pTipo, int pX, int pY){
+    public BalaAbstracta generar(TipoBala pTipo, Pixel pCoordCentro){
         BalaAbstracta b;
 
         switch(pTipo){
-            case "pixel":
-                b = new BalaPixel(pX,pY);
+            case TipoBala.pixel:
+                b = new Bala(crearFormaBalaPixel(pCoordCentro));
                 break;
+            case TipoBala.flecha:
 
-            case "rombo":
-                b = new BalaRombo(pX,pY);
+                b = new Bala(crearFormaBalaFlecha(pCoordCentro));
                 break;
-            case "flecha":
-                b = new BalaFlecha(pX,pY);
-                break;
+            case TipoBala.rombo:
 
-            default: return null;
+                b = new Bala(crearFormaBalaRombo(pCoordCentro));
+                break;
+            default: throw new IllegalArgumentException();
         }
         return b;
+    }
+
+    /**
+     * Añadimos las componentes que forman la bala
+     * @param pCentro
+     * @return
+     */
+    private CompositeCoordenada crearFormaBalaPixel(Pixel pCentro){
+        CompositeCoordenada coordForma = new CompositeCoordenada();
+        int cX = pCentro.getX();
+        int cY = pCentro.getY();
+        coordForma.addComponent(new Pixel(cX, cY));
+        return coordForma;
+    }
+    private CompositeCoordenada crearFormaBalaFlecha(Pixel pCentro){
+        CompositeCoordenada coordForma = new CompositeCoordenada();
+        int cX = pCentro.getX();
+        int cY = pCentro.getY();
+        coordForma.addComponent(new Pixel(cX, cY - 2));
+        coordForma.addComponent(new Pixel(cX - 1, cY - 1));
+        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
+        return coordForma;
+    }
+    private CompositeCoordenada crearFormaBalaRombo(Pixel pCentro){
+        CompositeCoordenada coordForma = new CompositeCoordenada();
+        int cX = pCentro.getX();
+        int cY = pCentro.getY();
+        coordForma.addComponent(new Pixel(cX, cY - 3));
+        coordForma.addComponent(new Pixel(cX,cY - 4 )); //arriba
+        coordForma.addComponent(new Pixel(cX,cY - 2)); //abajo
+        coordForma.addComponent(new Pixel(cX + 1,cY - 3)); //derecha
+        coordForma.addComponent(new Pixel(cX - 1,cY - 3)); //izquierda
+        coordForma.addComponent(new Pixel(cX - 1,cY - 4)); //esquina noroeste
+        coordForma.addComponent(new Pixel(cX + 1,cY - 4)); //esquina noreste
+        coordForma.addComponent(new Pixel(cX + 1,cY - 2)); //esquina sudeste
+        coordForma.addComponent(new Pixel(cX - 1,cY - 2)); //esquina suroeste
+        coordForma.addComponent(new Pixel(cX,cY - 5)); //punta superior
+        coordForma.addComponent(new Pixel(cX,cY - 1)); //punta inferior
+        coordForma.addComponent(new Pixel(cX - 2,cY - 3)); //punta izquierda
+        coordForma.addComponent(new Pixel(cX + 2,cY - 3)); //punta derecha
+        return coordForma;
     }
 }

@@ -1,6 +1,6 @@
 package model.Composite;
 
-import model.Entidad;
+import model.Tipos.TipoEntidad;
 import model.Espacio;
 
 import java.util.ArrayList;
@@ -63,15 +63,13 @@ public class CompositeCoordenada implements Coordenada {
 
 
     /**
-     * Actualizamos las coordendas en .this, si las nuevas son validas, vaciamos las coord iniciales con esp.vaciarCasillas(compAnterior)
-     * y pintamos la nueva entidad pasandosela como parametro en: esp.colocarEntidad(components, pEnt);
-     * @param pEnt Es el tipo de entidad (nave,enemigo o bala) que queremos mover
-     * @param dx comp x a donde queremos mover la entidad
-     * @param dy comp y a donde queremos mover la entidad
-     * @return false si NO ha podido mover la Entidad
+     *
+     * @param dx
+     * @param dy
+     * @return
      */
-    public boolean moverEnEspacio(int dx, int dy, Entidad pEnt) {
-        Espacio.getEspacio().moverEntidad(generarNuevaCoord(dx, dy), pEnt);
+    public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt) {
+        return Espacio.getEspacio().moverEntidad(this, generarNuevaCoord(dx, dy), pEnt);
     }
 
     @Override
@@ -103,4 +101,11 @@ public class CompositeCoordenada implements Coordenada {
         return Objects.hash(getPixeles());
     }
 
+    @Override
+    public boolean validarMovimiento(int dx, int dy) {
+        for(Coordenada coord : components){
+            if(!coord.validarMovimiento(dx, dy)) return false;
+        }
+        return true;
+    }
 }

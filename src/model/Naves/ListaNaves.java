@@ -1,11 +1,13 @@
-package model;
+package model.Naves;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
 import model.Factorias.FactoriaNave;
+import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
+import java.util.Observable;
 
 public class ListaNaves {
     private ArrayList<NaveAbstracta> listaNaves;
@@ -59,15 +61,6 @@ public class ListaNaves {
         return null;
     }
 
-    /* //TODO
-    public void setCoordNave(int pIdNave, int cX, int cY) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.setCoord(cX, cY);
-
-    }
-    */
-
-
     public int getNumNaves() {
         return listaNaves.size();
     }
@@ -108,15 +101,10 @@ public class ListaNaves {
         return listaIds.contains(idNave);
     }
 
-
-    //TODO
-    /*
     public void alternarModoDisparo(int pIdNave) {
-        this.findNave(pIdNave).changeStrategy();
+        NaveAbstracta nave = findNave(pIdNave);
+        if(nave != null) nave.changeStrategy();
     }
-
-     */
-
     /**
      * Devuelve una Coordenada (ya sea pixel o composite) de la nave pIdNave
      * @param pIdNave
@@ -133,11 +121,13 @@ public class ListaNaves {
             nave.moverBalas();
         }
     }
-    public CompositeCoordenada moverBalasNave(int pIdNave) {
+    /*
+    TODO: public CompositeCoordenada moverBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if(nave != null) return nave.moverBalas();
         else return null;
     }
+    */
 
     public void borrarBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
@@ -203,9 +193,9 @@ public class ListaNaves {
      * @param dx
      * @param dy
      */
-    public void actualizarCoordNave(int pIdNave, int dx, int dy) {
+    public void moverNave(int pIdNave, int dx, int dy) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.actualizarCoord(dx, dy);
+        if (nave != null) nave.moverNave(dx, dy);
     }
 
 }

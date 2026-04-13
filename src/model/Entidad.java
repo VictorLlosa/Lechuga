@@ -1,5 +1,7 @@
 package model;
 
-public enum Entidad {
-    nave,alien, bala, vacio
+import java.util.Observer;
+
+public abstract class Entidad implements Observer {
+
 }
