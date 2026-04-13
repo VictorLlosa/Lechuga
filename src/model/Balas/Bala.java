@@ -12,9 +12,4 @@ public class Bala extends BalaAbstracta{
     public Bala(CompositeCoordenada pCoordForma) {
         super(pCoordForma);
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
 }

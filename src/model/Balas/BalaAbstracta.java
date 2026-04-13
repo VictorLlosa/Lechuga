@@ -2,12 +2,11 @@ package model.Balas;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
-import model.Entidad;
 import model.Tipos.TipoEntidad;
 
-import java.util.Observable;
+import java.util.Observer;
 
-public abstract class BalaAbstracta extends Entidad {
+public abstract class BalaAbstracta{
     private CompositeCoordenada coord;
 
     public BalaAbstracta(CompositeCoordenada pCoordForma) {

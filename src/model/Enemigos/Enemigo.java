@@ -16,8 +16,4 @@ public class Enemigo extends EnemigoAbstracto{
         this.setCoord(coordForma);
     }
 
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
 }

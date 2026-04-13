@@ -2,9 +2,10 @@ package model.Enemigos;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
-import model.Entidad;
 
-public abstract class EnemigoAbstracto extends Entidad {
+import java.util.Observer;
+
+public abstract class EnemigoAbstracto{
 
     private CompositeCoordenada coord;
     private boolean muerto;

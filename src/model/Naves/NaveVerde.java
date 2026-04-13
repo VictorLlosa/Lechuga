@@ -22,9 +22,4 @@ public class NaveVerde extends NaveAbstracta {
         this.setCoord(coordForma);
         this.setCannon(new Pixel(pCoordCentro.getX(),pCoordCentro.getY()-1));
     }
-
-    @Override
-    public void update(Observable o, Object arg) {
-
-    }
 }

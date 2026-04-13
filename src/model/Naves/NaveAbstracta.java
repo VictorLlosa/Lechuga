@@ -4,18 +4,17 @@ import model.Balas.BalaAbstracta;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
-import model.Entidad;
 import model.Espacio;
 import model.Balas.ListaBalas;
 import model.Strategy.*;
 import model.Tipos.TipoEntidad;
 
-import java.util.Observable;
+import java.util.Observer;
 
 /**
  * id Empieza en 0, es un atributo autoincremental
  */
-public abstract class NaveAbstracta extends Entidad {
+public abstract class NaveAbstracta {
 
     private CompositeCoordenada coord;
     private Pixel cannon;

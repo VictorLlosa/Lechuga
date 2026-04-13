@@ -12,7 +12,7 @@ import model.Tipos.TipoNave;
 import java.util.*;
 
 
-public class Espacio extends Observable {
+public class Espacio{
 
 	private static Espacio miEspacio;
 	private final int hDim = 100;
@@ -27,7 +27,6 @@ public class Espacio extends Observable {
 				matriz[i][j] = new Casilla();
 			}
 		}
-		this.addObserver(ListaNaves.getListaNaves());
 	}
 	public static Espacio getEspacio() {
 		if (miEspacio == null) {
