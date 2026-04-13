@@ -29,8 +29,6 @@ public abstract class NaveAbstracta {
     protected NaveAbstracta(){
         this.id = contadorId++; // Asignar ID único y luego incrementar el contador
         listaBalas = new ListaBalas();
-        stratAct = 0;
-        disparo = strategies[stratAct];
         muerta = false;
     }
 
@@ -49,6 +47,7 @@ public abstract class NaveAbstracta {
      */
     public void disparar(){
         BalaAbstracta bala = disparo.disparar(cannon);
+        if(bala == null) return; //no queda municion
         boolean puesto = Espacio.getEspacio().colocarEntidad(bala.getCoord(), TipoEntidad.bala);
         if(puesto) listaBalas.anadirBala(bala);
     }
@@ -122,10 +121,7 @@ public abstract class NaveAbstracta {
      * @param dy
      */
     public void moverNave(int dx, int dy) {
-        if(coord.validarMovimiento(dx,dy)) {//Si no se puede mover no hace nada
-            coord.moverEnEspacio(dx,dy, TipoEntidad.nave);
-            this.cannon.actualizarCoord(dx,dy);
-        }
+        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave)) this.cannon.actualizarCoord(dx,dy);
 
     }
 
@@ -135,6 +131,8 @@ public abstract class NaveAbstracta {
 
     protected void setStrategies(DisparoStrategy[] pStrategies) {
         this.strategies = pStrategies;
+        stratAct = 0;
+        disparo = strategies[stratAct];
     }
 
     protected void setCoord(CompositeCoordenada pCoordForma) {
@@ -144,4 +142,5 @@ public abstract class NaveAbstracta {
     protected void setCannon(Pixel pCoordCannon) {
         this.cannon = pCoordCannon;
     }
+
 }

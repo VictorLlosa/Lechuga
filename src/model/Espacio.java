@@ -72,15 +72,10 @@ public class Espacio{
 	public boolean noHayColisionAlCrear(Coordenada pCoord){
 		ArrayList<Pixel> pixeles = pCoord.getPixeles();
 		for(Pixel p : pixeles){ //como Coordenada puede ser una lista de Pixeles o un Composite, tenemos que hacer este bucle
-			if (matriz[p.getX()][p.getY()].getObjeto() != TipoEntidad.vacio) return false;
+			if (matriz[p.getX()][p.getY()].getEntidad() != TipoEntidad.vacio) return false;
 		}
 		return true;
 	}
-
-	public boolean puedeDisparar(int x, int y) {
-		return x < this.hDim && y < this.vDim + 1 && x >= 0 && y >= 0;
-	}
-
 	/**
 	 * Anadimos una nave a listaNaves. Hacemos un for con CompositeCoordenada.getChildren().  sacamos los pixeles de cada coordenada (que van a ser siempre
 	 * 1 pixel por coordenada, aunque lo hemos hecho asi para que sea mas modular) y por cada pixel, hacemos un getx,gety y cambiamos el objeto en esa coordenada por
@@ -137,18 +132,18 @@ public class Espacio{
 	 * @param pCoord las coordenadas de la bala o la Entidad que le pasemos
 	 * @return un hashSet de Entidad. Es un hashSet para que no se puedan repetir las referencias a los objetos (de ser varios) con los que ha colisionado
 	 */
-	private boolean colision(Coordenada pCoord, TipoEntidad pEnt){
+/*
+	private HashSet<TipoEntidad> colision(Coordenada pCoord, TipoEntidad pEnt){
 		ArrayList<Pixel> pixeles = pCoord.getPixeles();
 		for(Pixel p : pixeles){
-			Casilla casilla = matriz[p.getX()][p.getY()];
+			matriz[p.getX()][p.getY()].colision(pEnt);
 		}
 	}
-
+*/
 	/**
 	 * Borramos de la pantalla y despues de la lista
 	 */
 	public void borrarBalas(){
-		//TODO: Hay que revisra/cambiar todo
 		int numNaves = ListaNaves.getListaNaves().getNumNaves();
 		for (int i = 0; i < numNaves; i++) { //el id es 0
 			Coordenada coordBalas = ListaNaves.getListaNaves().getCoordBalasNave(i);
@@ -218,8 +213,17 @@ public class Espacio{
 		}
 	}
 
+
 	public boolean moverEntidad(Coordenada pCoordAnt, Coordenada pCoordNueva, TipoEntidad pEnt){
-		colision(pCoordNueva, pEnt);
+		if(!esCoordenadaValida(pCoordNueva)) {
+			if(pEnt == TipoEntidad.bala || pEnt == TipoEntidad.alien) vaciarCasillas(pCoordAnt);
+			return false;
+		}else {
+			vaciarCasillas(pCoordAnt);
+			colocarEntidad(pCoordNueva,pEnt);
+			return true;
+		}
+		//return colision(pCoordNueva, pEnt);
 	}
 
 }

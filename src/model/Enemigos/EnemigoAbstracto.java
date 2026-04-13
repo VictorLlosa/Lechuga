@@ -2,18 +2,18 @@ package model.Enemigos;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
+import model.Espacio;
+import model.Tipos.TipoEntidad;
 
 import java.util.Observer;
 
 public abstract class EnemigoAbstracto{
 
     private CompositeCoordenada coord;
-    private boolean muerto;
     private static int contadorId = 0; // Contador global para IDs
     private int id; // ID único de cada instancia
 
     public EnemigoAbstracto () {
-        muerto = false;
         id = contadorId++;
     }
 
@@ -29,24 +29,19 @@ public abstract class EnemigoAbstracto{
         return coord.equals(pCoord);
     }
 
-    /**
-     * Devuelve el valor del atributo "muerto"
-     * @return
-     */
-    public boolean estaMuerto(){
-        return this.muerto;
-    }
-
-    public void matar() {
-        muerto = true;
-    }
-
     public Integer getId() {
         return id;
     }
 
     protected void setCoord(CompositeCoordenada pCoordForma) {
         this.coord = pCoordForma;
+    }
+
+    /**
+     * Se usa para mover los enemigos para abajo cada cierto tiempo. Si el movimiento es valido, actualizar la posicion
+     */
+    public boolean moverEnEspacio() {
+        return coord.moverEnEspacio(0,1, TipoEntidad.alien);
     }
 }
 

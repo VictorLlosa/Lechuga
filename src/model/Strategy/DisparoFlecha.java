@@ -13,8 +13,11 @@ public class DisparoFlecha implements DisparoStrategy{
      * @oaram pCoordCannon
      * @return Devuelve el CompositeCoordenada en la que se ha creado la bala
      */
+    int municion = 30;
     @Override
     public BalaAbstracta disparar(Pixel pCoordCannon){
-        return FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, pCoordCannon);
+        municion--;
+        if(municion<0) return null;
+        else return FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, pCoordCannon);
     }
 }

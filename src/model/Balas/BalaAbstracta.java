@@ -25,11 +25,11 @@ public abstract class BalaAbstracta{
 
     /**
      * hace "coord.moverEnEspacio(0, -1, Entidad.bala);", que internamente ya mueve todas las coordenadas
-     * que componen la Bala
+     * que componen la Bala. Si no se ha podido mover, es que se ha salido la bala del tablero
      * @return la nueva coordenada de la bala
      */
-    public void moverEnEspacio() {
-        coord.moverEnEspacio(0, -1, TipoEntidad.bala);
+    public boolean moverEnEspacio() {
+        return coord.moverEnEspacio(0, -1, TipoEntidad.bala);
     }
 
     /**

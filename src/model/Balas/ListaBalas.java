@@ -4,8 +4,13 @@ import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ListaBalas {
+import static model.Tipos.TipoEntidad.bala;
+
+public class ListaBalas implements Observer {
     private final ArrayList<BalaAbstracta> listaBalas;
 
     public ListaBalas() {
@@ -18,11 +23,11 @@ public class ListaBalas {
 
     /**
      * Si no ha podido mover una Bala, la elimina de la lista
-     * (//TODO (de momento)
      */
     public synchronized void moverBalas() {
-        for (BalaAbstracta bala : listaBalas) {
-            bala.moverEnEspacio();
+        Iterator<BalaAbstracta> itr = listaBalas.iterator();
+        while (itr.hasNext()){
+            if (!itr.next().moverEnEspacio()) itr.remove();
         }
     }
 
@@ -76,5 +81,10 @@ public class ListaBalas {
             }
         }
         return false;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+
     }
 }

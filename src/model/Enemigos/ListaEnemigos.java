@@ -6,16 +6,18 @@ import model.Factorias.FactoriaEnemigo;
 import model.Tipos.TipoEnem;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ListaEnemigos {
+public class ListaEnemigos implements Observer {
     private final int MAX_ENEMIGOS_POSIBLES=8;
     private ArrayList<EnemigoAbstracto> listaEnemigos;
-    private ArrayList<Integer> listaIds;
+
     private boolean enemigoHaLlegadoAbajo;
     private static ListaEnemigos miListaEnemigos = null;
     public ListaEnemigos() {
         this.listaEnemigos = new ArrayList<>();
-        this.listaIds = new ArrayList<>();
         enemigoHaLlegadoAbajo = false;
     }
 
@@ -37,7 +39,6 @@ public class ListaEnemigos {
             EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
             if(Espacio.getEspacio().esCoordValidaAlCrear(enemigo.getCoord())){
                 listaEnemigos.add(enemigo);
-                listaIds.add(enemigo.getId());
                 return enemigo.getCoord();
             }else{
                 return null;
@@ -50,28 +51,8 @@ public class ListaEnemigos {
 
     public void borrarListaEnemigos(){
         listaEnemigos.clear();
-        listaIds.clear();
         enemigoHaLlegadoAbajo = false;
     }
-
-    /*
-    //TODO: public CompositeCoordenada moverEnemigos() {
-        Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
-        while (it.hasNext()) {
-            EnemigoAbstracto enem = it.next();
-            enem.actualizarPos();
-            Coordenada coord = enem.getCoord();
-
-            // si el enemigo ha llegado abajo eliminarlo y marcar fin
-            if (coord.getY() > 59) {
-                listaIds.remove(enem.getId());
-                it.remove();   // eliminar correctamente
-                enemigoHaLlegadoAbajo = true;
-            }
-        }
-    }
-
-     */
 
     public Coordenada getCoordEnemigo(int pId) {
         EnemigoAbstracto enem = findEnemigo(pId);
@@ -92,31 +73,8 @@ public class ListaEnemigos {
 
     public int getNumEnemigos() { return listaEnemigos.size(); }
 
-    public void matarEnemigo(int pPos) {
-        listaEnemigos.get(pPos).matar();
-    }
-
     public boolean enemigoHaLLegadoAbajo() {
         return enemigoHaLlegadoAbajo;
-    }
-
-    /**
-     * se usa en MoverBalas. Una misma bala puede matar varios enemigos a la vez y por ello, necesitamos comprobar que
-     * mientras haya "partes" de un enemigo sin eliminar, tenemos que seguir iterando hasta eliminarlo entero
-     * @return las Coordenadas del/de los enemigo/enemigos que hemos matado.
-     */
-    public Coordenada matarEnemigosEn(Coordenada pCoord) {
-        EnemigoAbstracto enem;
-        CompositeCoordenada coordEnems = new CompositeCoordenada();
-        do {
-            enem = this.findEnemigoEn(pCoord);
-            if (enem != null) {
-                enem.matar();//TODO: REVISAR LO DE MATAR, IGUAL NO HACE FALTA
-                listaIds.remove(enem.getId());
-                coordEnems.addComponent(enem.getCoord());
-            }
-        } while (enem != null);
-        return coordEnems;
     }
 
     private EnemigoAbstracto findEnemigoEn(Coordenada pCoord){
@@ -131,25 +89,6 @@ public class ListaEnemigos {
         return !listaEnemigos.isEmpty();
     }
 
-    public void eliminarEnemigosMuertos() {
-        // Locura de java
-        listaEnemigos.removeIf(EnemigoAbstracto::estaMuerto);
-    }
-
-    /**
-     *
-     * @param pId
-     * @return devuelve si un enemigo esta muelto. si no existe, devuelve true.
-     */
-    public boolean enemigoMuerto(int pId) {
-        EnemigoAbstracto enem = findEnemigo(pId);
-        if( enem != null) return enem.estaMuerto();
-        else return true;
-    }
-
-    public ArrayList<Integer> getListaIds() {
-        return listaIds;
-    }
 
     /**
      * Lo usamos en buscar coord de enemigo
@@ -163,4 +102,15 @@ public class ListaEnemigos {
         return null;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
+
+    public void moverEnemigos() {
+        Iterator<EnemigoAbstracto> itr = listaEnemigos.iterator();
+        while(itr.hasNext()){
+            if(!itr.next().moverEnEspacio()) itr.remove();
+        }
+    }
 }

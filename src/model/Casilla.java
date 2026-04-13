@@ -24,12 +24,12 @@ public class Casilla extends Observable{
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
 	}
-	
-	public void cambiarObjeto(TipoEntidad pObjeto, int pId) {
+	//TODO meter el id
+	public void cambiarObjeto(TipoEntidad pObjeto) {
 		// Notificar sólo si el color cambia (evitar repaints redundantes)
 		if (pObjeto.equals(this.entidad)) return;
 		entidad = pObjeto;
-		idEntidad = pId;
+		//idEntidad = pId;
 		Object[] arg ={pObjeto};
 		setChanged();
 		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
@@ -41,5 +41,4 @@ public class Casilla extends Observable{
 	public TipoEntidad getEntidad() {
 		return entidad;
 	}
-
 }

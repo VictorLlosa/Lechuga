@@ -8,8 +8,9 @@ import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.Observer;
 
-public class ListaNaves {
+public class ListaNaves implements Observer {
     private ArrayList<NaveAbstracta> listaNaves;
     ArrayList<Integer> listaIds;
     private static ListaNaves miListaNaves;
@@ -198,4 +199,9 @@ public class ListaNaves {
         if (nave != null) nave.moverNave(dx, dy);
     }
 
+    //TODO ahora
+    @Override
+    public void update(Observable o, Object arg) {
+
+    }
 }

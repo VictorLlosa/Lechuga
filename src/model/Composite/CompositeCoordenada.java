@@ -63,13 +63,15 @@ public class CompositeCoordenada implements Coordenada {
 
 
     /**
-     *
+     *Solo mueve la entidad si la coordenada es valida
      * @param dx
      * @param dy
-     * @return
+     * @return la nave necesita saber si se ha podido mover para actualizar su cannon
      */
     public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt) {
-        return Espacio.getEspacio().moverEntidad(this, generarNuevaCoord(dx, dy), pEnt);
+        boolean movido = Espacio.getEspacio().moverEntidad(this, generarNuevaCoord(dx, dy), pEnt);
+        if(movido) actualizarCoord(dx,dy);
+        return movido;
     }
 
     @Override

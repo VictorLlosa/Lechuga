@@ -2,12 +2,10 @@ package model.Naves;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Pixel;
-import model.Strategy.DisparoFlecha;
 import model.Strategy.DisparoPixel;
 import model.Strategy.DisparoRombo;
 import model.Strategy.DisparoStrategy;
 
-import java.util.Observable;
 
 public class NaveAzul extends NaveAbstracta{
     public NaveAzul(Pixel pCoordCentro){
@@ -21,6 +19,6 @@ public class NaveAzul extends NaveAbstracta{
         coordForma.addComponent(new Pixel(cX-1,cY)); //izq
         coordForma.addComponent(new Pixel(cX+1,cY)); //derecha
         this.setCoord(coordForma);
-        this.setCannon(new Pixel(pCoordCentro.getX(),pCoordCentro.getY()-1));
+        this.setCannon(new Pixel(pCoordCentro.getX(),pCoordCentro.getY()-2));
     }
 }

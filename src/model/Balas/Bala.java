@@ -8,7 +8,6 @@ import model.Tipos.TipoBala;
 import java.util.Observable;
 
 public class Bala extends BalaAbstracta{
-
     public Bala(CompositeCoordenada pCoordForma) {
         super(pCoordForma);
     }

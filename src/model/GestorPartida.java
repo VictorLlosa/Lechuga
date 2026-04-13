@@ -107,7 +107,7 @@ public class GestorPartida extends Observable {
 			ListaNaves.getListaNaves().moverBalas();
 		}
 		if (contadorAcciones % 20 == 0) { // 200 ms
-			//TODO: ListaEnemigos.getListaEnemigos().moverEnemigos();
+			ListaEnemigos.getListaEnemigos().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
 	}

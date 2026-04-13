@@ -20,6 +20,6 @@ public class NaveVerde extends NaveAbstracta {
         coordForma.addComponent(new Pixel(cX-1,cY)); //izq
         coordForma.addComponent(new Pixel(cX+1,cY)); //derecha
         this.setCoord(coordForma);
-        this.setCannon(new Pixel(pCoordCentro.getX(),pCoordCentro.getY()-1));
+        this.setCannon(new Pixel(pCoordCentro.getX(),pCoordCentro.getY()-2));
     }
 }
