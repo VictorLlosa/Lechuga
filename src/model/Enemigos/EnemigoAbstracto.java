@@ -2,10 +2,7 @@ package model.Enemigos;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
-import model.Espacio;
 import model.Tipos.TipoEntidad;
-
-import java.util.Observer;
 
 public abstract class EnemigoAbstracto{
 
@@ -15,14 +12,6 @@ public abstract class EnemigoAbstracto{
 
     public EnemigoAbstracto () {
         id = contadorId++;
-    }
-
-    public void actualizarPos() {
-        coord.actualizarCoord(0, 1);
-    }
-
-    public Coordenada getCoord() {
-        return coord;
     }
 
     public boolean estaEn(Coordenada pCoord){
@@ -41,7 +30,14 @@ public abstract class EnemigoAbstracto{
      * Se usa para mover los enemigos para abajo cada cierto tiempo. Si el movimiento es valido, actualizar la posicion
      */
     public boolean moverEnEspacio() {
-        return coord.moverEnEspacio(0,1, TipoEntidad.alien);
+        return coord.moverEnEspacio(0,1, TipoEntidad.enemigo);
+    }
+    public void ponerEnEspacio(){
+        coord.moverEnEspacio(0,0, TipoEntidad.enemigo);
+    }
+
+    public void borrar() {
+        coord.borrar();
     }
 }
 

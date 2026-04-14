@@ -28,12 +28,12 @@ public class FactoriaEnemigo {
      * @param pCoordCentro es el centro del Enemigo
      * @return
      */
-    public EnemigoAbstracto generar(TipoEnem pTipo, Pixel pCoordCentro){
+    public EnemigoAbstracto generar(TipoEnem pTipo, int cX, int cY){
         EnemigoAbstracto enem;
 
         switch(pTipo){
             case TipoEnem.normal:
-                enem = new Enemigo(pCoordCentro);
+                enem = new Enemigo(cX, cY);
                 break;
 
             default: throw new IllegalArgumentException();

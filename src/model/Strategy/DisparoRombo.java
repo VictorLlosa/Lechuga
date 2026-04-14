@@ -18,6 +18,10 @@ public class DisparoRombo implements DisparoStrategy{
     public BalaAbstracta disparar(Pixel pCoordCannon){
         municion--;
         if(municion<0) return null;
-        else {return FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, pCoordCannon);}
+        else {
+            BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, pCoordCannon);
+            bala.ponerEnEspacio();
+            return bala;
+        }
     }
 }

@@ -27,20 +27,20 @@ public class FactoriaNave {
      * @param pCoordCentro
      * @return
      */
-    public NaveAbstracta generar(TipoNave pTipo, Pixel pCoordCentro){
+    public NaveAbstracta generar(TipoNave pTipo, int cX, int cY){
         NaveAbstracta nave;
 
         switch(pTipo){
             case TipoNave.green:
-                nave = new NaveVerde(pCoordCentro);
+                nave = new NaveVerde(cX, cY);
                 break;
 
             case TipoNave.blue:
-                nave = new NaveAzul(pCoordCentro);
+                nave = new NaveAzul(cX, cY);
                 break;
 
             case TipoNave.red:
-                nave = new NaveRoja(pCoordCentro);
+                nave = new NaveRoja(cX, cY);
                 break;
 
             default:

@@ -1,5 +1,7 @@
 package model.Composite;
 
+import model.Tipos.TipoEntidad;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
@@ -8,13 +10,15 @@ public interface Coordenada {
 
     Coordenada generarNuevaCoord(int dx, int dy);
 
-    /**
-     * Lo usa el Composite, para devolver su lista de pixeles
-     * @return
-     */
-    ArrayList<Pixel> getPixeles();
-
     boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1);
 
-    boolean validarMovimiento(int dx, int dy);
+    /**
+     * Se usa en MoverEnEspacio()
+     * @return
+     */
+    boolean sePuedeMover();
+
+    boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
+
+    void borrar();
 }

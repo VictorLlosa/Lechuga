@@ -1,12 +1,12 @@
 package model.Enemigos;
 
 import model.Composite.*;
-import model.Espacio;
 import model.Factorias.FactoriaEnemigo;
+import model.State.Casilla;
 import model.Tipos.TipoEnem;
+import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,24 +29,32 @@ public class ListaEnemigos implements Observer {
     }
 
     /**
-     * Crea un enemigo a partir de su centro, usa el metodo "esCoordValidaAlCrear(enemigo.getCoord() )"
-     * @param pCentro
+     * @param pX
+     * @param pY
      * @param pTipo
      * @return Coordenada del enemigo o null si no ha podido crearlo
      */
-    public Coordenada anadirEnemigo(Pixel pCentro, TipoEnem pTipo) {
+    public boolean anadirEnemigo(int pX, int pY, TipoEnem pTipo) {
+        boolean exito = true;
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pCentro);
-            if(Espacio.getEspacio().esCoordValidaAlCrear(enemigo.getCoord())){
+            EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pX, pY);
+            if(enemigo!=null){
                 listaEnemigos.add(enemigo);
-                return enemigo.getCoord();
+                exito = true;
             }else{
-                return null;
+                exito = false;
             }
         }else{
-            return null;
+            exito = false;
         }
+        return exito;
 
+    }
+
+    public void ponerEnemigosEnEspacio(){
+        for(EnemigoAbstracto enem: listaEnemigos){
+            enem.ponerEnEspacio();
+        }
     }
 
     public void borrarListaEnemigos(){
@@ -54,36 +62,11 @@ public class ListaEnemigos implements Observer {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public Coordenada getCoordEnemigo(int pId) {
-        EnemigoAbstracto enem = findEnemigo(pId);
-        if( enem != null) return enem.getCoord();
-        else return null;
-    }
-
-    /**
-     * Devuelve un CompositeCoordenada con las coordenadas de todos los enemigos. Se usa en Espacio, para 'moverEnemigos()'
-     */
-    public CompositeCoordenada getCoordAllEnemigos() {
-        CompositeCoordenada coordsEnem = new CompositeCoordenada();
-        for(EnemigoAbstracto enem : listaEnemigos){
-            coordsEnem.addComponent(enem.getCoord());
-        }
-        return coordsEnem;
-    }
-
     public int getNumEnemigos() { return listaEnemigos.size(); }
 
     public boolean enemigoHaLLegadoAbajo() {
         return enemigoHaLlegadoAbajo;
     }
-
-    private EnemigoAbstracto findEnemigoEn(Coordenada pCoord){
-        for (EnemigoAbstracto enem : listaEnemigos) {
-            if (enem.estaEn(pCoord)) return enem;
-        }
-        return null;
-    }
-
 
     public boolean quedanEnemigos() {
         return !listaEnemigos.isEmpty();
@@ -102,15 +85,40 @@ public class ListaEnemigos implements Observer {
         return null;
     }
 
+    /**
+     * La casilla nos notifica: (el tipo de entidad , el id de esa entidad)
+     * @param o     the observable object.
+     * @param arg   an argument passed to the {@code notifyObservers}
+     *                 method.
+     */
     @Override
     public void update(Observable o, Object arg) {
-
+        Object[][] params = (Object[][]) arg;
+        TipoEntidad ent = (TipoEntidad) params[0][0];
+        if(ent != TipoEntidad.enemigo) borrarEnemigo(params[1]);
     }
 
+    /**
+     * Le dice a todos los enemigos que se muevan. Si el enemigo se ha intentado mover fuera
+     * del espacio (exito = false) se le dice que se borre, se marca que los enemigos
+     * han llegado abajo y se elimina de la lista.
+     */
     public void moverEnemigos() {
-        Iterator<EnemigoAbstracto> itr = listaEnemigos.iterator();
-        while(itr.hasNext()){
-            if(!itr.next().moverEnEspacio()) itr.remove();
+
+        for(EnemigoAbstracto enem : listaEnemigos){
+            boolean exito = enem.moverEnEspacio();
+            if(!exito) enem.borrar();
+            listaEnemigos.remove(enem);
+            enemigoHaLlegadoAbajo = true;
         }
+    }
+
+    public void borrarEnemigos() {
+        for(EnemigoAbstracto enem: listaEnemigos){
+            enem.borrar();
+        }
+    }
+    public void borrarEnemigo(int pId) {
+        findEnemigo(pId).borrar();
     }
 }

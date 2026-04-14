@@ -1,11 +1,9 @@
 package model.Composite;
 
 import model.Tipos.TipoEntidad;
-import model.Espacio;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Objects;
 
 
 public class CompositeCoordenada implements Coordenada {
@@ -34,18 +32,6 @@ public class CompositeCoordenada implements Coordenada {
         }
     }
 
-    /**
-     * Pasamos del arrayList de coordenadas a un ArrayList de Pixel. Recursivamente, iteramos las listas para convertir los composites en arraylists de pixel
-     * @return
-     */
-    @Override
-    public ArrayList<Pixel> getPixeles() {
-        ArrayList<Pixel> pixeles = new ArrayList<Pixel>();
-        for(Coordenada c : components){
-            pixeles.addAll(c.getPixeles());//te añade cada elemento de la coleccion 'c.getPixeles()' a la lista 'pixeles'
-        }
-        return pixeles;
-    }
 
     @Override
     public boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1) {
@@ -57,21 +43,39 @@ public class CompositeCoordenada implements Coordenada {
         return esta;
     }
 
-    private Iterator<Coordenada> getIterator(){
-        return components.iterator();
-    }
-
-
     /**
-     *Solo mueve la entidad si la coordenada es valida
+     * Solo mueve la entidad si la coordenada es valida
      * @param dx
      * @param dy
-     * @return la nave necesita saber si se ha podido mover para actualizar su cannon
+     * @return Devuelve true si se ha movido, false si se ha intentado mover fuera del espacio
      */
-    public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt) {
-        boolean movido = Espacio.getEspacio().moverEntidad(this, generarNuevaCoord(dx, dy), pEnt);
-        if(movido) actualizarCoord(dx,dy);
-        return movido;
+    public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+        boolean exito = true;
+        if(this.sePuedeMover()){
+            for(Coordenada coord : components){
+                if(!coord.moverEnEspacio(dx, dy, pEnt, pIdEnt)){
+                    break; //Un pixel ya ha colisionado asique paramos
+                }
+            }
+        }else{
+            exito = false;
+        }
+        return exito;
+    }
+
+    /**
+     * Métoodo que devuelve un true en el caso de que se pueda mover el elemento
+     * @return
+     */
+    public boolean sePuedeMover(){
+        boolean sePuedeMoverEntero = true;
+        for(Coordenada coord : components){
+            if(!coord.sePuedeMover()){
+                sePuedeMoverEntero = false;
+                break;
+            }
+        }
+        return sePuedeMoverEntero;
     }
 
     @Override
@@ -83,31 +87,15 @@ public class CompositeCoordenada implements Coordenada {
         return nuevas;
     }
 
+
     /**
-     * Mira si todas las coordenadas coinciden con el objeto que le hemos pasdao. Este metodo se usa en 'EstasEn' de Bala, que se usa en findBala y en
-     * existebalaEn, para eliminar las balas de una nave, por ejemplo
-     * @param o El CompositeCoordenada con el que queremos comparar los elementos
-     * @return
+     * Borra el elemento que hubiera en esa coordenada.
+     * Es llamado por BalaAbstracta
      */
     @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        CompositeCoordenada that = (CompositeCoordenada) o;
-        ArrayList<Pixel> misPixeles = this.getPixeles();
-        ArrayList<Pixel> susPixeles = that.getPixeles();
-        return misPixeles.containsAll(susPixeles) && susPixeles.containsAll(misPixeles);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(getPixeles());
-    }
-
-    @Override
-    public boolean validarMovimiento(int dx, int dy) {
+    public void borrar(){
         for(Coordenada coord : components){
-            if(!coord.validarMovimiento(dx, dy)) return false;
+            coord.borrar();
         }
-        return true;
     }
 }

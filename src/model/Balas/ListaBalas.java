@@ -1,14 +1,8 @@
 package model.Balas;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
-
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
-
-import static model.Tipos.TipoEntidad.bala;
 
 public class ListaBalas implements Observer {
     private final ArrayList<BalaAbstracta> listaBalas;
@@ -22,12 +16,14 @@ public class ListaBalas implements Observer {
     }
 
     /**
-     * Si no ha podido mover una Bala, la elimina de la lista
+     * Le dice a todas las balas que se muevan. Si la bala se ha salido del espacio
+     * (exito = false) se le dice a la bala que se borre y se elimina de la lista.
      */
     public synchronized void moverBalas() {
-        Iterator<BalaAbstracta> itr = listaBalas.iterator();
-        while (itr.hasNext()){
-            if (!itr.next().moverEnEspacio()) itr.remove();
+        for(BalaAbstracta bala : listaBalas){
+            boolean exito = bala.moverEnEspacio();
+            if(!exito) bala.borrar();
+            listaBalas.remove(bala);
         }
     }
 
@@ -35,52 +31,14 @@ public class ListaBalas implements Observer {
         return listaBalas.size();
     }
 
+    /**
+     * Este metodo es llamado por naveAbstracta al reiniciar y borra la lista de balas de la nave
+     */
     public void borrarListaBalas() {
+        for(BalaAbstracta bala: listaBalas){
+            bala.borrar();
+        }
         listaBalas.clear();
-    }
-
-    /**
-     * Devuelve
-     * @return
-     */
-    public CompositeCoordenada getCoordBalas() {
-        CompositeCoordenada composite = new CompositeCoordenada();
-        for (BalaAbstracta b : listaBalas){
-            composite.addComponent(b.getCoord());
-        }
-        return composite;
-    }
-
-    /**
-     *
-     * @return
-     */
-    public void eliminarBalaEn(Coordenada pCoord){
-        BalaAbstracta bala = findBala(pCoord);
-        if (bala !=null) listaBalas.remove(bala);
-    }
-
-
-    /**
-     * para cada bala en la lista, hasta que demos con ella, le preguntamos si .estaEn(pCoord)
-     * @return null si no la encontramos
-     */
-    private BalaAbstracta findBala(Coordenada pCoord){
-        for (BalaAbstracta bala : listaBalas){
-            if (bala.estasEn(pCoord)){
-                return bala;
-            }
-        }
-        return null;
-    }
-
-    public boolean existeBalaEn(Coordenada pCoord){
-        for (BalaAbstracta bala : listaBalas){
-            if (bala.estasEn(pCoord)){
-                return true;
-            }
-        }
-        return false;
     }
 
     @Override

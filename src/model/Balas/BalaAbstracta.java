@@ -32,6 +32,7 @@ public abstract class BalaAbstracta{
         return coord.moverEnEspacio(0, -1, TipoEntidad.bala);
     }
 
+    public void ponerEnEspacio(){ coord.moverEnEspacio(0, 0, TipoEntidad.bala);}
     /**
      * La usamos en ExisteBalaEn y en findBala de ListaBalas
      * @param pCoord
@@ -41,4 +42,10 @@ public abstract class BalaAbstracta{
         return coord.equals(pCoord);
     }
 
+    /**
+     * Metodo llamado por borrarListaBalas para borrar la lista de balas
+     */
+    public void borrar() {
+        coord.borrar();
+    }
 }

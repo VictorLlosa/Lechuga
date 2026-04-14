@@ -4,12 +4,10 @@ import model.Balas.BalaAbstracta;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
-import model.Espacio;
 import model.Balas.ListaBalas;
 import model.Strategy.*;
 import model.Tipos.TipoEntidad;
 
-import java.util.Observer;
 
 /**
  * id Empieza en 0, es un atributo autoincremental
@@ -47,9 +45,7 @@ public abstract class NaveAbstracta {
      */
     public void disparar(){
         BalaAbstracta bala = disparo.disparar(cannon);
-        if(bala == null) return; //no queda municion
-        boolean puesto = Espacio.getEspacio().colocarEntidad(bala.getCoord(), TipoEntidad.bala);
-        if(puesto) listaBalas.anadirBala(bala);
+        if(bala != null) listaBalas.anadirBala(bala);
     }
 
     public boolean tienesId(int idNave) {
@@ -73,8 +69,9 @@ public abstract class NaveAbstracta {
         listaBalas.moverBalas();
     }
 
-    public CompositeCoordenada getCoordBalas() { return listaBalas.getCoordBalas();}
-
+    /**
+     * Metodo usado por la lista de naves que sirve para borrar todas las balas de la lista de balas
+     */
     public void borrarBalas() {
         listaBalas.borrarListaBalas();
     }
@@ -99,32 +96,28 @@ public abstract class NaveAbstracta {
         contadorId = 0; // Reiniciar el contador global
     }
 
-    /**
-     * Solo elimina la bala si la nave la tiene. Lo usamos en ListaNaves (eliminarbala por coord)
-     *
-     */
-    public void eliminarBalaPorCoord(Coordenada pCoord){
-        if(tieneBalaEnCoord(pCoord)) listaBalas.eliminarBalaEn(pCoord);
-    }
-
-    /**
-     * Se usa en eliminarBalaPorCoord(x,y)
-     * @return
-     */
-    public boolean tieneBalaEnCoord(Coordenada pCoord){
-       return listaBalas.existeBalaEn(pCoord);
-    }
 
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
+     * Si la nave se ha intentado mover fuera de Espacio, no se actualiza cannon
      * @param dx
      * @param dy
      */
     public void moverNave(int dx, int dy) {
-        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave)) this.cannon.actualizarCoord(dx,dy);
+        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id)) this.cannon.actualizarCoord(dx,dy);
 
     }
 
+    /**
+     * Metodo que llama ListaNaves el cual mueve la entidad por el espacio
+     */
+    public void ponerEnEspacio(){
+        coord.moverEnEspacio(0,0, TipoEntidad.nave, this.id);
+    }
+
+    public void borrarNave(){
+        coord.borrar();
+    }
     public CompositeCoordenada getForma() {
         return coord;
     }

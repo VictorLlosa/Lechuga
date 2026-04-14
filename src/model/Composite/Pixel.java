@@ -1,7 +1,9 @@
 package model.Composite;
 
 import model.Espacio;
+import model.Tipos.TipoEntidad;
 
+import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -36,21 +38,10 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public ArrayList<Pixel> getPixeles() {
-		ArrayList<Pixel> pixel = new ArrayList<Pixel>();
-		pixel.add(this);
-		return pixel;
-	}
-
-	@Override
 	public boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1) {
 		return x>=pX0 && x<=pX1 && y>=pY0 && y<=pY1;
 	}
 
-	@Override
-	public boolean validarMovimiento(int dx, int dy) {
-		return Espacio.getEspacio().esCoordenadaValida(generarNuevaCoord(dx, dy));
-	}
 
 	@Override
 	public boolean equals(Object o) {
@@ -68,9 +59,20 @@ public class Pixel implements Coordenada {
 		return Objects.hash(x, y);
 	}
 
-	/*
-	//TODO: public void moverEnEspacio(int dx, int dy, Entidad pEnt){
-
+	@Override
+	public boolean sePuedeMover() {
+		return Espacio.getEspacio().esCoordenadaValida(x, y);
 	}
-	*/
+
+	@Override
+	public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+		boolean exito = Espacio.getEspacio().moverEntidad(x, y, x + dx, y + dy, pEnt, pIdEnt);
+		if(exito) actualizarCoord(dx,dy);
+		return exito;
+	}
+
+	@Override
+	public void borrar(){
+		Espacio.getEspacio().vaciarCasilla(x,y);
+	}
 }

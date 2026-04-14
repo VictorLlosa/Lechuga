@@ -17,7 +17,13 @@ public class DisparoFlecha implements DisparoStrategy{
     @Override
     public BalaAbstracta disparar(Pixel pCoordCannon){
         municion--;
-        if(municion<0) return null;
-        else return FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, pCoordCannon);
+        if(municion<0){
+            return null;
+        }
+        else{
+            BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, pCoordCannon);
+            bala.ponerEnEspacio();
+            return bala;
+        }
     }
 }

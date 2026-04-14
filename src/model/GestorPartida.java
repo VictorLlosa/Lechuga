@@ -3,6 +3,7 @@ package model;
 import model.Composite.Pixel;
 import model.Enemigos.ListaEnemigos;
 import model.Naves.ListaNaves;
+import model.Tipos.TipoEnem;
 import model.Tipos.TipoNave;
 
 import java.util.Observable;
@@ -118,31 +119,38 @@ public class GestorPartida extends Observable {
 	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
 	private void anadirNaves(TipoNave pTipo) {
-		Espacio.getEspacio().anadirNave(pTipo, new Pixel(55,50));
+		ListaNaves.getListaNaves().anadirNave(pTipo, 55, 50);
+		ListaNaves.getListaNaves().ponerNavesEnEspacio();
 	}
 
 	private void borrarNaves(){
-		Espacio.getEspacio().borrarNaves();
+		ListaNaves.getListaNaves().borrarNaves();
 	}
 
+	/**
+	 * Metodo que borra todas las balas de la lista de naves, el cual llama a la lista de naves para borrarlas
+	 */
 	private void borrarBalas(){
-		Espacio.getEspacio().borrarBalas();
+		ListaNaves.getListaNaves().borrarBalas();
 	}
 
 
 	private void anadirEnemigos() {
 		int random = 5;
+		boolean creado;
 		int numEnemigos = numeroEnemigosAleatorio();
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
+				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEnem.normal );
 			}
-			while(!Espacio.getEspacio().anadirEnemigos(new Pixel(random,5)));
+			while(!creado);
 		}
+		ListaEnemigos.getListaEnemigos().ponerEnemigosEnEspacio();
 	}
 
 	private void borrarEnemigos(){
-		Espacio.getEspacio().borrarEnemigos();
+		ListaEnemigos.getListaEnemigos().borrarEnemigos();
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
@@ -154,11 +162,11 @@ public class GestorPartida extends Observable {
 	 * @return
 	 */
 	private boolean esFinPartida() {
-		if(!Espacio.getEspacio().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
+		if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "ganado";
 			return true;
 		}
-		else if(!Espacio.getEspacio().quedanNaves() || Espacio.getEspacio().enemigoGana()){
+		else if(!ListaNaves.getListaNaves().quedanNaves() || Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "perdido";
 			return true;
 		}else{
