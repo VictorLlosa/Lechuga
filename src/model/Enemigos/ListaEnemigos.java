@@ -1,9 +1,7 @@
 package model.Enemigos;
 
-import model.Composite.*;
 import model.EventoEntidad;
 import model.Factorias.FactoriaEnemigo;
-import model.State.Casilla;
 import model.Tipos.TipoEnem;
 import model.Tipos.TipoEntidad;
 
@@ -97,7 +95,7 @@ public class ListaEnemigos implements Observer {
     public void update(Observable o, Object arg) {
         EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
         for(EventoEntidad evento : listaEvent){
-            if(evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIidEntidad());
+            if(evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIdEntidad());
         }
     }
 
@@ -107,16 +105,19 @@ public class ListaEnemigos implements Observer {
      * han llegado abajo y se elimina de la lista.
      */
     public void moverEnemigos() {
-        Iterator<EnemigoAbstracto> iterator = listaEnemigos.iterator();
-        while (iterator.hasNext()) {
-            EnemigoAbstracto enem = iterator.next();
+        ArrayList<EnemigoAbstracto> toRemove = new ArrayList<>();
+        for(EnemigoAbstracto enem: listaEnemigos){
             boolean exito = enem.moverEnEspacio();
             if (!exito) {
-                enem.borrar();
-                iterator.remove();
+                toRemove.add(enem);
                 enemigoHaLlegadoAbajo = true;
             }
         }
+        for(EnemigoAbstracto enem: toRemove){
+            enem.borrar();
+            listaEnemigos.remove(enem);
+        }
+
     }
 
     public void borrarEnemigos() {

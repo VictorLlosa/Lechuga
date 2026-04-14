@@ -1,5 +1,9 @@
 package model.Balas;
 
+import model.Enemigos.EnemigoAbstracto;
+import model.EventoEntidad;
+import model.Tipos.TipoEntidad;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Observable;
@@ -12,7 +16,7 @@ public class ListaBalas implements Observer {
         this.listaBalas = new ArrayList<>();
     }
 
-    public synchronized void anadirBala(BalaAbstracta pBala) {
+    public void anadirBala(BalaAbstracta pBala) {
         listaBalas.add(pBala);
     }
 
@@ -20,19 +24,21 @@ public class ListaBalas implements Observer {
      * Le dice a todas las balas que se muevan. Si la bala se ha salido del espacio
      * (exito = false) se le dice a la bala que se borre y se elimina de la lista.
      */
-    public synchronized void moverBalas() {
-        Iterator<BalaAbstracta> iterator = listaBalas.iterator();
-        while (iterator.hasNext()) {
-            BalaAbstracta bala = iterator.next();
+    public void moverBalas() {
+        ArrayList<BalaAbstracta> toRemove = new ArrayList<>();
+        for(BalaAbstracta bala: listaBalas){
             boolean exito = bala.moverEnEspacio();
             if (!exito) {
-                bala.borrar();
-                iterator.remove();
+                toRemove.add(bala);
             }
+        }
+        for(BalaAbstracta bala: toRemove){
+            bala.borrar();
+            listaBalas.remove(bala);
         }
     }
 
-    public synchronized int getNumBalas() {
+    public int getNumBalas() {
         return listaBalas.size();
     }
 
@@ -45,9 +51,25 @@ public class ListaBalas implements Observer {
         }
         listaBalas.clear();
     }
+    private void borrarBala(int pId) {
+        BalaAbstracta bala = findBala(pId);
+        if(bala != null) bala.borrar();
+    }
+
+    private BalaAbstracta findBala(int pId) {
+        for (BalaAbstracta bala : listaBalas){
+            if(bala.getId() == pId) return bala;
+        }
+        return null;
+    }
 
     @Override
     public void update(Observable o, Object arg) {
-
+        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
+        for(EventoEntidad evento : listaEvent){
+            if(evento.getTipo() == TipoEntidad.bala) borrarBala(evento.getIdEntidad());
+        }
     }
+
+
 }

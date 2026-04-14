@@ -51,4 +51,8 @@ public abstract class BalaAbstracta{
     public void borrar() {
         coord.borrar();
     }
+
+    public int getId() {
+        return id;
+    }
 }

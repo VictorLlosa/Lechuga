@@ -29,6 +29,6 @@ public class EventoEntidad {
     }
 
     public TipoEntidad getTipo() { return tipo; }
-    public int getIidEntidad() { return idEntidad; }
+    public int getIdEntidad() { return idEntidad; }
     public boolean getLabel(){ return label;}
 }

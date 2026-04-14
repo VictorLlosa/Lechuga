@@ -186,14 +186,6 @@ public class GestorPartida extends Observable {
 	}
 
 	/**
-	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)
-	 * Ahora esta puesto por defecto a la nave 0
-	 */
-	public void alternarModoDisparo(){
-		ListaNaves.getListaNaves().alternarModoDisparo(0);
-	}
-
-	/**
 	 * LLama a naveAbstracta.reiniciarcontador naves
 	 */
 	private void reiniciarContadorNaves(){
