@@ -1,0 +1,5 @@
+package model.Tipos;
+
+public enum TipoEnem {
+    normal //,masivo
+}

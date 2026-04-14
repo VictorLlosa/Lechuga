@@ -1,10 +1,12 @@
 package viewController;
 
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Observer;
 
 import model.GestorPartida;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoNave;
 
 import javax.swing.*;
 
@@ -25,6 +27,10 @@ public class Controlador implements KeyListener {
 	private volatile boolean rightPressed = false;
 	private volatile boolean spacePressed = false;
 
+	//nave seleccionada
+	private TipoNave tipoNave = TipoNave.red;
+
+
 	private int contDisparo = 0; // contador para limitar velocidad de disparo
 	private final int CADENCIA = 5; // ajustar para controlar cadencia de disparo (más bajo = más rápido)
 
@@ -34,12 +40,11 @@ public class Controlador implements KeyListener {
 	 */
 	private Controlador() {
 		timer = new Timer(40, e -> {
-			procesarMovimiento();
-
+			procesarMovimientoNave();
 			if (spacePressed) {
 				contDisparo++;
 				if (contDisparo >= CADENCIA) {
-					GestorPartida.getGestorPartida().disparar();
+					ListaNaves.getListaNaves().disparar(0);
 					contDisparo = 0;
 				}
 			} else {
@@ -70,10 +75,14 @@ public class Controlador implements KeyListener {
 		switch (SpaceInvaders.getSpaceInvaders().pantallaActual) {
 			case("Inicio"):
 				//ENTER
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) GestorPartida.getGestorPartida().iniciarPartida();
+				if (e.getKeyCode() == KeyEvent.VK_ENTER){
+					GestorPartida.getGestorPartida().iniciarPartida(tipoNave);
+				}
 			break;
 			case("Juego"):
-				setTecla(e.getKeyCode(),true);
+				if(e.getKeyCode() == KeyEvent.VK_M)
+					ListaNaves.getListaNaves().alternarModoDisparo(0);
+					else setTecla(e.getKeyCode(),true);
 			break;
 			case("Fin"):
 				if (e.getKeyCode() == KeyEvent.VK_R){
@@ -96,7 +105,7 @@ public class Controlador implements KeyListener {
 	}
 
 	/**
-	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false
+	 * Si estamos en juego, llama a setTecla, que pone el WASD y el ENTER a false (y la M)
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
@@ -121,7 +130,8 @@ public class Controlador implements KeyListener {
 		}
 	}
 
-	private void procesarMovimiento() {
+
+	private void procesarMovimientoNave() {
 		int dx = 0, dy = 0;
 
 		if (upPressed) dy -= 1;
@@ -129,7 +139,24 @@ public class Controlador implements KeyListener {
 		if (downPressed) dy += 1;
 		if (rightPressed) dx += 1;
 
-		GestorPartida.getGestorPartida().moverNave(0,dx,dy);
+		if (dx != 0 || dy != 0) {
+			ListaNaves.getListaNaves().moverNave(0, dx, dy);
+		}
 	}
 
+
+	public void seleccionarNave(TipoNave tipo) {
+		this.tipoNave = tipo;
+		switch (tipo) {
+			case TipoNave.red:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
+				break;
+			case TipoNave.green:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
+				break;
+			case TipoNave.blue:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
+				break;
+		}
+	}
 }

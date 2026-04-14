@@ -1,5 +1,7 @@
 package viewController;
 
+import model.Tipos.TipoEntidad;
+
 import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
@@ -10,6 +12,7 @@ import javax.swing.JLabel;
 /**
  * El label es observador de la casilla. Cuando la casilla cambia de color, notifica a su Label observador; y este,
  * en su update, cambia el volor de su background.
+ * Tiene un atributo estatico que guarda de que color es
  */
 public class LabelCasilla extends JLabel implements Observer{
 
@@ -29,17 +32,17 @@ public class LabelCasilla extends JLabel implements Observer{
 	public void update(Observable o, Object arg) {
 		Object[] params = (Object[])arg;
 
-		switch ((String) params[0]){
-			case "Vacio":
+		switch ((TipoEntidad) params[0]){
+			case TipoEntidad.vacio:
 				this.setBackground(Color.BLACK);
 			break;
-			case "Nave":
-				this.setBackground(Color.BLUE);
+			case TipoEntidad.nave:
+				this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
 			break;
-			case "Bala":
+			case TipoEntidad.bala:
 				this.setBackground(Color.WHITE);
 			break;
-			case "Enemigo":
+			case TipoEntidad.alien:
 				this.setBackground(Color.RED);
 			break;
 
