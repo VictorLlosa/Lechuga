@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>/home/llosa/Documentos/IS/TRABAJO/Lechuga/src</OriginalElement>
+  <nodes>
+    <node x="163.7415296810126" y="379.6027168793927">viewController.PantallaJuego</node>
+    <node x="984.75" y="3023.1329999111563">model.Bala</node>
+    <node x="133.01101561518982" y="2683.1329999111563">model.ListaEnemigos</node>
+    <node x="-206.43870485063292" y="475.6027168793927">viewController.LabelCasilla</node>
+    <node x="484.7667528911393" y="-55.01922569505473">viewController.SpaceInvaders</node>
+    <node x="968.0" y="2683.1329999111563">model.ListaBalas</node>
+    <node x="539.9063475307854" y="3078.677437865587">model.Nave</node>
+    <node x="161.75212802430377" y="3078.677437865587">model.Enemigo</node>
+    <node x="468.5333388962025" y="807.2745655758313">viewController.Controlador</node>
+    <node x="526.0" y="3491.1329999111563">model.Coordenada</node>
+    <node x="490.9063475307854" y="2683.1329999111563">model.ListaNaves</node>
+    <node x="484.7667528911393" y="378.9914342464813">viewController.PantallaInicio</node>
+    <node x="464.75" y="2020.5635473541947">model.Espacio</node>
+    <node x="468.5333388962025" y="1332.6885369238144">model.GestorPartida</node>
+    <node x="53.0" y="2169.0765532332834">model.Casilla</node>
+    <node x="781.8111282632912" y="378.9914342464813">viewController.PantallaFin</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="model.ListaEnemigos" target="model.Enemigo" relationship="TO_MANY">
+      <point x="-12.151957819857216" y="163.1161330566997" />
+      <point x="260.3590577953326" y="3051.1329999111563" />
+      <point x="260.7521280243038" y="3051.1329999111563" />
+      <point x="0.0" y="-128.0" />
+    </edge>
+    <edge source="model.Espacio" target="model.Casilla" relationship="TO_MANY">
+      <point x="0.0" y="296.0" />
+      <point x="631.25" y="2273.0765532332834" />
+      <point x="177.0" y="2273.0765532332834" />
+      <point x="0.0" y="-104.0" />
+    </edge>
+    <edge source="model.Espacio" target="model.Coordenada" relationship="CREATE">
+      <point x="111.0" y="296.0" />
+      <point x="742.25" y="2623.1329999111563" />
+      <point x="1240.0" y="2623.1329999111563" />
+      <point x="1240.0" y="3596.632874746599" />
+      <point x="707.5" y="3596.632874746599" />
+      <point x="66.0" y="-116.0" />
+    </edge>
+    <edge source="model.ListaBalas" target="model.Bala" relationship="CREATE">
+      <point x="-68.0" y="140.0" />
+      <point x="1026.0" y="3008.1329999111563" />
+      <point x="1078.75" y="3008.1329999111563" />
+      <point x="-5.0" y="0.0" />
+    </edge>
+    <edge source="model.ListaEnemigos" target="model.Coordenada" relationship="DEPENDENCY">
+      <point x="-135.44962953226218" y="69.99621316201637" />
+      <point x="-77.22525664405043" y="2917.1292130731727" />
+      <point x="-77.22525664405043" y="3626.271738139004" />
+      <point x="575.5" y="3626.271738139004" />
+      <point x="-66.0" y="-116.0" />
+    </edge>
+    <edge source="viewController.SpaceInvaders" target="viewController.Controlador" relationship="DEPENDENCY">
+      <point x="71.5" y="118.56649995557814" />
+      <point x="689.2667528911393" y="113.81455698438512" />
+      <point x="1091.880539098734" y="113.81455698438512" />
+      <point x="1091.880539098734" y="1147.8826869997638" />
+      <point x="723.2833388962025" y="1147.8826869997638" />
+      <point x="88.25" y="0.0" />
+    </edge>
+    <edge source="viewController.Controlador" target="viewController.SpaceInvaders" relationship="DEPENDENCY">
+      <point x="78.25" y="0.0" />
+      <point x="713.2833388962025" y="1110.938265733941" />
+      <point x="1060.325002086076" y="1110.938265733941" />
+      <point x="1060.325002086076" y="156.3720400883041" />
+      <point x="679.2667528911393" y="156.3720400883041" />
+      <point x="61.5" y="118.56649995557814" />
+    </edge>
+    <edge source="model.Nave" target="model.Coordenada" relationship="TO_ONE">
+      <point x="0.0" y="140.0" />
+      <point x="640.4063475307854" y="3515.2340076826567" />
+      <point x="542.5" y="3515.2340076826567" />
+      <point x="-99.0" y="-116.0" />
+    </edge>
+    <edge source="model.Espacio" target="model.ListaBalas" relationship="DEPENDENCY">
+      <point x="12.3896780826841" y="204.19821269311888" />
+      <point x="643.6396780826841" y="2584.333033288371" />
+      <point x="627.4730253231904" y="2584.333033288371" />
+      <point x="627.4730253231904" y="2663.1329999111563" />
+      <point x="1094.0" y="2663.1329999111563" />
+      <point x="0.0" y="-140.0" />
+    </edge>
+    <edge source="viewController.PantallaFin" target="viewController.Controlador" relationship="DEPENDENCY">
+      <point x="0.0" y="176.0" />
+      <point x="904.8111282632912" y="770.658100913148" />
+      <point x="633.8445088810126" y="770.658100913148" />
+      <point x="633.8445088810126" y="814.6996359820423" />
+      <point x="551.7833388962025" y="814.6996359820423" />
+      <point x="-83.25" y="-236.0" />
+    </edge>
+    <edge source="viewController.SpaceInvaders" target="viewController.PantallaInicio" relationship="DEPENDENCY">
+      <point x="-66.5" y="118.56649995557814" />
+      <point x="551.2667528911393" y="158.83302254177255" />
+      <point x="607.7667528911393" y="158.83302254177255" />
+      <point x="0.0" y="-176.0" />
+    </edge>
+    <edge source="viewController.Controlador" target="model.GestorPartida" relationship="DEPENDENCY">
+      <point x="0.0" y="236.0" />
+      <point x="0.0" y="-320.0" />
+    </edge>
+    <edge source="viewController.PantallaJuego" target="viewController.LabelCasilla" relationship="TO_MANY">
+      <point x="0.0" y="128.0" />
+      <point x="291.7415296810126" y="547.4080661452153" />
+      <point x="-81.43870485063292" y="547.4080661452153" />
+      <point x="0.0" y="-80.0" />
+    </edge>
+    <edge source="model.Bala" target="model.Coordenada" relationship="TO_ONE">
+      <point x="0.0" y="92.0" />
+      <point x="1083.75" y="3411.1329999111563" />
+      <point x="640.4063475307854" y="3411.1329999111563" />
+      <point x="640.4063475307854" y="3515.2340076826567" />
+      <point x="542.5" y="3515.2340076826567" />
+      <point x="-99.0" y="-116.0" />
+    </edge>
+    <edge source="model.Espacio" target="model.ListaNaves" relationship="DEPENDENCY">
+      <point x="9.15634753078541" y="276.40926168552414" />
+      <point x="640.4063475307854" y="2609.678350224529" />
+      <point x="627.4730253231904" y="2609.678350224529" />
+      <point x="627.4730253231904" y="2698.5949404017438" />
+      <point x="640.4063475307854" y="2698.5949404017438" />
+      <point x="0.0" y="-164.0" />
+    </edge>
+    <edge source="model.ListaBalas" target="model.Coordenada" relationship="DEPENDENCY">
+      <point x="63.0" y="140.0" />
+      <point x="1157.0" y="2983.1329999111563" />
+      <point x="1202.75" y="2983.1329999111563" />
+      <point x="1202.75" y="3551.0356745440677" />
+      <point x="674.5" y="3551.0356745440677" />
+      <point x="33.0" y="-116.0" />
+    </edge>
+    <edge source="viewController.SpaceInvaders" target="viewController.PantallaFin" relationship="DEPENDENCY">
+      <point x="-66.5" y="118.56649995557814" />
+      <point x="607.7667528911393" y="182.11377421610155" />
+      <point x="607.7667528911393" y="325.5192236135699" />
+      <point x="904.8111282632912" y="325.5192236135699" />
+      <point x="0.0" y="-176.0" />
+    </edge>
+    <edge source="model.ListaBalas" target="model.Bala" relationship="TO_MANY">
+      <point x="-58.0" y="140.0" />
+      <point x="1036.0" y="2998.1329999111563" />
+      <point x="1088.75" y="2998.1329999111563" />
+      <point x="5.0" y="0.0" />
+    </edge>
+    <edge source="model.Enemigo" target="model.Coordenada" relationship="TO_ONE">
+      <point x="0.0" y="128.0" />
+      <point x="260.7521280243038" y="3433.4108101390043" />
+      <point x="640.4063475307854" y="3433.4108101390043" />
+      <point x="640.4063475307854" y="3503.1090181130367" />
+      <point x="542.5" y="3503.1090181130367" />
+      <point x="-99.0" y="-116.0" />
+    </edge>
+    <edge source="model.GestorPartida" target="model.Coordenada" relationship="CREATE">
+      <point x="82.12149816815315" y="84.36032407871608" />
+      <point x="868.0435961529631" y="1737.0488610025304" />
+      <point x="868.0435961529631" y="1736.9248508478652" />
+      <point x="1260.5" y="1736.9248508478652" />
+      <point x="1260.5" y="3639.5356328225485" />
+      <point x="740.5" y="3639.5356328225485" />
+      <point x="99.0" y="-116.0" />
+    </edge>
+    <edge source="model.Espacio" target="model.ListaEnemigos" relationship="DEPENDENCY">
+      <point x="-3.776974676809573" y="277.4870385361569" />
+      <point x="627.4730253231904" y="2663.1329999111563" />
+      <point x="272.5110156151898" y="2663.1329999111563" />
+      <point x="0.0" y="-164.0" />
+    </edge>
+    <edge source="viewController.SpaceInvaders" target="viewController.PantallaJuego" relationship="DEPENDENCY">
+      <point x="-66.5" y="118.56649995557814" />
+      <point x="551.2667528911393" y="166.81089879493658" />
+      <point x="607.7667528911393" y="166.81089879493658" />
+      <point x="607.7667528911393" y="325.5192236135699" />
+      <point x="291.7415296810126" y="325.5192236135699" />
+      <point x="0.0" y="-128.0" />
+    </edge>
+    <edge source="viewController.PantallaJuego" target="viewController.Controlador" relationship="DEPENDENCY">
+      <point x="0.0" y="-128.0" />
+      <point x="291.7415296810126" y="770.658100913148" />
+      <point x="635.0333388962025" y="770.658100913148" />
+      <point x="635.0333388962025" y="807.2745655758313" />
+      <point x="83.25" y="-236.0" />
+    </edge>
+    <edge source="model.GestorPartida" target="model.Espacio" relationship="DEPENDENCY">
+      <point x="-83.25" y="320.0" />
+      <point x="551.7833388962025" y="1957.4524733288779" />
+      <point x="631.25" y="1957.4524733288779" />
+      <point x="0.0" y="-296.0" />
+    </edge>
+    <edge source="viewController.PantallaInicio" target="viewController.Controlador" relationship="DEPENDENCY">
+      <point x="0.0" y="176.0" />
+      <point x="635.0333388962025" y="730.9914342464813" />
+      <point x="635.0333388962025" y="770.9914342464813" />
+      <point x="633.8445088810126" y="770.9914342464813" />
+      <point x="633.8445088810126" y="833.3218507871056" />
+      <point x="551.7833388962025" y="833.3218507871056" />
+      <point x="-83.25" y="-236.0" />
+    </edge>
+    <edge source="model.ListaNaves" target="model.Coordenada" relationship="DEPENDENCY">
+      <point x="74.75" y="164.0" />
+      <point x="715.1563475307854" y="3031.1329999111563" />
+      <point x="888.75" y="3031.1329999111563" />
+      <point x="888.75" y="3520.466221987105" />
+      <point x="641.5" y="3520.466221987105" />
+      <point x="0.0" y="-116.0" />
+    </edge>
+    <edge source="model.ListaNaves" target="model.Nave" relationship="TO_MANY">
+      <point x="-0.32494972046595194" y="130.52416109356227" />
+      <point x="640.0813978103195" y="3051.1329999111563" />
+      <point x="640.4063475307854" y="3051.1329999111563" />
+      <point x="0.0" y="-140.0" />
+    </edge>
+  </edges>
+  <settings layout="Series Parallel" zoom="0.475051955049262" showDependencies="true" x="-14256.297707192942" y="3511.277178814232" />
+  <SelectedNodes />
+  <Categories>
+    <Category>Fields</Category>
+    <Category>Methods</Category>
+  </Categories>
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+

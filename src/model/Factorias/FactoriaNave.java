@@ -1,8 +1,11 @@
 package model.Factorias;
 
 import model.Composite.Pixel;
-import model.NaveAbstracta;
-import model.Nave;
+import model.Naves.NaveAbstracta;
+import model.Naves.NaveAzul;
+import model.Naves.NaveRoja;
+import model.Naves.NaveVerde;
+import model.Tipos.TipoNave;
 
 public class FactoriaNave {
     private static FactoriaNave miFactoriaNave = null;
@@ -19,18 +22,31 @@ public class FactoriaNave {
     }
 
     /**
-     *
-     * @param pTipo el color de la nave
+     * Dependiendo del tipo de nave, tendrá un modo de disparo u otro (unas Strategy's diferentes)
+     * @param pTipo
+     * @param pCoordCentro
      * @return
      */
-    public NaveAbstracta generar(String pTipo, String color, Pixel pCoord){
-        Nave nave;
+    public NaveAbstracta generar(TipoNave pTipo, int cX, int cY){
+        NaveAbstracta nave;
+
         switch(pTipo){
-            case "normal":
-                nave = new Nave(pCoord.getX(), pCoord.getY());
-            break;
-            default: return null;
+            case TipoNave.green:
+                nave = new NaveVerde(cX, cY);
+                break;
+
+            case TipoNave.blue:
+                nave = new NaveAzul(cX, cY);
+                break;
+
+            case TipoNave.red:
+                nave = new NaveRoja(cX, cY);
+                break;
+
+            default:
+                throw new IllegalArgumentException();
         }
+
         return nave;
     }
 }

@@ -1,6 +1,6 @@
 package model.Strategy;
 
-import model.Composite.CompositeCoordenada;
+import model.Balas.BalaAbstracta;
 import model.Composite.Pixel;
 
 /**
@@ -9,5 +9,5 @@ import model.Composite.Pixel;
  * como podria ser poner un color por defecto a las balas o valores ctes.
  */
 public interface DisparoStrategy {
-    public CompositeCoordenada disparar(int pX, int pY); //TODO faltan los demas disparos
+    public BalaAbstracta disparar(Pixel pCoordCannon);
 }

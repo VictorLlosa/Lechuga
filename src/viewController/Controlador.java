@@ -3,10 +3,10 @@ package viewController;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Observer;
 
 import model.GestorPartida;
-import model.ListaNaves;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoNave;
 
 import javax.swing.*;
 
@@ -27,11 +27,8 @@ public class Controlador implements KeyListener {
 	private volatile boolean rightPressed = false;
 	private volatile boolean spacePressed = false;
 
-	//cambio de modo de disparo
-	private volatile boolean cambioDisparo = false;
-
 	//nave seleccionada
-	private String colorNave = "rojo";
+	private TipoNave tipoNave = TipoNave.red;
 
 
 	private int contDisparo = 0; // contador para limitar velocidad de disparo
@@ -43,12 +40,11 @@ public class Controlador implements KeyListener {
 	 */
 	private Controlador() {
 		timer = new Timer(40, e -> {
-			procesarMovimiento();
-
+			procesarMovimientoNave();
 			if (spacePressed) {
 				contDisparo++;
 				if (contDisparo >= CADENCIA) {
-					GestorPartida.getGestorPartida().disparar();
+					ListaNaves.getListaNaves().disparar(0);
 					contDisparo = 0;
 				}
 			} else {
@@ -80,30 +76,17 @@ public class Controlador implements KeyListener {
 			case("Inicio"):
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
-
-					GestorPartida.getGestorPartida().iniciarPartida(colorNave);
+					GestorPartida.getGestorPartida().iniciarPartida(tipoNave);
 				}
-				//Seleccion de nave. Dependiendo de la tecla pulsada, la Nave es de un Color
-				else if(e.getKeyCode() == KeyEvent.VK_A){
-					this.colorNave="azul";
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_R){
-					this.colorNave="rojo";
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_V){
-					this.colorNave="verde";
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
-				}
-
 			break;
 			case("Juego"):
-				setTecla(e.getKeyCode(),true);
+				if(e.getKeyCode() == KeyEvent.VK_M)
+					ListaNaves.getListaNaves().alternarModoDisparo(0);
+					else setTecla(e.getKeyCode(),true);
 			break;
 			case("Fin"):
 				if (e.getKeyCode() == KeyEvent.VK_R){
-					GestorPartida.getGestorPartida().reiniciarPartida(colorNave);
+					GestorPartida.getGestorPartida().reiniciarPartida();
 					reiniciarTeclas();
 				}
 			break;
@@ -119,7 +102,6 @@ public class Controlador implements KeyListener {
 		leftPressed = false;
 		rightPressed = false;
 		spacePressed = false;
-		cambioDisparo = false;
 	}
 
 	/**
@@ -145,11 +127,11 @@ public class Controlador implements KeyListener {
 			case KeyEvent.VK_A: leftPressed = pressed; break;
 			case KeyEvent.VK_D: rightPressed = pressed; break;
 			case KeyEvent.VK_SPACE: spacePressed = pressed; break;
-			case KeyEvent.VK_M: cambioDisparo = pressed; break;
 		}
 	}
 
-	private void procesarMovimiento() {
+
+	private void procesarMovimientoNave() {
 		int dx = 0, dy = 0;
 
 		if (upPressed) dy -= 1;
@@ -158,15 +140,23 @@ public class Controlador implements KeyListener {
 		if (rightPressed) dx += 1;
 
 		if (dx != 0 || dy != 0) {
-			ListaNaves.getListaNaves().actualizarCoordNave(0, dx, dy);
+			ListaNaves.getListaNaves().moverNave(0, dx, dy);
 		}
 	}
 
-	/**
-	 * Llama a "toggleModoDisparo() de GestorPartida si se ha cambiado el modo de Disparo"
-	 * De momento, solo tenemos la nave de id 0.
-	 */
-	private void procesarModoDisparo(){
-		if (cambioDisparo) GestorPartida.getGestorPartida().alternarModoDisparo();
+
+	public void seleccionarNave(TipoNave tipo) {
+		this.tipoNave = tipo;
+		switch (tipo) {
+			case TipoNave.red:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
+				break;
+			case TipoNave.green:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
+				break;
+			case TipoNave.blue:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
+				break;
+		}
 	}
 }

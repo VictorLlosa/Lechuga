@@ -1,5 +1,10 @@
 package viewController;
+import model.Balas.ListaBalas;
+import model.Enemigos.ListaEnemigos;
 import model.GestorPartida;
+import model.Naves.ListaNaves;
+import model.Naves.NaveAbstracta;
+
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import java.awt.Color;
@@ -45,12 +50,20 @@ public class PantallaJuego extends JPanel {
 	}
 
 	/**
-	 * Asigna los observers a todas las casillas del tablero.
+	 * Asigna los observers a todas las casillas del tablero: la matriz de labels, ListaEnemigos, ListaNaves
 	 */
 	void asignarObservers() {
 		for(int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
-				GestorPartida.getGestorPartida().asignarObserverCasilla(matrizLabels[i][j], i, j);
+				GestorPartida.getGestorPartida().asignarObserverCasilla(matrizLabels[i][j], i, j); //matriz de labels
+				GestorPartida.getGestorPartida().asignarObserverCasilla(ListaEnemigos.getListaEnemigos(),i,j); //listaEnemigos
+				GestorPartida.getGestorPartida().asignarObserverCasilla(ListaNaves.getListaNaves(),i,j); //ListaNaves
+				/* TODO falta asignar los observer a todas las listas de balas  ;
+				    for (int i:ListaNaves.getListaNaves().getListaIds()){
+
+				}
+				*/
+
 			}
 		}
 	}

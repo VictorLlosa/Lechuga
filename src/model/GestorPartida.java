@@ -1,6 +1,10 @@
 package model;
 
 import model.Composite.Pixel;
+import model.Enemigos.ListaEnemigos;
+import model.Naves.ListaNaves;
+import model.Tipos.TipoEnem;
+import model.Tipos.TipoNave;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -47,11 +51,11 @@ public class GestorPartida extends Observable {
 
 	/**
 	 * Llama a this.anadirNaves con el parametro del tipo de la nave inciial
-	 * @param pColorNave establece el tipo de todas las naves
+	 * @param pTipoNave establece el tipo de todas las naves
 	 */
-	public void iniciarPartida(String pColorNave){
+	public void iniciarPartida(TipoNave pTipoNave){
 		//Añadir Nave
-		anadirNaves(pColorNave);
+		anadirNaves(pTipoNave);
 		//Añadir Enegmigos
 		numeroEnemigosAleatorio();
 		anadirEnemigos();
@@ -64,11 +68,10 @@ public class GestorPartida extends Observable {
 
 	/**
 	 * El orden de los metodos de esta funcion es lo que mas importa de cara al jeugo
-	 * @param pColorNave
 	 */
-	public void reiniciarPartida(String pColorNave){
+	public void reiniciarPartida(){
 		borrarEnemigos();
-		reiniciarContadorNaves();  //reinicia el 1er id de las naves a "-1" de nuevo
+		reiniciarContadorNaves();
 		borrarBalas();
 		borrarNaves();
 		//reiniciarTeclas();
@@ -102,76 +105,68 @@ public class GestorPartida extends Observable {
 		}
 		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
 		if (contadorAcciones % 5 == 0) { // 50 ms
-			Espacio.getEspacio().moverBalas();
+			ListaNaves.getListaNaves().moverBalas();
 		}
 		if (contadorAcciones % 20 == 0) { // 200 ms
-			Espacio.getEspacio().moverEnemigos();
+			ListaEnemigos.getListaEnemigos().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
-
-		//TODO va a haber que quitar esto de aqui
-		/*comprobarColisiones();*/
 	}
 
 	/**
 	 * Anadimos una nave de pid=0,"roja" y en la Coordenada (55,50)
 	 * Por defecto el id es 0. Es aqui donde se lo asignamos. De momento, solo
-	 * @param pColor Tipo de nave(s) que queremos iniciar
+	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
-	private void anadirNaves(String pColor) {
-		Espacio.getEspacio().anadirNave(pColor, new Pixel(55,50));
+	private void anadirNaves(TipoNave pTipo) {
+		ListaNaves.getListaNaves().anadirNave(pTipo, 55, 50);
+		ListaNaves.getListaNaves().ponerNavesEnEspacio();
 	}
 
 	private void borrarNaves(){
-		Espacio.getEspacio().borrarNaves();
+		ListaNaves.getListaNaves().borrarNaves();
 	}
 
+	/**
+	 * Metodo que borra todas las balas de la lista de naves, el cual llama a la lista de naves para borrarlas
+	 */
 	private void borrarBalas(){
-		Espacio.getEspacio().borrarBalas();
+		ListaNaves.getListaNaves().borrarBalas();
 	}
+
 
 	private void anadirEnemigos() {
 		int random = 5;
+		boolean creado;
 		int numEnemigos = numeroEnemigosAleatorio();
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
+				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEnem.normal );
 			}
-			while(!Espacio.getEspacio().esCoordenadaValida(new Pixel(random,5)));
-
-			Espacio.getEspacio().anadirEnemigos(new Pixel(random,5));
+			while(!creado);
 		}
+		ListaEnemigos.getListaEnemigos().ponerEnemigosEnEspacio();
 	}
 
 	private void borrarEnemigos(){
-		Espacio.getEspacio().borrarEnemigos();
+		ListaEnemigos.getListaEnemigos().borrarEnemigos();
 	}
 
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
 		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
-
-	public void moverNave(int idNave, int dx, int dy) {
-		Espacio.getEspacio().moverNave(idNave, dx, dy);
-	}
-
-/*
-	private void comprobarColisiones() {
-		Espacio.getEspacio().comprobarColisiones();
-	}
-*/
-
 	/**
 	 * La partida se pierde cuando no "getEspacio.quedanNaves()" o el ".enemigoGana()"
 	 * porque ha llegado abajo
 	 * @return
 	 */
 	private boolean esFinPartida() {
-		if(!Espacio.getEspacio().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
+		if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "ganado";
 			return true;
 		}
-		else if(!Espacio.getEspacio().quedanNaves() || Espacio.getEspacio().enemigoGana()){
+		else if(!ListaNaves.getListaNaves().quedanNaves() || Espacio.getEspacio().enemigoGana()){
 			estadoFinal = "perdido";
 			return true;
 		}else{
@@ -190,16 +185,12 @@ public class GestorPartida extends Observable {
 		this.addObserver(o);
 	}
 
-    public void disparar() {
-		Espacio.getEspacio().disparar(0);
-    }
-
 	/**
 	 * Cambia el modo disparo de una nave. TODO poner que se haga por IDNave (o sea, por cada nave si las hubiese)
 	 * Ahora esta puesto por defecto a la nave 0
 	 */
 	public void alternarModoDisparo(){
-		//ListaNaves.getListaNaves().alternarModoDisparo(0);
+		ListaNaves.getListaNaves().alternarModoDisparo(0);
 	}
 
 	/**
@@ -208,4 +199,6 @@ public class GestorPartida extends Observable {
 	private void reiniciarContadorNaves(){
 		ListaNaves.getListaNaves().reiniciarContadorNaves();
 	}
+
+
 }

@@ -1,13 +1,17 @@
-package model;
+package model.Naves;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
 import model.Factorias.FactoriaNave;
+import model.Tipos.TipoEntidad;
+import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 
-public class ListaNaves {
+public class ListaNaves implements Observer {
     private ArrayList<NaveAbstracta> listaNaves;
     ArrayList<Integer> listaIds;
     private static ListaNaves miListaNaves;
@@ -25,50 +29,28 @@ public class ListaNaves {
     }
 
     /**
-     * buscamos la nave con id "pIdNave" y le hacemos .disparar()
-     *
-     * @param pIdNave
-     * @return
+     * Llama al disparar() de la nave.
+     * @param pIdNave es el id de la nave
+     * @return devuelve un CompositeCoordenada (las coordenadas de la bala) o null si no se ha podido crear.
      */
-    public CompositeCoordenada disparar(int pIdNave) {
+    public void disparar(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) return nave.disparar();
-        else return null;
+        if (nave != null) nave.disparar();
     }
 
     /**
      * anade una nave a ListaNaves
-     *
-     * @param pColor
-     * @param pCoord
+     * @param pTipo
+     * @param cX
+     * @param cY
+     * @return
      */
-    public CompositeCoordenada anadirNave(String pColor, Pixel pCoord) {
-        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar("normal", pColor, pCoord);
+    public CompositeCoordenada anadirNave(TipoNave pTipo, int cX, int cY) {
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, cX, cY);
         listaNaves.add(nave);
         listaIds.add(nave.getId());
         return nave.getForma();
     }
-
-    public CompositeCoordenada getCoordNave(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) return nave.getCoord();
-        return null;
-    }
-
-    public Coordenada getCannonNave(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) return nave.getCannon();
-        return null;
-    }
-
-    /* //TODO
-    public void setCoordNave(int pIdNave, int cX, int cY) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.setCoord(cX, cY);
-
-    }
-    */
-
 
     public int getNumNaves() {
         return listaNaves.size();
@@ -99,9 +81,9 @@ public class ListaNaves {
         return null;
     }
 
-    private NaveAbstracta findNaveEn(int cX, int cY) {
+    private NaveAbstracta findNaveEn(Coordenada pCoord) {
         for (NaveAbstracta nave : listaNaves) {
-            if (nave.estasEn(cX, cY)) return nave;
+            if (nave.estasEn(pCoord)) return nave;
         }
         return null;
     }
@@ -110,26 +92,15 @@ public class ListaNaves {
         return listaIds.contains(idNave);
     }
 
-
-    //TODO
-    /*
     public void alternarModoDisparo(int pIdNave) {
-        this.findNave(pIdNave).changeStrategy();
-    }
-    /*
-     */
-    public ArrayList<Pixel> getCoordBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) return nave.getCoordBalas();
-        else return null;
-
+        if(nave != null) nave.changeStrategy();
     }
 
-    public void moverBalasNave(int pIdNave) {
-
-        NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null) nave.moverBalas();
-
+    public void moverBalas(){
+        for(NaveAbstracta nave : listaNaves){
+            nave.moverBalas();
+        }
     }
 
     public void borrarBalasNave(int pIdNave) {
@@ -139,22 +110,10 @@ public class ListaNaves {
     }
     /**
      * Le llama Espacio
-     *
-     * @param cX
-     * @param cY
      */
-    public void matarNaveEn(int cX, int cY) {
-        NaveAbstracta nave = this.findNaveEn(cX, cY);
+    public void matarNaveEn(Coordenada pCoord) {
+        NaveAbstracta nave = this.findNaveEn(pCoord);
         if (nave != null) this.matarNave(nave.getId());
-    }
-
-    /**
-     * Mira si TODAS las naves .estanMuertas()
-     *
-     * @return
-     */
-    public boolean quedanNaves() {
-        return !listaIds.isEmpty();
     }
 
     /**
@@ -174,34 +133,56 @@ public class ListaNaves {
     }
 
     /**
-     * Llama a eliminarBalaPorCoord de la naveAbstracta con el id que pasaos como parametro
-     */
-    public void eliminarBalaPorCoord(int pIdNave, int cX,int cY){
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.eliminarBalaPorCoord(cX, cY);
-    }
-
-    /**
-     * Aqui no pasamos el id de la nave como parametro. Tenemos que ir nave por nave buscando la que tenga una
-     * bala en las componentes de coordenadna dadas
-     * @param cX
-     * @param cY
-     */
-    public void eliminarBalaPorCoord(int cX,int cY){
-        for (NaveAbstracta nave : listaNaves){
-            nave.eliminarBalaPorCoord(cX, cY);
-        }
-
-    }
-
-    /**
      * Se usa en Espacio para mover la nave a las coordenadas seleccionadas. Actualiza cada coordenada que compone a la nave
      * @param pIdNave
      * @param dx
      * @param dy
      */
-    public void actualizarCoordNave(int pIdNave, int dx, int dy) {
+    public void moverNave(int pIdNave, int dx, int dy) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.actualizarCoord(dx, dy);
+        if (nave != null) nave.moverNave(dx, dy);
+    }
+
+    /**
+     * Metodo que llama gestorPartida para poner cada una de las naves en el espacio
+     */
+    public void ponerNavesEnEspacio(){
+        for(NaveAbstracta nave : listaNaves){
+            nave.ponerEnEspacio();
+        }
+    }
+
+    /**
+     * Igual que en el update de ListaEnemigos
+     * @param o     La casilla
+     * @param arg   es un array de dos posiciones:
+     *              (0: tipo de entidad
+     *              1: id de la entidad)
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        Object[] params = (Object[])params;
+        TipoEntidad ent = (TipoEntidad) params[0];
+        if(ent != TipoEntidad.nave) borrarEnemigo();
+    }
+
+    /**
+     * Metodo que borra todas las balas de la lista de balas, el cual es utilizado por el gestorPartida para borrarlas
+     */
+    public void borrarBalas() {
+        for(NaveAbstracta nave: listaNaves){
+            nave.borrarBalas();
+        }
+    }
+
+    public void borrarNaves() {
+        for(NaveAbstracta nave: listaNaves){
+            nave.borrarNave();
+        }
+        borrarListaNaves();
+    }
+
+    public boolean quedanNaves() {
+        return listaIds.isEmpty();
     }
 }
