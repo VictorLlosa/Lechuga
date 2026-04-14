@@ -26,7 +26,6 @@ public class Controlador implements KeyListener {
 	private volatile boolean leftPressed = false;
 	private volatile boolean rightPressed = false;
 	private volatile boolean spacePressed = false;
-	private volatile boolean cambioDisparo = false;
 
 	//nave seleccionada
 	private TipoNave tipoNave = TipoNave.red;
@@ -77,23 +76,8 @@ public class Controlador implements KeyListener {
 			case("Inicio"):
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
-
 					GestorPartida.getGestorPartida().iniciarPartida(tipoNave);
 				}
-				//Seleccion de nave. Dependiendo de la tecla pulsada, la Nave es de un Color
-				else if(e.getKeyCode() == KeyEvent.VK_A){
-					this.tipoNave = TipoNave.blue;
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_R){
-					this.tipoNave =TipoNave.red;
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
-				}
-				else if(e.getKeyCode() == KeyEvent.VK_V){
-					this.tipoNave =TipoNave.green;
-					PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
-				}
-
 			break;
 			case("Juego"):
 				if(e.getKeyCode() == KeyEvent.VK_M)
@@ -118,7 +102,6 @@ public class Controlador implements KeyListener {
 		leftPressed = false;
 		rightPressed = false;
 		spacePressed = false;
-		cambioDisparo = false;
 	}
 
 	/**
@@ -162,4 +145,18 @@ public class Controlador implements KeyListener {
 	}
 
 
+	public void seleccionarNave(TipoNave tipo) {
+		this.tipoNave = tipo;
+		switch (tipo) {
+			case TipoNave.red:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.RED);
+				break;
+			case TipoNave.green:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.GREEN);
+				break;
+			case TipoNave.blue:
+				PantallaJuego.getPantallaJuego().cambiarColorNave(Color.BLUE);
+				break;
+		}
+	}
 }
