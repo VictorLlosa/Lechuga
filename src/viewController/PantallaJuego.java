@@ -56,13 +56,6 @@ public class PantallaJuego extends JPanel {
 		for(int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
 				GestorPartida.getGestorPartida().asignarObserverCasilla(matrizLabels[i][j], i, j); //matriz de labels
-				GestorPartida.getGestorPartida().asignarObserverCasilla(ListaEnemigos.getListaEnemigos(),i,j); //listaEnemigos
-				GestorPartida.getGestorPartida().asignarObserverCasilla(ListaNaves.getListaNaves(),i,j); //ListaNaves
-				/* TODO falta asignar los observer a todas las listas de balas  ;
-				    for (int i:ListaNaves.getListaNaves().getListaIds()){
-
-				}
-				*/
 
 			}
 		}

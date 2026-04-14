@@ -1,6 +1,7 @@
 package model.Balas;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -20,10 +21,14 @@ public class ListaBalas implements Observer {
      * (exito = false) se le dice a la bala que se borre y se elimina de la lista.
      */
     public synchronized void moverBalas() {
-        for(BalaAbstracta bala : listaBalas){
+        Iterator<BalaAbstracta> iterator = listaBalas.iterator();
+        while (iterator.hasNext()) {
+            BalaAbstracta bala = iterator.next();
             boolean exito = bala.moverEnEspacio();
-            if(!exito) bala.borrar();
-            listaBalas.remove(bala);
+            if (!exito) {
+                bala.borrar();
+                iterator.remove();
+            }
         }
     }
 

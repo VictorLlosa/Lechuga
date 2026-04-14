@@ -1,6 +1,8 @@
 package model;
 
+import model.Balas.ListaBalas;
 import model.Enemigos.ListaEnemigos;
+import model.Naves.ListaNaves;
 import model.State.Casilla;
 import model.Tipos.TipoEntidad;
 
@@ -20,6 +22,11 @@ public class Espacio{
 		for (int i = 0; i < hDim; i++) {
 			for (int j = 0; j < vDim; j++) {
 				matriz[i][j] = new Casilla();
+				asignarObserverCasilla(ListaEnemigos.getListaEnemigos(),i,j); //listaEnemigos
+				asignarObserverCasilla(ListaNaves.getListaNaves(),i,j); //ListaNaves
+				for(ListaBalas lb : ListaNaves.getListaNaves().getListaBalas()){
+					asignarObserverCasilla(lb,i,j);
+				}//TODO: VER SI HAY FORMA MEJOR de hacerlo sin hacer u getter de listabalas
 			}
 		}
 	}

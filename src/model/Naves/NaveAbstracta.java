@@ -136,4 +136,7 @@ public abstract class NaveAbstracta {
         this.cannon = pCoordCannon;
     }
 
+    public ListaBalas getListaBalas() {
+        return listaBalas;
+    }
 }

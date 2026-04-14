@@ -1,12 +1,14 @@
 package model.Enemigos;
 
 import model.Composite.*;
+import model.EventoEntidad;
 import model.Factorias.FactoriaEnemigo;
 import model.State.Casilla;
 import model.Tipos.TipoEnem;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -86,16 +88,17 @@ public class ListaEnemigos implements Observer {
     }
 
     /**
-     * La casilla nos notifica: (el tipo de entidad , el id de esa entidad)
+     * La casilla nos notifica dos tuplas: [TipoEntidad.eltipo, pCasilla.getId()},{pEnt, pIdEntidad (entidad movida)} ]
      * @param o     the observable object.
      * @param arg   an argument passed to the {@code notifyObservers}
      *                 method.
      */
     @Override
     public void update(Observable o, Object arg) {
-        Object[][] params = (Object[][]) arg;
-        TipoEntidad ent = (TipoEntidad) params[0][0];
-        if(ent != TipoEntidad.enemigo) borrarEnemigo(params[1]);
+        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
+        for(EventoEntidad evento : listaEvent){
+            if(evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIidEntidad());
+        }
     }
 
     /**
@@ -104,12 +107,15 @@ public class ListaEnemigos implements Observer {
      * han llegado abajo y se elimina de la lista.
      */
     public void moverEnemigos() {
-
-        for(EnemigoAbstracto enem : listaEnemigos){
+        Iterator<EnemigoAbstracto> iterator = listaEnemigos.iterator();
+        while (iterator.hasNext()) {
+            EnemigoAbstracto enem = iterator.next();
             boolean exito = enem.moverEnEspacio();
-            if(!exito) enem.borrar();
-            listaEnemigos.remove(enem);
-            enemigoHaLlegadoAbajo = true;
+            if (!exito) {
+                enem.borrar();
+                iterator.remove();
+                enemigoHaLlegadoAbajo = true;
+            }
         }
     }
 
@@ -119,6 +125,10 @@ public class ListaEnemigos implements Observer {
         }
     }
     public void borrarEnemigo(int pId) {
-        findEnemigo(pId).borrar();
+        EnemigoAbstracto enemigo = findEnemigo(pId);
+        if (enemigo != null) {
+            enemigo.borrar();
+            listaEnemigos.remove(enemigo);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package model.State;
 
+import model.EventoEntidad;
 import model.Tipos.TipoEntidad;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,6 +19,7 @@ public class Casilla extends Observable{
 	
 	public Casilla() {
 		entidad = TipoEntidad.vacio;
+		estado = new EstadoCasillaVacia();
 		idEntidad = -1;
 	}
 
@@ -25,12 +27,12 @@ public class Casilla extends Observable{
 		this.addObserver(o);
 	}
 
-	public void cambiarObjeto(TipoEntidad pObjeto) {
+	public void cambiarObjeto(TipoEntidad pEnt) {
 		// Notificar sólo si el color cambia (evitar repaints redundantes)
-		if (pObjeto.equals(this.entidad)) return;
-		entidad = pObjeto;
+		if (pEnt.equals(this.entidad)) return;
+		entidad = pEnt;
 
-		Object[] arg ={pObjeto};
+		EventoEntidad[] arg = {new EventoEntidad(pEnt)};
 		setChanged();
 		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
 	}
@@ -65,7 +67,8 @@ public class Casilla extends Observable{
 	 */
 	public boolean ponerEntidad(TipoEntidad pEnt, int pIdEntidad){
 		estado.ponerEntidad(this, pEnt, pIdEntidad);
-		return true; //todo no se que devuelve
+		return true;
+
 	}
 
 	public void setIdEntidad(int pId){

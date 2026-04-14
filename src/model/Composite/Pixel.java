@@ -38,12 +38,6 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1) {
-		return x>=pX0 && x<=pX1 && y>=pY0 && y<=pY1;
-	}
-
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 

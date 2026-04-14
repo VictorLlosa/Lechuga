@@ -10,7 +10,6 @@ public interface Coordenada {
 
     Coordenada generarNuevaCoord(int dx, int dy);
 
-    boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1);
 
     /**
      * Se usa en MoverEnEspacio()

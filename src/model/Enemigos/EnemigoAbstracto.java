@@ -6,7 +6,7 @@ import model.Tipos.TipoEntidad;
 
 public abstract class EnemigoAbstracto{
 
-    private CompositeCoordenada coord;
+    private Coordenada coord;
     private static int contadorId = 0; // Contador global para IDs
     private int id; // ID único de cada instancia
 
@@ -22,7 +22,7 @@ public abstract class EnemigoAbstracto{
         return id;
     }
 
-    protected void setCoord(CompositeCoordenada pCoordForma) {
+    protected void setCoord(Coordenada pCoordForma) {
         this.coord = pCoordForma;
     }
 
@@ -30,10 +30,10 @@ public abstract class EnemigoAbstracto{
      * Se usa para mover los enemigos para abajo cada cierto tiempo. Si el movimiento es valido, actualizar la posicion
      */
     public boolean moverEnEspacio() {
-        return coord.moverEnEspacio(0,1, TipoEntidad.enemigo);
+        return coord.moverEnEspacio(0,1, TipoEntidad.enemigo, this.id);
     }
     public void ponerEnEspacio(){
-        coord.moverEnEspacio(0,0, TipoEntidad.enemigo);
+        coord.moverEnEspacio(0,0, TipoEntidad.enemigo, this.id);
     }
 
     public void borrar() {

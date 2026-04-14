@@ -1,8 +1,11 @@
 package model.Naves;
 
+import model.Balas.ListaBalas;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
+import model.Espacio;
+import model.EventoEntidad;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
@@ -161,9 +164,10 @@ public class ListaNaves implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        Object[] params = (Object[])params;
-        TipoEntidad ent = (TipoEntidad) params[0];
-        if(ent != TipoEntidad.nave) borrarEnemigo();
+        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
+        for(EventoEntidad evento : listaEvent){
+            if(evento.getTipo() == TipoEntidad.nave) borrarNave(evento.getIidEntidad());
+        }
     }
 
     /**
@@ -182,7 +186,23 @@ public class ListaNaves implements Observer {
         borrarListaNaves();
     }
 
+    public void borrarNave(int pId) {
+        NaveAbstracta nave = findNave(pId);
+        if(nave != null){
+            nave.borrarNave();
+            nave.matar();
+        }
+    }
+
     public boolean quedanNaves() {
-        return listaIds.isEmpty();
+        return !listaIds.isEmpty();
+    }
+
+    public ArrayList<ListaBalas> getListaBalas() {
+        ArrayList<ListaBalas> lb = new ArrayList<>();
+        for(NaveAbstracta nave: listaNaves){
+            lb.add(nave.getListaBalas());
+        }
+        return lb;
     }
 }

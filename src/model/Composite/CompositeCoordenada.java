@@ -33,28 +33,18 @@ public class CompositeCoordenada implements Coordenada {
     }
 
 
-    @Override
-    public boolean estasEnIntervalo(int pX0, int pX1, int pY0, int pY1) {
-        boolean esta = true;
-        for (Coordenada coord : components) {
-            esta = coord.estasEnIntervalo(pX0, pX1, pY0, pY1);
-            if (!esta) return false;
-        }
-        return esta;
-    }
-
     /**
      * Solo mueve la entidad si la coordenada es valida
      * @param dx
      * @param dy
-     * @return Devuelve true si se ha movido, false si se ha intentado mover fuera del espacio
+     * @return Devuelve true si se ha movido, false si no.
      */
     public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
         boolean exito = true;
-        if(this.sePuedeMover()){
+        if(this.generarNuevaCoord(dx, dy).sePuedeMover()){
             for(Coordenada coord : components){
                 if(!coord.moverEnEspacio(dx, dy, pEnt, pIdEnt)){
-                    break; //Un pixel ya ha colisionado asique paramos
+                    exito = false;
                 }
             }
         }else{

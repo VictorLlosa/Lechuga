@@ -7,13 +7,16 @@ import model.Tipos.TipoEntidad;
 import java.util.Observer;
 
 public abstract class BalaAbstracta{
-    private CompositeCoordenada coord;
+    private Coordenada coord;
+    private static int contadorId = 0; // Contador global para IDs
+    private int id; // ID único de cada instancia
 
-    public BalaAbstracta(CompositeCoordenada pCoordForma) {
+    public BalaAbstracta(Coordenada pCoordForma) {
         this.coord = pCoordForma;
+        id = contadorId++;
     }
 
-    public CompositeCoordenada getCoord() {
+    public Coordenada getCoord() {
       return coord;
     }
 
@@ -29,10 +32,10 @@ public abstract class BalaAbstracta{
      * @return la nueva coordenada de la bala
      */
     public boolean moverEnEspacio() {
-        return coord.moverEnEspacio(0, -1, TipoEntidad.bala);
+        return coord.moverEnEspacio(0, -1, TipoEntidad.bala, this.id);
     }
 
-    public void ponerEnEspacio(){ coord.moverEnEspacio(0, 0, TipoEntidad.bala);}
+    public void ponerEnEspacio(){ coord.moverEnEspacio(0, 0, TipoEntidad.bala, this.id);}
     /**
      * La usamos en ExisteBalaEn y en findBala de ListaBalas
      * @param pCoord

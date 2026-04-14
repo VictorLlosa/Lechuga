@@ -1,5 +1,6 @@
 package viewController;
 
+import model.EventoEntidad;
 import model.Tipos.TipoEntidad;
 
 import java.awt.*;
@@ -30,22 +31,25 @@ public class LabelCasilla extends JLabel implements Observer{
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		Object[] params = (Object[])arg;
+		EventoEntidad[] params = (EventoEntidad[])arg;
+		for(EventoEntidad evento : params){
+			if(evento.getLabel()){
+				switch (evento.getTipo()){
+					case TipoEntidad.vacio:
+						this.setBackground(Color.BLACK);
+						break;
+					case TipoEntidad.nave:
+						this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
+						break;
+					case TipoEntidad.bala:
+						this.setBackground(Color.WHITE);
+						break;
+					case TipoEntidad.enemigo:
+						this.setBackground(Color.RED);
+						break;
 
-		switch ((TipoEntidad) params[0]){
-			case TipoEntidad.vacio:
-				this.setBackground(Color.BLACK);
-			break;
-			case TipoEntidad.nave:
-				this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
-			break;
-			case TipoEntidad.bala:
-				this.setBackground(Color.WHITE);
-			break;
-			case TipoEntidad.alien:
-				this.setBackground(Color.RED);
-			break;
-
+				}
+			}
 		}
 
 	}
