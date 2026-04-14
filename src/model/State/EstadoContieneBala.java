@@ -11,18 +11,29 @@ public class EstadoContieneBala implements EstadoCasilla {
      * @return si se ha movido sin colisiones (true)
      */
     @Override
-    public void ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+    public boolean ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+        boolean colision;
         switch (pEnt) {
             case TipoEntidad.enemigo:
                 pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
                 pCasilla.setIdEntidad(-1);
-                EventoEntidad[] arg = {new EventoEntidad(TipoEntidad.bala, pCasilla.getId()),new EventoEntidad(pEnt, pIdEntidad)};
+                EventoEntidad[] arg = {new EventoEntidad(TipoEntidad.bala, pCasilla.getId()),
+                                        new EventoEntidad(pEnt, pIdEntidad),
+                                        new EventoEntidad(pEnt)
+                };
                 pCasilla.notificarObservers(arg);
+                colision = true;
+            break;
             case TipoEntidad.nave://no hay colision pero si que pintamos la nave por encima, solo para que se vea esteticamente
                 pCasilla.cambiarDeEstadoA(new EstadoContieneNave());
+                pCasilla.cambiarObjeto(pEnt);
                 pCasilla.setIdEntidad(pIdEntidad);
+                colision = false;
+            break;
             //en caso de casilla vacia y bala no se hace nada
             default:
+                colision = false;
         }
+        return !colision;
     }
 }

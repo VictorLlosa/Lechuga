@@ -5,18 +5,23 @@ import model.Tipos.TipoEntidad;
 
 public class EstadoContieneEnemigo implements EstadoCasilla {
     @Override
-    public void ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+    public boolean ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+        boolean colision;
         switch (pEnt) {
             case TipoEntidad.bala://Tanto con bala y nave pasa lo mismo
             case TipoEntidad.nave:
                 int idEnemigo = pCasilla.getId();
                 pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
                 pCasilla.setIdEntidad(-1);
-                EventoEntidad[] arg = {new EventoEntidad(TipoEntidad.enemigo, idEnemigo),new EventoEntidad(pEnt, pIdEntidad)};
+                EventoEntidad[] arg = {new EventoEntidad(TipoEntidad.enemigo, idEnemigo),
+                                       new EventoEntidad(pEnt, pIdEntidad),
+                                        new EventoEntidad(pEnt)
+                                       };
                 pCasilla.notificarObservers(arg);
-                break;
+                colision = true;
             default:
-                break;
+                colision=false;
         }
+        return !colision;
     }
 }

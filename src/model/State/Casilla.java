@@ -28,7 +28,7 @@ public class Casilla extends Observable{
 	}
 
 	public void cambiarObjeto(TipoEntidad pEnt) {
-		// Notificar sólo si el color cambia (evitar repaints redundantes)
+		// Notificar solo si el color cambia (evitar repaints redundantes)
 		if (pEnt.equals(this.entidad)) return;
 		entidad = pEnt;
 
@@ -66,9 +66,7 @@ public class Casilla extends Observable{
 	 * @param pEnt
 	 */
 	public boolean ponerEntidad(TipoEntidad pEnt, int pIdEntidad){
-		estado.ponerEntidad(this, pEnt, pIdEntidad);
-		return true;
-
+		return estado.ponerEntidad(this, pEnt, pIdEntidad);
 	}
 
 	public void setIdEntidad(int pId){
