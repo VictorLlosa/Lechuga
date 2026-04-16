@@ -57,7 +57,6 @@ public class GestorPartida extends Observable {
 		//Añadir Nave
 		anadirNaves(pTipoNave);
 		//Añadir Enegmigos
-		numeroEnemigosAleatorio();
 		anadirEnemigos();
 
 		iniciarLoopJuego();
@@ -71,11 +70,9 @@ public class GestorPartida extends Observable {
 	 */
 	public void reiniciarPartida(){
 		borrarEnemigos();
-		reiniciarContadorNaves();
+		reiniciarContadorIds();
 		borrarBalas();
 		borrarNaves();
-		//reiniciarTeclas();
-		numeroEnemigosAleatorio();
 		setChanged();
 		notifyObservers("reiniciar");
 	}
@@ -188,8 +185,8 @@ public class GestorPartida extends Observable {
 	/**
 	 * LLama a naveAbstracta.reiniciarcontador naves
 	 */
-	private void reiniciarContadorNaves(){
-		ListaNaves.getListaNaves().reiniciarContadorNaves();
+	private void reiniciarContadorIds(){
+		GeneradorId.getGeneradorId().reset();
 	}
 
 

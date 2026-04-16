@@ -65,10 +65,8 @@ public class ListaBalas implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
-        for(EventoEntidad evento : listaEvent){
-            if(evento.getTipo() == TipoEntidad.bala) borrarBala(evento.getIdEntidad());
-        }
+        EventoEntidad evento = (EventoEntidad) arg;
+        if(evento.getCambio() && evento.getTipo() == TipoEntidad.bala) borrarBala(evento.getIdEntidad());
     }
 
 

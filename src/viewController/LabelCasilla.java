@@ -31,25 +31,21 @@ public class LabelCasilla extends JLabel implements Observer{
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
-		EventoEntidad[] params = (EventoEntidad[])arg;
-		for(EventoEntidad evento : params){
-			if(evento.getLabel()){
-				switch (evento.getTipo()){
-					case TipoEntidad.vacio:
-						this.setBackground(Color.BLACK);
-						break;
-					case TipoEntidad.nave:
-						this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
-						break;
-					case TipoEntidad.bala:
-						this.setBackground(Color.WHITE);
-						break;
-					case TipoEntidad.enemigo:
-						this.setBackground(Color.RED);
-						break;
+		TipoEntidad entidad = (TipoEntidad)arg;
+		switch (entidad){
+			case TipoEntidad.vacio:
+				this.setBackground(Color.BLACK);
+				break;
+			case TipoEntidad.nave:
+				this.setBackground(PantallaJuego.getPantallaJuego().getColorNave());
+				break;
+			case TipoEntidad.bala:
+				this.setBackground(Color.WHITE);
+				break;
+			case TipoEntidad.enemigo:
+				this.setBackground(Color.RED);
+				break;
 
-				}
-			}
 		}
 
 	}

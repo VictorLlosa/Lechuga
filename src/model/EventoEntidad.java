@@ -7,7 +7,7 @@ import model.Tipos.TipoEntidad;
  * Lo usamos en el update de
  */
 public class EventoEntidad {
-    private boolean label;
+    private boolean cambio;
     private TipoEntidad tipo;
     private int idEntidad;
 
@@ -17,18 +17,18 @@ public class EventoEntidad {
      * @param idEntidad
      */
     public EventoEntidad(TipoEntidad tipo, int idEntidad){
-        this.label = false;
+        this.cambio = true;
         this.tipo = tipo;
         this.idEntidad = idEntidad;
     }
 
-    public EventoEntidad(TipoEntidad tipo){
-        this.label = true;
-        this.tipo = tipo;
+    public EventoEntidad(){
+        this.cambio = false;
+        this.tipo = null;
         this.idEntidad = -1;
     }
 
     public TipoEntidad getTipo() { return tipo; }
     public int getIdEntidad() { return idEntidad; }
-    public boolean getLabel(){ return label;}
+    public boolean getCambio(){ return cambio;}
 }

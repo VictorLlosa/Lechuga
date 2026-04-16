@@ -5,6 +5,7 @@ import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
 import model.Composite.Pixel;
 import model.Balas.ListaBalas;
+import model.GeneradorId;
 import model.Strategy.*;
 import model.Tipos.TipoEntidad;
 
@@ -16,7 +17,6 @@ public abstract class NaveAbstracta {
 
     private CompositeCoordenada coord;
     private Pixel cannon;
-    private static int contadorId = 0; // Contador global para IDs
     private int id; // ID único de cada instancia
     private DisparoStrategy disparo;
     private DisparoStrategy[] strategies;
@@ -25,7 +25,8 @@ public abstract class NaveAbstracta {
     private boolean muerta;
 
     protected NaveAbstracta(){
-        this.id = contadorId++; // Asignar ID único y luego incrementar el contador
+        //TODO: id = GeneradorId.getGeneradorId().nextId();
+        id = 0;
         listaBalas = new ListaBalas();
         muerta = false;
     }
@@ -92,10 +93,6 @@ public abstract class NaveAbstracta {
         return muerta;
     }
 
-    public void reiniciarContadorNaves() {
-        contadorId = 0; // Reiniciar el contador global
-    }
-
 
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
@@ -103,8 +100,12 @@ public abstract class NaveAbstracta {
      * @param dx
      * @param dy
      */
-    public void moverNave(int dx, int dy) {
-        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id)) this.cannon.actualizarCoord(dx,dy);
+    public boolean moverNave(int dx, int dy) {
+        if(!coord.sePuedeMover(dx, dy)) return true; //Si la nave se intenta salir no se mueve pero no se borra
+        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id)){
+            this.cannon.actualizarCoord(dx,dy);
+            return true;
+        } else return false;
 
     }
 
@@ -112,7 +113,7 @@ public abstract class NaveAbstracta {
      * Metodo que llama ListaNaves el cual mueve la entidad por el espacio
      */
     public void ponerEnEspacio(){
-        coord.moverEnEspacio(0,0, TipoEntidad.nave, this.id);
+        coord.colocarEnEspacio(TipoEntidad.nave, this.id);
     }
 
     public void borrarNave(){

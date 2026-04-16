@@ -3,7 +3,6 @@ package model.Composite;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 
 
 public class CompositeCoordenada implements Coordenada {
@@ -34,18 +33,32 @@ public class CompositeCoordenada implements Coordenada {
 
 
     /**
-     * Solo mueve la entidad si la coordenada es valida
+     *
      * @param dx
      * @param dy
-     * @return Devuelve true si se ha movido, false si no.
+     * @param pEnt
+     * @param pIdEnt
+     * @return
      */
     public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
         boolean exito = true;
-        if(this.generarNuevaCoord(dx, dy).sePuedeMover()){
+        if(this.sePuedeMover(dx, dy) && !this.colisiona(dx, dy, pEnt, pIdEnt)){
+            this.borrar();
+            this.actualizarCoord(dx, dy);
+            this.colocarEnEspacio(pEnt, pIdEnt);
+
+        }else{
+            exito = false;
+        }
+        return exito;
+    }
+
+    @Override
+    public boolean colocarEnEspacio(TipoEntidad pEnt, int pIdEnt) {
+        boolean exito = true;
+        if(sePuedeMover(0,0) && !colisiona(0,0,pEnt, pIdEnt)){
             for(Coordenada coord : components){
-                if(!coord.moverEnEspacio(dx, dy, pEnt, pIdEnt)){
-                    exito = false;
-                }
+                coord.colocarEnEspacio(pEnt, pIdEnt);
             }
         }else{
             exito = false;
@@ -53,28 +66,44 @@ public class CompositeCoordenada implements Coordenada {
         return exito;
     }
 
+    @Override
+    public boolean abajo() {
+        boolean abajo = false;
+        for(Coordenada coord : components){
+            if(coord.abajo()){
+                abajo = true;
+                break;
+            }
+        }
+        return abajo;
+    }
+
+    @Override
+    public boolean colisiona(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+        boolean colisiona = false;
+        for(Coordenada coord: components){
+            if(coord.colisiona(dx, dy, pEnt, pIdEnt)){
+                colisiona = true;
+                break;
+            }
+        }
+        return colisiona;
+    }
+
     /**
      * Métoodo que devuelve un true en el caso de que se pueda mover el elemento
      * @return
      */
-    public boolean sePuedeMover(){
+    @Override
+    public boolean sePuedeMover(int dx, int dy){
         boolean sePuedeMoverEntero = true;
         for(Coordenada coord : components){
-            if(!coord.sePuedeMover()){
+            if(!coord.sePuedeMover(dx, dy)){
                 sePuedeMoverEntero = false;
                 break;
             }
         }
         return sePuedeMoverEntero;
-    }
-
-    @Override
-    public Coordenada generarNuevaCoord(int dx, int dy) {
-        CompositeCoordenada nuevas = new CompositeCoordenada();
-        for (Coordenada c : components) {
-            nuevas.addComponent(c.generarNuevaCoord(dx, dy));
-        }
-        return nuevas;
     }
 
 
@@ -88,4 +117,6 @@ public class CompositeCoordenada implements Coordenada {
             coord.borrar();
         }
     }
+
+
 }

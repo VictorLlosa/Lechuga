@@ -2,16 +2,16 @@ package model.Enemigos;
 
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
+import model.GeneradorId;
 import model.Tipos.TipoEntidad;
 
 public abstract class EnemigoAbstracto{
 
     private Coordenada coord;
-    private static int contadorId = 0; // Contador global para IDs
     private int id; // ID único de cada instancia
 
     public EnemigoAbstracto () {
-        id = contadorId++;
+        id = GeneradorId.getGeneradorId().nextId();
     }
 
     public boolean estaEn(Coordenada pCoord){
@@ -33,11 +33,15 @@ public abstract class EnemigoAbstracto{
         return coord.moverEnEspacio(0,1, TipoEntidad.enemigo, this.id);
     }
     public void ponerEnEspacio(){
-        coord.moverEnEspacio(0,0, TipoEntidad.enemigo, this.id);
+        coord.colocarEnEspacio(TipoEntidad.enemigo, this.id);
     }
 
     public void borrar() {
         coord.borrar();
+    }
+
+    public boolean haLLegadoAbajo() {
+        return coord.abajo();
     }
 }
 

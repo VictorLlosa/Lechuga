@@ -93,10 +93,8 @@ public class ListaEnemigos implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
-        for(EventoEntidad evento : listaEvent){
-            if(evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIdEntidad());
-        }
+        EventoEntidad evento = (EventoEntidad) arg;
+        if(evento.getCambio() && evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIdEntidad());
     }
 
     /**
@@ -105,17 +103,16 @@ public class ListaEnemigos implements Observer {
      * han llegado abajo y se elimina de la lista.
      */
     public void moverEnemigos() {
-        ArrayList<EnemigoAbstracto> toRemove = new ArrayList<>();
-        for(EnemigoAbstracto enem: listaEnemigos){
+        Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
+
+        while (it.hasNext()) {
+            EnemigoAbstracto enem = it.next();
             boolean exito = enem.moverEnEspacio();
+            if(enem.haLLegadoAbajo()) enemigoHaLlegadoAbajo = true;
             if (!exito) {
-                toRemove.add(enem);
-                enemigoHaLlegadoAbajo = true;
+                enem.borrar();
+                it.remove();
             }
-        }
-        for(EnemigoAbstracto enem: toRemove){
-            enem.borrar();
-            listaEnemigos.remove(enem);
         }
 
     }
@@ -124,6 +121,7 @@ public class ListaEnemigos implements Observer {
         for(EnemigoAbstracto enem: listaEnemigos){
             enem.borrar();
         }
+        borrarListaEnemigos();
     }
     public void borrarEnemigo(int pId) {
         EnemigoAbstracto enemigo = findEnemigo(pId);

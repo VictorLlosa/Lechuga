@@ -57,27 +57,15 @@ public class ListaNaves implements Observer {
         return listaNaves.size();
     }
 
-    /**
-     * En vez de eliminar la nave la marcamos como muerta. Además, eliminamos su id de listaIds
-     * para que el espacio solo itere sobre las naves vivas
-     * @param pIdNave
-     */
-    public void matarNave(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) {
-            nave.matar();
-            listaIds.remove(nave.getId());
-        }
-    }
 
-    public void borrarListaNaves() {
+    public void reniciarListaNaves() {
         listaNaves.clear();
         listaIds.clear();
     }
 
     private NaveAbstracta findNave(int idNave) {
         for (NaveAbstracta nave : listaNaves) {
-            if (nave.tienesId(idNave)) return nave;
+            if (nave.tienesId(idNave) && !nave.estaMuerta()) return nave;
         }
         return null;
     }
@@ -109,20 +97,6 @@ public class ListaNaves implements Observer {
         if(nave != null) nave.borrarBalas();
 
     }
-    /**
-     * Le llama Espacio
-     */
-    public void matarNaveEn(Coordenada pCoord) {
-        NaveAbstracta nave = this.findNaveEn(pCoord);
-        if (nave != null) this.matarNave(nave.getId());
-    }
-
-    /**
-     * Como el id de las naves es un atributo estatico basta con modificarlo en una intancia
-     */
-    public void reiniciarContadorNaves() {
-        listaNaves.getFirst().reiniciarContadorNaves();
-    }
 
     /**
      * Devuelve una lista de id's (un ArrayList de enteros), para evitar tratar las "posiciones" de las naves en la ListaNaves,
@@ -141,7 +115,13 @@ public class ListaNaves implements Observer {
      */
     public void moverNave(int pIdNave, int dx, int dy) {
         NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.moverNave(dx, dy);
+        if (nave != null){
+            if(!nave.moverNave(dx, dy)){//TODO: si se sale se muere
+                nave.borrarNave();
+                nave.matar();
+                listaIds.remove(nave.getId());
+            }
+        }
     }
 
     /**
@@ -162,10 +142,8 @@ public class ListaNaves implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad[] listaEvent = (EventoEntidad[]) arg;
-        for(EventoEntidad evento : listaEvent){
-            if(evento.getTipo() == TipoEntidad.nave) borrarNave(evento.getIdEntidad());
-        }
+        EventoEntidad evento = (EventoEntidad) arg;
+        if(evento.getCambio() && evento.getTipo() == TipoEntidad.nave) borrarNave(evento.getIdEntidad());
     }
 
     /**
@@ -181,7 +159,7 @@ public class ListaNaves implements Observer {
         for(NaveAbstracta nave: listaNaves){
             nave.borrarNave();
         }
-        borrarListaNaves();
+        reniciarListaNaves();
     }
 
     public void borrarNave(int pId) {

@@ -8,16 +8,15 @@ import java.util.ArrayList;
 public interface Coordenada {
     void actualizarCoord(int dx, int dy);
 
-    Coordenada generarNuevaCoord(int dx, int dy);
+    boolean colisiona(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
 
-
-    /**
-     * Se usa en MoverEnEspacio()
-     * @return
-     */
-    boolean sePuedeMover();
+    boolean sePuedeMover(int dx, int dy);
 
     boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
 
     void borrar();
+
+    boolean colocarEnEspacio(TipoEntidad tipoEntidad, int id);
+
+    boolean abajo();
 }

@@ -1,7 +1,10 @@
 package model.State;
 
+import model.EventoEntidad;
 import model.Tipos.TipoEntidad;
 
 public interface EstadoCasilla {
-    boolean ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad);
+    EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt);
+
+    void ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad);
 }

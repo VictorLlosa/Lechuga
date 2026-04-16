@@ -11,27 +11,36 @@ public class EstadoContieneNave implements EstadoCasilla {
      * @param pEnt
      */
     @Override
-    public boolean ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
-        boolean colision;
+    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt ) {
+        EventoEntidad evento;
         switch (pEnt) {
             case TipoEntidad.enemigo:
-                int idNave = pCasilla.getId();
+                evento = new EventoEntidad(pCasilla.getEntidad(), pCasilla.getId());
                 pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
-                pCasilla.setIdEntidad(-1);
-                //Ha habido colision, se vacia la casilla y se notifica a las listas diciendo que eliminen la nave y el enemigo
-                EventoEntidad[] arg = {new EventoEntidad(TipoEntidad.nave, idNave),
-                                        new EventoEntidad(pEnt, pIdEntidad),
-                                        new EventoEntidad(pEnt)
-                };
-                pCasilla.notificarObservers(arg);
-                colision=true;
+                pCasilla.cambiarObjeto(TipoEntidad.vacio,-1);
+            break;
+            case TipoEntidad.nave: //La nave con otra nave colisiona, pero no se elimina ninguna
+                evento = new EventoEntidad();
             break;
             default:
-                //Con bala enemigo y vacio no hay colision y queremos que
-                // la nave siempre esté por encima, solo para que se vea esteticamente
-                //Como ya habia una nave no hacemos nada.
-                colision=false;
+                evento = null;
         }
-        return !colision;
+        return evento;
+    }
+    public void ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+        switch (pEnt) {
+            case TipoEntidad.vacio:
+                break;
+            case TipoEntidad.nave:
+                pCasilla.cambiarDeEstadoA(new EstadoContieneNave());
+                pCasilla.cambiarObjeto(pEnt, pIdEntidad);
+                break;
+            case TipoEntidad.bala: //Se dibuja la nave encima de la bala
+                break;
+            case TipoEntidad.enemigo: //no va a ocurrir pero se pone
+                pCasilla.cambiarDeEstadoA(new EstadoContieneEnemigo());
+                pCasilla.cambiarObjeto(pEnt, pIdEntidad);
+                break;
+        }
     }
 }

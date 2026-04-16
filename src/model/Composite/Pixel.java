@@ -3,8 +3,6 @@ package model.Composite;
 import model.Espacio;
 import model.Tipos.TipoEntidad;
 
-import java.security.spec.ECGenParameterSpec;
-import java.util.ArrayList;
 import java.util.Objects;
 
 public class Pixel implements Coordenada {
@@ -33,11 +31,6 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public Coordenada generarNuevaCoord(int dx, int dy) {
-		return new Pixel(x + dx, y + dy);
-	}
-
-	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
 
@@ -54,19 +47,37 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public boolean sePuedeMover() {
-		return Espacio.getEspacio().esCoordenadaValida(x, y);
+	public boolean sePuedeMover(int dx, int dy) {
+		return Espacio.getEspacio().esCoordenadaValida(x+dx, y+dy);
 	}
 
 	@Override
 	public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
-		boolean exito = Espacio.getEspacio().moverEntidad(x, y, x + dx, y + dy, pEnt, pIdEnt);
-		if(exito) actualizarCoord(dx,dy);
-		return exito;
+		this.borrar();
+		this.actualizarCoord(dx, dy);
+		this.colocarEnEspacio(pEnt, pIdEnt);
+		return true;
+	}
+	@Override
+	public boolean colocarEnEspacio(TipoEntidad pEnt, int pIdEnt) {
+		Espacio.getEspacio().colocarEntidad(x, y, pEnt, pIdEnt);
+		return true;
+	}
+
+	@Override
+	public boolean abajo() {
+		return Espacio.getEspacio().abajo(y);
+	}
+
+	@Override
+	public boolean colisiona(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+		return Espacio.getEspacio().colision(x+dx,y+dy, pEnt, pIdEnt);
 	}
 
 	@Override
 	public void borrar(){
-		Espacio.getEspacio().vaciarCasilla(x,y);
+		if(Espacio.getEspacio().esCoordenadaValida(x,y)) Espacio.getEspacio().vaciarCasilla(x,y);
 	}
+
+
 }

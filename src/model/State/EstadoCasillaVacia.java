@@ -1,29 +1,30 @@
 package model.State;
 
+import model.EventoEntidad;
 import model.Tipos.TipoEntidad;
 
 public class EstadoCasillaVacia implements EstadoCasilla {
     @Override
-    public boolean ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad){
-        switch(pEnt){
-            case enemigo:
-                pCasilla.setIdEntidad(pIdEntidad);
-                pCasilla.cambiarDeEstadoA(new EstadoContieneEnemigo());
-                pCasilla.cambiarObjeto(pEnt);
+    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt){
+        return null;
+    }
+
+    @Override
+    public void ponerEntidad(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad) {
+        switch (pEnt){
+            case TipoEntidad.vacio:
+                pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
                 break;
-            case nave:
-                pCasilla.setIdEntidad(pIdEntidad);
+            case TipoEntidad.nave:
                 pCasilla.cambiarDeEstadoA(new EstadoContieneNave());
-                pCasilla.cambiarObjeto(pEnt);
                 break;
-            case bala:
-                pCasilla.setIdEntidad(pIdEntidad);
+            case TipoEntidad.bala:
                 pCasilla.cambiarDeEstadoA(new EstadoContieneBala());
-                pCasilla.cambiarObjeto(pEnt);
                 break;
-            default:
+            case TipoEntidad.enemigo:
+                pCasilla.cambiarDeEstadoA(new EstadoContieneEnemigo());
                 break;
         }
-        return true;
+        pCasilla.cambiarObjeto(pEnt, pIdEntidad);
     }
 }

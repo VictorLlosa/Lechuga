@@ -27,18 +27,19 @@ public class Casilla extends Observable{
 		this.addObserver(o);
 	}
 
-	public void cambiarObjeto(TipoEntidad pEnt) {
+	public void cambiarObjeto(TipoEntidad pEnt, int pId) {
 		// Notificar solo si el color cambia (evitar repaints redundantes)
-		if (pEnt.equals(this.entidad)) return;
+		if (pEnt.equals(this.entidad) && pId == this.idEntidad) return;
 		entidad = pEnt;
+		idEntidad = pId;
 
-		EventoEntidad[] arg = {new EventoEntidad(pEnt)};
-		setChanged();
-		notifyObservers(arg); //notifica al Observer que se ha cambiado el color
+        setChanged();
+		notifyObservers(pEnt); //notifica al Observer que se ha cambiado el color
 	}
 
 	public void vaciar() {
-		cambiarObjeto(TipoEntidad.vacio);
+		cambiarDeEstadoA(new EstadoCasillaVacia());
+		cambiarObjeto(TipoEntidad.vacio,-1);
 	}
 	public TipoEntidad getEntidad() {
 		return entidad;
@@ -53,20 +54,11 @@ public class Casilla extends Observable{
 	}
 
 	/**
-	 * Notifica a los observers con el argumento (y tb setChanged()).
-	 * @param arg es son dos tuplas [TipoEntidad.eltipo, pCasilla.getId()},{pEnt, pIdEntidad} ]
-	 */
-	public void notificarObservers (Object arg) {
-		setChanged();
-		notifyObservers(arg);
-	}
-
-	/**
-	 * Metodoo principal del patron State
 	 * @param pEnt
 	 */
-	public boolean ponerEntidad(TipoEntidad pEnt, int pIdEntidad){
-		return estado.ponerEntidad(this, pEnt, pIdEntidad);
+	public void ponerEntidad(TipoEntidad pEnt, int pIdEntidad){
+		estado.ponerEntidad(this, pEnt, pIdEntidad);
+		//Para decidir que se pinta encima de que pero TODO: No va bien
 	}
 
 	public void setIdEntidad(int pId){
@@ -74,5 +66,10 @@ public class Casilla extends Observable{
 	}
 	public int getId(){
 		return idEntidad;
+	}
+
+	public EventoEntidad colision(TipoEntidad pEnt, int pIdEntidad) {
+		if(this.idEntidad == pIdEntidad) return null;
+		return estado.colision(this, pEnt);
 	}
 }
