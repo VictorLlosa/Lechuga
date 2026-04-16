@@ -116,7 +116,7 @@ public class ListaNaves implements Observer {
     public void moverNave(int pIdNave, int dx, int dy) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null){
-            if(!nave.moverNave(dx, dy)){//TODO: si se sale se muere
+            if(!nave.moverNave(dx, dy)){
                 nave.borrarNave();
                 nave.matar();
                 listaIds.remove(nave.getId());

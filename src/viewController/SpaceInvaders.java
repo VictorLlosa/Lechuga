@@ -75,9 +75,8 @@ public class SpaceInvaders extends JFrame implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         switch ((String) arg){
-            case "repaint": //TODO quitar repaint
+            case "repaint":
                 PantallaJuego.getPantallaJuego().repaint();
-                //Controlador.getControlador().procesarMovimiento();
                 break;
             case "jugar":
                 pantallaActual = "Juego";
