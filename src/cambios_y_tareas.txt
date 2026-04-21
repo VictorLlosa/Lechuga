@@ -8,19 +8,10 @@ TAREAS
 - Hacer que controlador llame a nave para mover. Nave actualiza sus coordenadas y le dice a espacio que vacie/lene las casillas
 
 CAMBIOS
+- BOSS:
+    Tamaño mediano
+    Se mueva
+    Dispara
+    Diferentes fases (state) (diferentes modos de disparo)
 
-- ahora listabalas no es mae. Cada nave tiene las coords de las balas
-- cada vez que  vayamos a crear una nave o un enemigo. Le pasamos tambien la Casilla donde se crea
-- LabelCasilla tiene un atributo estatico que es su color
-- comprobarColisionEnemigonave devuelve un booleano que dice si ha (true) o no (false) habido colision
-- Para mover balas, iteramos sobre las ListaNaves. Sobre cada navve iteramos por las Coordenadas de sus Balas. Vaciamos la casilla donde estaba, luego le decimos a la nave
-que mueva las balas y despues volvemos a iterar sobre la lista de balas y vemos si en la posicion nueva habia un objeto antes en esa coordenada. Solo tenemos la coordenada dodne esta el enemigo
-- Entidad es un tipo enumerado, que es bala,nave,enemigo o vacio
-- hemos anadido el atributo id a Enemigo (NaveAbstracta ya lo tenia, pero se usaba mal pq se iteraba en Espacio con la posicion de la nave en lugar de el id)
-- Ahra en Espacio se itera sobre la lista de ID's (de enemigo o naves) que siguen vivos
-- Lo que se llamaba antes 'Coordenada', se llama 'Pixel' ahora
--EL COMPOSITE TIENE QUE COMPROBAR Y LUEGO MOVER. Coordenada puede ser o un CompositeCoordenada o un Pixel
-
-POR PREGUNTAR A ANDER
-- como hacemos moverEntidad
-- los disparos limitados lo hacemos con un conador o con el State?
+    (opcional) spawn enemigos

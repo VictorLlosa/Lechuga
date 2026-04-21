@@ -11,8 +11,7 @@ public abstract class BalaAbstracta{
     private Coordenada coord;
     private final int id; // ID único de cada instancia
 
-    public BalaAbstracta(Coordenada pCoordForma) {
-        this.coord = pCoordForma;
+    public BalaAbstracta() {
         id = GeneradorId.getGeneradorId().nextId();
     }
 
@@ -36,5 +35,9 @@ public abstract class BalaAbstracta{
 
     public int getId() {
         return id;
+    }
+
+    protected void setCoord(Coordenada pCoordForma) {
+        this.coord = pCoordForma;
     }
 }

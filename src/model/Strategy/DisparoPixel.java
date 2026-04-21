@@ -15,8 +15,8 @@ public class DisparoPixel implements DisparoStrategy{
      * @return Devuelve el CompositeCoordenada en la que se ha creado la bala
      */
     @Override
-    public BalaAbstracta disparar(Pixel pCoordCannon) {
-        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.pixel, pCoordCannon);
+    public BalaAbstracta disparar(int cX, int cY) {
+        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.pixel, cX, cY);
         bala.ponerEnEspacio();
         return bala;
     }

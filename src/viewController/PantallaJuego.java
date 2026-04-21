@@ -14,8 +14,8 @@ import java.awt.GridLayout;
 public class PantallaJuego extends JPanel {
 
 	private static final long serialVersionUID = 1L;
-	private final int hDim = 100 ;
-	private final int vDim = 60;
+	private final int hDim = 200 ;
+	private final int vDim = 120;
 	private final int ALTO_CASILLA = 25;
 	private final int ANCHO_CASILLA = 25;
 	private static PantallaJuego miPantallaJuego = null;
@@ -29,6 +29,7 @@ public class PantallaJuego extends JPanel {
 		setLayout(new GridLayout(vDim,hDim));
 		matrizLabels = new LabelCasilla[hDim][vDim];
 		this.addKeyListener(Controlador.getControlador());
+		setPreferredSize(new Dimension(hDim, vDim));
 		// Crear y configurar todas las casillas
 		// Se itera primero por j (filas del GridLayout) y luego por i (columnas del GridLayout)
 		// para que la posición visual coincida con la matriz [i][j]
@@ -75,5 +76,6 @@ public class PantallaJuego extends JPanel {
 	public Color getColorNave() {
 		return colorNave;
 	}
+
 }
 

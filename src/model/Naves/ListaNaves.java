@@ -2,8 +2,8 @@ package model.Naves;
 
 import model.Balas.ListaBalas;
 import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
 import model.ColisionEvent;
+import model.Composite.Coordenada;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
@@ -46,7 +46,7 @@ public class ListaNaves implements Observer {
      * @param cY
      * @return
      */
-    public CompositeCoordenada anadirNave(TipoNave pTipo, int cX, int cY) {
+    public Coordenada anadirNave(TipoNave pTipo, int cX, int cY) {
         NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, cX, cY);
         listaNaves.add(nave);
         listaIds.add(nave.getId());
@@ -70,17 +70,6 @@ public class ListaNaves implements Observer {
         return null;
     }
 
-    private NaveAbstracta findNaveEn(Coordenada pCoord) {
-        for (NaveAbstracta nave : listaNaves) {
-            if (nave.estasEn(pCoord)) return nave;
-        }
-        return null;
-    }
-
-    public boolean existeNave(int idNave) {
-        return listaIds.contains(idNave);
-    }
-
     public void alternarModoDisparo(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if(nave != null) nave.changeStrategy();
@@ -91,7 +80,7 @@ public class ListaNaves implements Observer {
             nave.moverBalas();
         }
     }
-
+/*
     public void borrarBalasNave(int pIdNave) {
         NaveAbstracta nave = findNave(pIdNave);
         if(nave != null) nave.borrarBalas();
@@ -102,10 +91,12 @@ public class ListaNaves implements Observer {
      * Devuelve una lista de id's (un ArrayList de enteros), para evitar tratar las "posiciones" de las naves en la ListaNaves,
      * y asi las tratamos por su id directamente
      * @return
-     */
+
     public ArrayList<Integer> getListaIds() {
         return listaIds;
     }
+    */
+
 
     /**
      * Se usa en Espacio para mover la nave a las coordenadas seleccionadas. Actualiza cada coordenada que compone a la nave

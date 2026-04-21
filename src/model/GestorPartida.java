@@ -77,11 +77,15 @@ public class GestorPartida extends Observable {
 		notifyObservers(TipoEventoJuego.REINICIAR);
 	}
 
+	/**
+	 * esFinPartida SOLO comprueba que no haya naves.
+	 */
 	private void iniciarLoopJuego() {
 		if (gameTimer == null) {
 			gameTimer = new Timer(gameDelay, e -> {
-
-				if (esFinPartida()) {
+				if (entrarFaseBoss()) {//TODO: HACER CON STATE
+					ListaEnemigos.getListaEnemigos().anadirEnemigo(50, 10, TipoEnem.boss);
+				}else if(esFinPartida()) {
 					detenerGameTimer();
 					setChanged();
 					notifyObservers(estadoFinal);
@@ -92,6 +96,14 @@ public class GestorPartida extends Observable {
 			gameTimer.setInitialDelay(0);
 			gameTimer.start();
 		}
+	}
+
+	/**
+	 * Lo usamos en el iniciarLoopJuego()
+	 * @return devuelve si quedan enemigos.
+	 */
+	private boolean entrarFaseBoss() {
+		return !ListaEnemigos.getListaEnemigos().quedanEnemigos();
 	}
 
 	private void LoopJuego() {
@@ -166,6 +178,7 @@ public class GestorPartida extends Observable {
 		else if(!ListaNaves.getListaNaves().quedanNaves() || Espacio.getEspacio().enemigoGana()){
 			estadoFinal = TipoEventoJuego.PERDIDO;
 			return true;
+
 		}else{
 			return false;
 		}

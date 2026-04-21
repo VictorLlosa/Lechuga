@@ -15,11 +15,11 @@ public class DisparoRombo implements DisparoStrategy{
      * @return Devuelve el CompositeCoordenada en la que se ha creado la bala
      */
     @Override
-    public BalaAbstracta disparar(Pixel pCoordCannon){
+    public BalaAbstracta disparar(int cX, int cY){
         municion--;
         if(municion<0) return null;
         else {
-            BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, pCoordCannon);
+            BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, cX, cY);
             bala.ponerEnEspacio();
             return bala;
         }

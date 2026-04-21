@@ -1,5 +1,5 @@
 package model.Tipos;
 
 public enum TipoEnem {
-    normal
+    normal, boss
 }

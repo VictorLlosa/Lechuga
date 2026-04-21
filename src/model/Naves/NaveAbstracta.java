@@ -15,7 +15,7 @@ import model.Tipos.TipoEntidad;
  */
 public abstract class NaveAbstracta {
 
-    private CompositeCoordenada coord;
+    private Coordenada coord;
     private Pixel cannon;
     private int id; // ID único de cada instancia
     private DisparoStrategy disparo;
@@ -31,30 +31,17 @@ public abstract class NaveAbstracta {
         muerta = false;
     }
 
-
-    protected CompositeCoordenada getCoord() {
-        return coord;
-    }
-
-    protected Pixel getCannon() {
-        return cannon;
-    }
-
     /**
      * Le decimos a la estrategia actual que dispare. Si ha podido disparar, añadimo la bala a listaBalas.
      * @return El composite de la bala o null si no se ha podido disparar.
      */
     public void disparar(){
-        BalaAbstracta bala = disparo.disparar(cannon);
+        BalaAbstracta bala = disparo.disparar(cannon.getX(), cannon.getY());
         if(bala != null) listaBalas.anadirBala(bala);
     }
 
     public boolean tienesId(int idNave) {
         return this.id == idNave;
-    }
-
-    public boolean estasEn(Coordenada pCoord) {
-        return coord.equals(pCoord);
     }
 
     public void changeStrategy(){
@@ -119,7 +106,7 @@ public abstract class NaveAbstracta {
     public void borrarNave(){
         coord.borrar();
     }
-    public CompositeCoordenada getForma() {
+    public Coordenada getForma() {
         return coord;
     }
 
@@ -129,7 +116,7 @@ public abstract class NaveAbstracta {
         disparo = strategies[stratAct];
     }
 
-    protected void setCoord(CompositeCoordenada pCoordForma) {
+    protected void setCoord(Coordenada pCoordForma) {
         this.coord = pCoordForma;
     }
 

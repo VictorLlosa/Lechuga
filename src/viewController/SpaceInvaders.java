@@ -53,10 +53,10 @@ public class SpaceInvaders extends JFrame implements Observer {
         contenedor.add(panelJuego, EstadoPantalla.JUEGO.getCardName());
         contenedor.add(panelFin, EstadoPantalla.FIN.getCardName());
 
-        setResizable(false);
+
+        setResizable(true);
         // Agregar contenedor a la ventana
         getContentPane().add(contenedor);
-
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
         GestorPartida.getGestorPartida().asignarObserver(this);
@@ -87,7 +87,6 @@ public class SpaceInvaders extends JFrame implements Observer {
                 PantallaJuego.getPantallaJuego().setFocusable(true);
                 PantallaJuego.getPantallaJuego().requestFocusInWindow();
                 break;
-
             case PERDIDO:
                 PantallaFin.getPantallaFin().setPerdido();
                 pantallaActual = EstadoPantalla.FIN;
@@ -99,6 +98,7 @@ public class SpaceInvaders extends JFrame implements Observer {
                 PantallaFin.getPantallaFin().setFocusable(true);
                 PantallaFin.getPantallaFin().requestFocusInWindow();
                 break;
+
             case GANADO:
                 PantallaFin.getPantallaFin().setGanado();
                 pantallaActual = EstadoPantalla.FIN;

@@ -1,10 +1,7 @@
 package model.Factorias;
-import model.Balas.Bala;
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
 import model.Enemigos.Enemigo;
 import model.Enemigos.EnemigoAbstracto;
-import model.Tipos.TipoBala;
+import model.Enemigos.EnemigoBoss;
 import model.Tipos.TipoEnem;
 
 
@@ -22,12 +19,7 @@ public class FactoriaEnemigo {
         return miFactoriaEnemigo;
     }
 
-    /**
-     * //TODO poner niveles de enemigos
-     * @param pTipo tipo enumerado, tipo de enemigo
-     * @param pCoordCentro es el centro del Enemigo
-     * @return
-     */
+
     public EnemigoAbstracto generar(TipoEnem pTipo, int cX, int cY){
         EnemigoAbstracto enem;
 
@@ -35,7 +27,9 @@ public class FactoriaEnemigo {
             case TipoEnem.normal:
                 enem = new Enemigo(cX, cY);
                 break;
-
+            case TipoEnem.boss:
+                enem = new EnemigoBoss(cX, cY);
+                break;
             default: throw new IllegalArgumentException();
         }
         return enem;

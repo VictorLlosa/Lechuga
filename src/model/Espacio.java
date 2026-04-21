@@ -12,8 +12,8 @@ import java.util.*;
 public class Espacio extends Observable{
 
 	private static Espacio miEspacio;
-	private final int hDim = 100;
-	private final int vDim = 60;
+	private final int hDim = 200;
+	private final int vDim = 120;
 
 	private final Casilla[][] matriz;
 

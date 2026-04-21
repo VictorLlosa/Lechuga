@@ -9,5 +9,5 @@ import model.Composite.Pixel;
  * como podria ser poner un color por defecto a las balas o valores ctes.
  */
 public interface DisparoStrategy {
-    public BalaAbstracta disparar(Pixel pCoordCannon);
+    public BalaAbstracta disparar(int cX, int cY);
 }

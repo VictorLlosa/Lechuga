@@ -21,69 +21,30 @@ public class FactoriaBala
     }
 
     /**
-     * Aquí se les da forma a las balas, con coordForma
+     *
      * @param pTipo
-     * @param pCoordCentro
+     * @param cX
+     * @param cY
      * @return
      */
-    public BalaAbstracta generar(TipoBala pTipo, Pixel pCoordCentro){
+    public BalaAbstracta generar(TipoBala pTipo, int cX, int cY){
         BalaAbstracta b;
 
         switch(pTipo){
             case TipoBala.pixel:
-                b = new Bala(crearFormaBalaPixel(pCoordCentro));
+                b = new BalaPixel(cX, cY);
                 break;
             case TipoBala.flecha:
 
-                b = new Bala(crearFormaBalaFlecha(pCoordCentro));
+                b = new BalaFlecha(cX, cY);
                 break;
             case TipoBala.rombo:
 
-                b = new Bala(crearFormaBalaRombo(pCoordCentro));
+                b = new BalaRombo(cX, cY);
                 break;
             default: throw new IllegalArgumentException();
         }
         return b;
     }
 
-    /**
-     * Añadimos las componentes que forman la bala
-     * @param pCentro
-     * @return
-     */
-    private CompositeCoordenada crearFormaBalaPixel(Pixel pCentro){
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        int cX = pCentro.getX();
-        int cY = pCentro.getY();
-        coordForma.addComponent(new Pixel(cX, cY));
-        return coordForma;
-    }
-    private CompositeCoordenada crearFormaBalaFlecha(Pixel pCentro){
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        int cX = pCentro.getX();
-        int cY = pCentro.getY();
-        coordForma.addComponent(new Pixel(cX, cY - 2));
-        coordForma.addComponent(new Pixel(cX - 1, cY - 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
-        return coordForma;
-    }
-    private CompositeCoordenada crearFormaBalaRombo(Pixel pCentro){
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        int cX = pCentro.getX();
-        int cY = pCentro.getY();
-        coordForma.addComponent(new Pixel(cX, cY - 3));
-        coordForma.addComponent(new Pixel(cX,cY - 4 )); //arriba
-        coordForma.addComponent(new Pixel(cX,cY - 2)); //abajo
-        coordForma.addComponent(new Pixel(cX + 1,cY - 3)); //derecha
-        coordForma.addComponent(new Pixel(cX - 1,cY - 3)); //izquierda
-        coordForma.addComponent(new Pixel(cX - 1,cY - 4)); //esquina noroeste
-        coordForma.addComponent(new Pixel(cX + 1,cY - 4)); //esquina noreste
-        coordForma.addComponent(new Pixel(cX + 1,cY - 2)); //esquina sudeste
-        coordForma.addComponent(new Pixel(cX - 1,cY - 2)); //esquina suroeste
-        coordForma.addComponent(new Pixel(cX,cY - 5)); //punta superior
-        coordForma.addComponent(new Pixel(cX,cY - 1)); //punta inferior
-        coordForma.addComponent(new Pixel(cX - 2,cY - 3)); //punta izquierda
-        coordForma.addComponent(new Pixel(cX + 2,cY - 3)); //punta derecha
-        return coordForma;
-    }
 }

@@ -3,7 +3,10 @@ package viewController;
 public enum EstadoPantalla {
     INICIO("Inicio"),
     JUEGO("Juego"),
-    FIN("Fin");
+    FIN("Fin"),
+    BOSS("Boss");
+
+
 
     private final String cardName;
 
