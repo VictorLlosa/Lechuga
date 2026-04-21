@@ -1,6 +1,6 @@
 package model.State;
 
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 import java.util.Observable;
 import java.util.Observer;
@@ -68,7 +68,7 @@ public class Casilla extends Observable{
 		return idEntidad;
 	}
 
-	public EventoEntidad colision(TipoEntidad pEnt, int pIdEntidad) {
+	public ColisionEvent colision(TipoEntidad pEnt, int pIdEntidad) {
 		if(this.idEntidad == pIdEntidad) return null;
 		return estado.colision(this, pEnt);
 	}

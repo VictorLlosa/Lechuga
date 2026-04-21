@@ -1,6 +1,6 @@
 package model.State;
 
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 
 public class EstadoContieneBala implements EstadoCasilla {
@@ -11,11 +11,11 @@ public class EstadoContieneBala implements EstadoCasilla {
      * @return si se ha movido (true)
      */
     @Override
-    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt){
-        EventoEntidad evento;
+    public ColisionEvent colision(Casilla pCasilla, TipoEntidad pEnt){
+        ColisionEvent evento;
         switch (pEnt) {
             case TipoEntidad.enemigo:
-                evento = new EventoEntidad(pCasilla.getEntidad(), pCasilla.getId());
+                evento = new ColisionEvent(pCasilla.getEntidad(), pCasilla.getId());
             break;
             //en caso de casilla vacia, nave y bala no se hace nada
             default:

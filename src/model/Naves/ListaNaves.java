@@ -3,7 +3,7 @@ package model.Naves;
 import model.Balas.ListaBalas;
 import model.Composite.CompositeCoordenada;
 import model.Composite.Coordenada;
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
@@ -142,7 +142,7 @@ public class ListaNaves implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad evento = (EventoEntidad) arg;
+        ColisionEvent evento = (ColisionEvent) arg;
         if(evento.getCambio() && evento.getTipo() == TipoEntidad.nave) borrarNave(evento.getIdEntidad());
     }
 

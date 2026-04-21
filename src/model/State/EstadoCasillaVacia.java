@@ -1,11 +1,11 @@
 package model.State;
 
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 
 public class EstadoCasillaVacia implements EstadoCasilla {
     @Override
-    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt){
+    public ColisionEvent colision(Casilla pCasilla, TipoEntidad pEnt){
         return null;
     }
 

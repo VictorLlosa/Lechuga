@@ -57,7 +57,7 @@ public class Espacio extends Observable{
 	}
 
 	public boolean colision(int x, int y, TipoEntidad pEnt, int pIdEntidad) {
-		EventoEntidad evento = matriz[x][y].colision(pEnt, pIdEntidad);
+		ColisionEvent evento = matriz[x][y].colision(pEnt, pIdEntidad);
 		if(evento != null){
 			setChanged();
 			notifyObservers(evento);

@@ -1,7 +1,6 @@
 package model.State;
 
-import model.EventoEntidad;
-import model.Tipos.TipoEnem;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 
 public class EstadoContieneNave implements EstadoCasilla {
@@ -11,16 +10,16 @@ public class EstadoContieneNave implements EstadoCasilla {
      * @param pEnt
      */
     @Override
-    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt ) {
-        EventoEntidad evento;
+    public ColisionEvent colision(Casilla pCasilla, TipoEntidad pEnt ) {
+        ColisionEvent evento;
         switch (pEnt) {
             case TipoEntidad.enemigo:
-                evento = new EventoEntidad(pCasilla.getEntidad(), pCasilla.getId());
+                evento = new ColisionEvent(pCasilla.getEntidad(), pCasilla.getId());
                 pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
                 pCasilla.cambiarObjeto(TipoEntidad.vacio,-1);
             break;
             case TipoEntidad.nave: //La nave con otra nave colisiona, pero no se elimina ninguna
-                evento = new EventoEntidad();
+                evento = new ColisionEvent();
             break;
             default:
                 evento = null;

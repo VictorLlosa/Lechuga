@@ -1,11 +1,9 @@
 package model.Balas;
 
-import model.Enemigos.EnemigoAbstracto;
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -65,7 +63,7 @@ public class ListaBalas implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad evento = (EventoEntidad) arg;
+        ColisionEvent evento = (ColisionEvent) arg;
         if(evento.getCambio() && evento.getTipo() == TipoEntidad.bala) borrarBala(evento.getIdEntidad());
     }
 

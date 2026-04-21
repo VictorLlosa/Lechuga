@@ -1,9 +1,9 @@
 package model;
 
-import model.Composite.Pixel;
 import model.Enemigos.ListaEnemigos;
 import model.Naves.ListaNaves;
 import model.Tipos.TipoEnem;
+import model.Tipos.TipoEventoJuego;
 import model.Tipos.TipoNave;
 
 import java.util.Observable;
@@ -27,7 +27,7 @@ public class GestorPartida extends Observable {
 									// evita conflictos de concurrencia)
 	private final int gameDelay = 10; // ms
 
-	private String estadoFinal = "";
+	private TipoEventoJuego estadoFinal;
 
 	// contador general para controlar acciones periódicas (movimiento enemigos, balas, etc.)
 	private int contadorAcciones = 0;
@@ -62,7 +62,7 @@ public class GestorPartida extends Observable {
 		iniciarLoopJuego();
 
 		setChanged();
-		notifyObservers("jugar");
+		notifyObservers(TipoEventoJuego.JUGAR);
 	}
 
 	/**
@@ -74,7 +74,7 @@ public class GestorPartida extends Observable {
 		borrarBalas();
 		borrarNaves();
 		setChanged();
-		notifyObservers("reiniciar");
+		notifyObservers(TipoEventoJuego.REINICIAR);
 	}
 
 	private void iniciarLoopJuego() {
@@ -98,7 +98,7 @@ public class GestorPartida extends Observable {
 		contadorAcciones++;
 		if(contadorAcciones % 3 == 0) { // 30 ms
 			setChanged();
-			notifyObservers("repaint");
+			notifyObservers(TipoEventoJuego.REPAINT);
 		}
 		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
 		if (contadorAcciones % 5 == 0) { // 50 ms
@@ -160,11 +160,11 @@ public class GestorPartida extends Observable {
 	 */
 	private boolean esFinPartida() {
 		if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
-			estadoFinal = "ganado";
+			estadoFinal = TipoEventoJuego.GANADO;
 			return true;
 		}
 		else if(!ListaNaves.getListaNaves().quedanNaves() || Espacio.getEspacio().enemigoGana()){
-			estadoFinal = "perdido";
+			estadoFinal = TipoEventoJuego.PERDIDO;
 			return true;
 		}else{
 			return false;

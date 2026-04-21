@@ -1,6 +1,6 @@
 package model.Enemigos;
 
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Factorias.FactoriaEnemigo;
 import model.Tipos.TipoEnem;
 import model.Tipos.TipoEntidad;
@@ -93,7 +93,7 @@ public class ListaEnemigos implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        EventoEntidad evento = (EventoEntidad) arg;
+        ColisionEvent evento = (ColisionEvent) arg;
         if(evento.getCambio() && evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIdEntidad());
     }
 

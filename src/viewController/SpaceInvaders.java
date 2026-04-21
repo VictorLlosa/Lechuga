@@ -1,6 +1,7 @@
 package viewController;
 
 import model.GestorPartida;
+import model.Tipos.TipoEventoJuego;
 
 import java.awt.*;
 import java.util.Observable;
@@ -13,7 +14,7 @@ public class SpaceInvaders extends JFrame implements Observer {
 	private CardLayout cardLayout;
     private JPanel contenedor;
     private static SpaceInvaders miSpace=null;
-    String pantallaActual;
+    private EstadoPantalla pantallaActual;
 
 
     static void main(String[] args) {
@@ -48,9 +49,9 @@ public class SpaceInvaders extends JFrame implements Observer {
         JPanel panelFin = PantallaFin.getPantallaFin();
 
         // Agregar paneles al contenedor
-        contenedor.add(panelInicio, "Inicio");
-        contenedor.add(panelJuego, "Juego");
-        contenedor.add(panelFin, "Fin");
+        contenedor.add(panelInicio, EstadoPantalla.INICIO.getCardName());
+        contenedor.add(panelJuego, EstadoPantalla.JUEGO.getCardName());
+        contenedor.add(panelFin, EstadoPantalla.FIN.getCardName());
 
         setResizable(false);
         // Agregar contenedor a la ventana
@@ -60,9 +61,8 @@ public class SpaceInvaders extends JFrame implements Observer {
         pack(); // Ajustar tamaño automáticamente basándose en getPreferredSize()
         GestorPartida.getGestorPartida().asignarObserver(this);
         setVisible(true);
-        this.
 
-        pantallaActual = "Inicio";
+        pantallaActual = EstadoPantalla.INICIO;
 
         PantallaInicio.getPantallaInicio().setFocusable(true);
         PantallaInicio.getPantallaInicio().requestFocusInWindow();
@@ -74,13 +74,13 @@ public class SpaceInvaders extends JFrame implements Observer {
      */
     @Override
     public void update(Observable o, Object arg) {
-        switch ((String) arg){
-            case "repaint":
+        switch ((TipoEventoJuego) arg){
+            case REPAINT:
                 PantallaJuego.getPantallaJuego().repaint();
                 break;
-            case "jugar":
-                pantallaActual = "Juego";
-                cardLayout.show(contenedor, "Juego");
+            case JUGAR:
+                pantallaActual = EstadoPantalla.JUEGO;
+                cardLayout.show(contenedor, pantallaActual.getCardName());
                 contenedor.revalidate();
                 contenedor.repaint();
 
@@ -88,32 +88,32 @@ public class SpaceInvaders extends JFrame implements Observer {
                 PantallaJuego.getPantallaJuego().requestFocusInWindow();
                 break;
 
-            case "perdido":
+            case PERDIDO:
                 PantallaFin.getPantallaFin().setPerdido();
-                pantallaActual = "Fin";
+                pantallaActual = EstadoPantalla.FIN;
 
-                cardLayout.show(contenedor, "Fin");
+                cardLayout.show(contenedor, pantallaActual.getCardName());
                 contenedor.revalidate();
                 contenedor.repaint();
 
                 PantallaFin.getPantallaFin().setFocusable(true);
                 PantallaFin.getPantallaFin().requestFocusInWindow();
                 break;
-            case "ganado":
+            case GANADO:
                 PantallaFin.getPantallaFin().setGanado();
-                pantallaActual = "Fin";
+                pantallaActual = EstadoPantalla.FIN;
 
-                cardLayout.show(contenedor, "Fin");
+                cardLayout.show(contenedor, pantallaActual.getCardName());
                 contenedor.revalidate();
                 contenedor.repaint();
 
                 PantallaFin.getPantallaFin().setFocusable(true);
                 PantallaFin.getPantallaFin().requestFocusInWindow();
                 break;
-            case "reiniciar":
-                pantallaActual = "Inicio";
+            case REINICIAR:
+                pantallaActual = EstadoPantalla.INICIO;
 
-                cardLayout.show(contenedor,"Inicio");
+                cardLayout.show(contenedor, pantallaActual.getCardName());
                 contenedor.revalidate();
                 contenedor.repaint();
 
@@ -123,5 +123,9 @@ public class SpaceInvaders extends JFrame implements Observer {
             default:
 
         }
+    }
+
+    public EstadoPantalla getPantallaActual() {
+        return pantallaActual;
     }
 }

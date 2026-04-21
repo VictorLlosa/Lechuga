@@ -1,6 +1,5 @@
 package viewController;
 
-import model.EventoEntidad;
 import model.Tipos.TipoEntidad;
 
 import java.awt.*;

@@ -66,25 +66,25 @@ public class Controlador implements KeyListener {
 	}
 
 	/**
-	 * Tratamos todas las acciones de las teclas. Desde SpaceInvaders le llamamos en su metodo 'update' de Observer, al metodo setPantallaActual,
-	 * para cambiar el atributo de Controlador de "pantallaActual". Lo usamos de forma parecida a una maquina de estados, donde dependiendo de que
+	 * Tratamos todas las acciones de las teclas según el estado de pantalla actual.
+	 * Lo usamos de forma parecida a una maquina de estados, donde dependiendo de que
 	 * estado (pantalla actual) tengamos activa, "activaremos o desactivaremos" una serie de teclas
 	 */
 	@Override
 	public void keyPressed(KeyEvent e) {
-		switch (SpaceInvaders.getSpaceInvaders().pantallaActual) {
-			case("Inicio"):
+		switch (SpaceInvaders.getSpaceInvaders().getPantallaActual()) {
+			case INICIO:
 				//ENTER
 				if (e.getKeyCode() == KeyEvent.VK_ENTER){
 					GestorPartida.getGestorPartida().iniciarPartida(tipoNave);
 				}
 			break;
-			case("Juego"):
+			case JUEGO:
 				if(e.getKeyCode() == KeyEvent.VK_M)
 					ListaNaves.getListaNaves().alternarModoDisparo(0);
 					else setTecla(e.getKeyCode(),true);
 			break;
-			case("Fin"):
+			case FIN:
 				if (e.getKeyCode() == KeyEvent.VK_R){
 					GestorPartida.getGestorPartida().reiniciarPartida();
 					reiniciarTeclas();
@@ -109,7 +109,7 @@ public class Controlador implements KeyListener {
 	 */
 	@Override
 	public void keyReleased(KeyEvent e) {
-		if (SpaceInvaders.getSpaceInvaders().pantallaActual.equals("Juego")) {
+		if (SpaceInvaders.getSpaceInvaders().getPantallaActual() == EstadoPantalla.JUEGO) {
 			setTecla(e.getKeyCode(), false);
 		}
 

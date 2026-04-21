@@ -1,16 +1,16 @@
 package model.State;
 
-import model.EventoEntidad;
+import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
 
 public class EstadoContieneEnemigo implements EstadoCasilla {
     @Override
-    public EventoEntidad colision(Casilla pCasilla, TipoEntidad pEnt) {
-        EventoEntidad evento;
+    public ColisionEvent colision(Casilla pCasilla, TipoEntidad pEnt) {
+        ColisionEvent evento;
         switch (pEnt) {
             case TipoEntidad.bala://Tanto con bala y nave pasa lo mismo
             case TipoEntidad.nave:
-                evento = new EventoEntidad(pCasilla.getEntidad(), pCasilla.getId());
+                evento = new ColisionEvent(pCasilla.getEntidad(), pCasilla.getId());
                 pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());
                 pCasilla.cambiarObjeto(TipoEntidad.vacio, -1);
             break;
