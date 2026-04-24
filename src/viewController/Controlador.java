@@ -39,7 +39,7 @@ public class Controlador implements KeyListener {
 	 * >= a la CADENCIA, dispararemos automaticamente.
 	 */
 	private Controlador() {
-		timer = new Timer(40, e -> {
+		timer = new Timer(10, e -> { //delay antes en 40, ahora en 10
 			procesarMovimientoNave();
 			if (spacePressed) {
 				contDisparo++;

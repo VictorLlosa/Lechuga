@@ -108,15 +108,15 @@ public class GestorPartida extends Observable {
 
 	private void LoopJuego() {
 		contadorAcciones++;
-		if(contadorAcciones % 3 == 0) { // 30 ms
+		if(contadorAcciones % 3/6 == 0) { // 30 ms  //CAMBIADO de % 3 == 0 a % 1 == 0
 			setChanged();
 			notifyObservers(TipoEventoJuego.REPAINT);
 		}
 		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
-		if (contadorAcciones % 5 == 0) { // 50 ms
+		if (contadorAcciones % 5/6 == 0) { // 50 ms //ahora tb esta cambiado (diferente a 50ms)
 			ListaNaves.getListaNaves().moverBalas();
 		}
-		if (contadorAcciones % 20 == 0) { // 200 ms
+		if (contadorAcciones % 20/2 == 0) { // 200 ms //(lo mismo)
 			ListaEnemigos.getListaEnemigos().moverEnemigos();
 			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
