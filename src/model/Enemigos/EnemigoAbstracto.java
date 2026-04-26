@@ -1,26 +1,25 @@
 package model.Enemigos;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
+import model.CompositeCoordenada.Coordenada;
 import model.GeneradorId;
 import model.Tipos.TipoEntidad;
 
 public abstract class EnemigoAbstracto{
 
     private Coordenada coord;
-    private int id; // ID único de cada instancia
+    private final int id; // ID único de cada instancia
+    private boolean muerto = false;
 
     public EnemigoAbstracto () {
         id = GeneradorId.getGeneradorId().nextId();
     }
 
-    public boolean estaEn(Coordenada pCoord){
-        return coord.equals(pCoord);
-    }
-
-    public Integer getId() {
+    int getId() {
         return id;
     }
+
+    Coordenada getCoord() {return coord;}
+
 
     protected void setCoord(Coordenada pCoordForma) {
         this.coord = pCoordForma;
@@ -29,19 +28,32 @@ public abstract class EnemigoAbstracto{
     /**
      * Se usa para mover los enemigos para abajo cada cierto tiempo. Si el movimiento es valido, actualizar la posicion
      */
-    public boolean moverEnEspacio() {
-        return coord.moverEnEspacio(0,1, TipoEntidad.enemigo, this.id);
+    public void moverEnEspacio() {
+        coord.moverEnEspacio(0,1, TipoEntidad.enemigo, this.id);
     }
     public void ponerEnEspacio(){
         coord.colocarEnEspacio(TipoEntidad.enemigo, this.id);
     }
 
-    public void borrar() {
+    public void borrar(){
         coord.borrar();
     }
 
     public boolean haLLegadoAbajo() {
-        return coord.abajo();
+        return !coord.sePuedeMover(0, 1);
+    }
+
+    /**
+     * Lo usamos en el update de ListaEnemigos
+     */
+    public void lethalHit(){
+        this.muerto = true;
+    }
+    public boolean estaMuerto(){
+        return this.muerto;
+    }
+    public void matar(){
+        this.muerto = true;
     }
 }
 

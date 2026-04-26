@@ -1,4 +1,4 @@
-package model.Composite;
+package model.CompositeCoordenada;
 
 import model.Tipos.TipoEntidad;
 
@@ -40,17 +40,12 @@ public class CompositeCoordenada implements Coordenada {
      * @param pIdEnt
      * @return
      */
-    public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
-        boolean exito = true;
+    public void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
         if(this.sePuedeMover(dx, dy) && !this.colisiona(dx, dy, pEnt, pIdEnt)){
             this.borrar();
             this.actualizarCoord(dx, dy);
             this.colocarEnEspacio(pEnt, pIdEnt);
-
-        }else{
-            exito = false;
         }
-        return exito;
     }
 
     @Override
@@ -64,18 +59,6 @@ public class CompositeCoordenada implements Coordenada {
             exito = false;
         }
         return exito;
-    }
-
-    @Override
-    public boolean abajo() {
-        boolean abajo = false;
-        for(Coordenada coord : components){
-            if(coord.abajo()){
-                abajo = true;
-                break;
-            }
-        }
-        return abajo;
     }
 
     @Override

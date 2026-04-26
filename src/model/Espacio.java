@@ -3,7 +3,7 @@ package model;
 import model.Balas.ListaBalas;
 import model.Enemigos.ListaEnemigos;
 import model.Naves.ListaNaves;
-import model.State.Casilla;
+import model.StateCasilla.Casilla;
 import model.Tipos.TipoEntidad;
 
 import java.util.*;
@@ -26,9 +26,6 @@ public class Espacio extends Observable{
 		}
 		addObserver(ListaEnemigos.getListaEnemigos());
 		addObserver(ListaNaves.getListaNaves());
-		for(ListaBalas lb : ListaNaves.getListaNaves().getListaBalas()){
-			addObserver(lb);
-		}//TODO: VER SI HAY FORMA MEJOR de hacerlo sin hacer u getter de listabalas
 	}
 	public static Espacio getEspacio() {
 		if (miEspacio == null) {
@@ -57,7 +54,7 @@ public class Espacio extends Observable{
 	}
 
 	public boolean colision(int x, int y, TipoEntidad pEnt, int pIdEntidad) {
-		ColisionEvent evento = matriz[x][y].colision(pEnt, pIdEntidad);
+		ArrayList<ColisionEvent> evento = matriz[x][y].colision(pEnt, pIdEntidad);
 		if(evento != null){
 			setChanged();
 			notifyObservers(evento);
@@ -82,11 +79,23 @@ public class Espacio extends Observable{
 	public void colocarEntidad(int actX, int actY, TipoEntidad pEnt, int pIdEntidad){
 		matriz[actX][actY].ponerEntidad(pEnt, pIdEntidad);
 	}
+
+	/**
+	 * Solo vacia la casilla (pone una Entidad de "vacio" en esa casilla) si en la casilla esta la misma entidad que quieres
+	 * que desaparezca. P.ej: Si una bala esta debajo de una nave y la bala se mueve,
+	 * al vaciar la posicion anterior de la bala, no se pone vacio, porque la casilla contiene nave (aunque haya
+	 * una nave y bala a la vez)
+	 */
 	public void vaciarCasilla(int x, int y){
 		matriz[x][y].vaciar();
 	}
 
 	public boolean abajo(int y) {
 		return y >= vDim;
+	}
+
+	public void borrarEntidadesMuertas() {
+		ListaEnemigos.getListaEnemigos().borrarMuertos();
+		ListaNaves.getListaNaves().borrarMuertos();
 	}
 }

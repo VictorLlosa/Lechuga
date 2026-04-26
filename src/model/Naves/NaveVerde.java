@@ -1,13 +1,10 @@
 package model.Naves;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
-import model.Espacio;
+import model.CompositeCoordenada.CompositeCoordenada;
+import model.CompositeCoordenada.Pixel;
 import model.Strategy.DisparoPixel;
 import model.Strategy.DisparoFlecha;
 import model.Strategy.DisparoStrategy;
-
-import java.util.Observable;
 
 public class NaveVerde extends NaveAbstracta {
     public NaveVerde(int cX, int cY){

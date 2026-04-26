@@ -1,7 +1,6 @@
 package model.Strategy;
 
 import model.Balas.BalaAbstracta;
-import model.Composite.Pixel;
 import model.Factorias.FactoriaBala;
 import model.Tipos.TipoBala;
 

@@ -1,8 +1,6 @@
 package model.Factorias;
-import model.Enemigos.Enemigo;
-import model.Enemigos.EnemigoAbstracto;
-import model.Enemigos.EnemigoBoss;
-import model.Tipos.TipoEnem;
+import model.Enemigos.*;
+import model.Tipos.TipoEntidad;
 
 
 public class FactoriaEnemigo {
@@ -20,15 +18,18 @@ public class FactoriaEnemigo {
     }
 
 
-    public EnemigoAbstracto generar(TipoEnem pTipo, int cX, int cY){
+    public EnemigoAbstracto generar(TipoEntidad pTipo, int cX, int cY){
         EnemigoAbstracto enem;
 
         switch(pTipo){
-            case TipoEnem.normal:
+            case TipoEntidad.enemigo:
                 enem = new Enemigo(cX, cY);
                 break;
-            case TipoEnem.boss:
-                enem = new EnemigoBoss(cX, cY);
+            case TipoEntidad.boss1:
+                enem = new EnemigoBoss1(cX, cY);
+                break;
+            case TipoEntidad.boss2:
+                enem = new EnemigoBoss2(cX, cY);
                 break;
             default: throw new IllegalArgumentException();
         }

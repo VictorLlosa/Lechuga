@@ -1,7 +1,9 @@
-package model.State;
+package model.StateCasilla;
 
 import model.ColisionEvent;
 import model.Tipos.TipoEntidad;
+
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -58,7 +60,6 @@ public class Casilla extends Observable{
 	 */
 	public void ponerEntidad(TipoEntidad pEnt, int pIdEntidad){
 		estado.ponerEntidad(this, pEnt, pIdEntidad);
-		//Para decidir que se pinta encima de que pero TODO: No va bien
 	}
 
 	public void setIdEntidad(int pId){
@@ -68,8 +69,8 @@ public class Casilla extends Observable{
 		return idEntidad;
 	}
 
-	public ColisionEvent colision(TipoEntidad pEnt, int pIdEntidad) {
+	public ArrayList<ColisionEvent> colision(TipoEntidad pEnt, int pIdEntidad) {
 		if(this.idEntidad == pIdEntidad) return null;
-		return estado.colision(this, pEnt);
+		return estado.colision(this, pEnt, pIdEntidad);
 	}
 }

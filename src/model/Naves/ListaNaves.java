@@ -1,25 +1,25 @@
 package model.Naves;
 
+import model.Balas.BalaAbstracta;
 import model.Balas.ListaBalas;
-import model.Composite.CompositeCoordenada;
 import model.ColisionEvent;
-import model.Composite.Coordenada;
+import model.CompositeCoordenada.Coordenada;
+import model.Enemigos.EnemigoAbstracto;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
 public class ListaNaves implements Observer {
     private ArrayList<NaveAbstracta> listaNaves;
-    ArrayList<Integer> listaIds;
     private static ListaNaves miListaNaves;
 
     public ListaNaves() {
         this.listaNaves = new ArrayList<>();
-        this.listaIds = new ArrayList<>();
     }
 
     public static ListaNaves getListaNaves() {
@@ -49,7 +49,6 @@ public class ListaNaves implements Observer {
     public Coordenada anadirNave(TipoNave pTipo, int cX, int cY) {
         NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, cX, cY);
         listaNaves.add(nave);
-        listaIds.add(nave.getId());
         return nave.getForma();
     }
 
@@ -60,7 +59,6 @@ public class ListaNaves implements Observer {
 
     public void reniciarListaNaves() {
         listaNaves.clear();
-        listaIds.clear();
     }
 
     private NaveAbstracta findNave(int idNave) {
@@ -80,22 +78,6 @@ public class ListaNaves implements Observer {
             nave.moverBalas();
         }
     }
-/*
-    public void borrarBalasNave(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null) nave.borrarBalas();
-
-    }
-
-    /**
-     * Devuelve una lista de id's (un ArrayList de enteros), para evitar tratar las "posiciones" de las naves en la ListaNaves,
-     * y asi las tratamos por su id directamente
-     * @return
-
-    public ArrayList<Integer> getListaIds() {
-        return listaIds;
-    }
-    */
 
 
     /**
@@ -107,11 +89,7 @@ public class ListaNaves implements Observer {
     public void moverNave(int pIdNave, int dx, int dy) {
         NaveAbstracta nave = findNave(pIdNave);
         if (nave != null){
-            if(!nave.moverNave(dx, dy)){
-                nave.borrarNave();
-                nave.matar();
-                listaIds.remove(nave.getId());
-            }
+            nave.moverNave(dx, dy);
         }
     }
 
@@ -122,19 +100,6 @@ public class ListaNaves implements Observer {
         for(NaveAbstracta nave : listaNaves){
             nave.ponerEnEspacio();
         }
-    }
-
-    /**
-     * Igual que en el update de ListaEnemigos
-     * @param o     La casilla
-     * @param arg   es un array de dos posiciones:
-     *              (0: tipo de entidad
-     *              1: id de la entidad)
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        ColisionEvent evento = (ColisionEvent) arg;
-        if(evento.getCambio() && evento.getTipo() == TipoEntidad.nave) borrarNave(evento.getIdEntidad());
     }
 
     /**
@@ -153,16 +118,27 @@ public class ListaNaves implements Observer {
         reniciarListaNaves();
     }
 
-    public void borrarNave(int pId) {
-        NaveAbstracta nave = findNave(pId);
-        if(nave != null){
-            nave.borrarNave();
-            nave.matar();
+    /**
+     * Borra las Naves muertas y también borra las balas muertas de cada Nave
+     */
+    public void borrarMuertos(){
+        for (NaveAbstracta nave : listaNaves) {
+            nave.borrarBalasMuertas();
+            if (nave.estaMuerta()) {
+                nave.borrarNave();
+            }
         }
     }
 
     public boolean quedanNaves() {
-        return !listaIds.isEmpty();
+        boolean vivas = false;
+        for(NaveAbstracta nave : listaNaves){
+            if(!nave.estaMuerta()){
+                vivas = true;
+                break;
+            }
+        }
+        return vivas;
     }
 
     public ArrayList<ListaBalas> getListaBalas() {
@@ -171,5 +147,24 @@ public class ListaNaves implements Observer {
             lb.add(nave.getListaBalas());
         }
         return lb;
+    }
+
+    /**
+     * Igual que en el update de ListaEnemigos
+     * @param o     La casilla
+     * @param arg   es un array de dos posiciones:
+     *              (0: tipo de entidad
+     *              1: id de la entidad)
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        ArrayList<ColisionEvent> eventos = (ArrayList<ColisionEvent>)arg;
+        for(ColisionEvent evento : eventos){
+            if(evento.getCambio() && evento.getTipo() == TipoEntidad.nave){
+                NaveAbstracta nave = findNave(evento.getIdEntidad());
+                if(nave != null) nave.matar();
+            }
+        }
+
     }
 }

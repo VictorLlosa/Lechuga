@@ -4,7 +4,7 @@ import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import model.GestorPartida;
+import model.StatePartida.GestorPartida;
 import model.Naves.ListaNaves;
 import model.Tipos.TipoNave;
 

@@ -1,19 +1,19 @@
 package model.Enemigos;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
+import model.Tipos.TipoEntidad;
 
-public class EnemigoBoss extends EnemigoAbstracto{
-    public EnemigoBoss(int cX, int cY){
+public abstract class EnemigoBoss extends EnemigoAbstracto{
+    private int vidas;
+    public EnemigoBoss(int vidas){
         super();
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        coordForma.addComponent(new Pixel(cX, cY)); //TODO: CAMBIAR FORMA
-        coordForma.addComponent(new Pixel(cX - 1, cY - 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
-        this.setCoord(coordForma);
+        this.vidas = vidas;
     }
 
-    public boolean estaMuerto (){
-        return this.estaMuerto();
+
+    @Override
+    public void lethalHit(){
+        vidas--;
+        if (vidas == 0) matar();
     }
+
 }

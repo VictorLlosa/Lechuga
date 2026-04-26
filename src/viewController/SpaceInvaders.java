@@ -1,6 +1,6 @@
 package viewController;
 
-import model.GestorPartida;
+import model.StatePartida.GestorPartida;
 import model.Tipos.TipoEventoJuego;
 
 import java.awt.*;

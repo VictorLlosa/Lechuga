@@ -1,8 +1,10 @@
-package model;
+package model.StatePartida;
 
 import model.Enemigos.ListaEnemigos;
+import model.Espacio;
+import model.GeneradorId;
 import model.Naves.ListaNaves;
-import model.Tipos.TipoEnem;
+import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 import model.Tipos.TipoNave;
 
@@ -27,12 +29,13 @@ public class GestorPartida extends Observable {
 									// evita conflictos de concurrencia)
 	private final int gameDelay = 10; // ms
 
-	private TipoEventoJuego estadoFinal;
+    private EstadoPartida estadoPartida; //estado actual del gestor (implementa EstadoPartida)
 
 	// contador general para controlar acciones periódicas (movimiento enemigos, balas, etc.)
-	private int contadorAcciones = 0;
+    int contadorAcciones = 0;
 
 	private GestorPartida() {
+		estadoPartida = new EstadoFase1();
 	}
 	public static GestorPartida getGestorPartida() {
 		if(miGestorPartida == null) {
@@ -77,48 +80,14 @@ public class GestorPartida extends Observable {
 		notifyObservers(TipoEventoJuego.REINICIAR);
 	}
 
-	/**
-	 * esFinPartida SOLO comprueba que no haya naves.
-	 */
 	private void iniciarLoopJuego() {
 		if (gameTimer == null) {
 			gameTimer = new Timer(gameDelay, e -> {
-				if (entrarFaseBoss()) {//TODO: HACER CON STATE
-					ListaEnemigos.getListaEnemigos().anadirEnemigo(50, 10, TipoEnem.boss);
-				}else if(esFinPartida()) {
-					detenerGameTimer();
-					setChanged();
-					notifyObservers(estadoFinal);
-				}else{
-					LoopJuego();
-				}
+				Espacio.getEspacio().borrarEntidadesMuertas();
+				estadoPartida.loopJuego(miGestorPartida);
 			});
 			gameTimer.setInitialDelay(0);
 			gameTimer.start();
-		}
-	}
-
-	/**
-	 * Lo usamos en el iniciarLoopJuego()
-	 * @return devuelve si quedan enemigos.
-	 */
-	private boolean entrarFaseBoss() {
-		return !ListaEnemigos.getListaEnemigos().quedanEnemigos();
-	}
-
-	private void LoopJuego() {
-		contadorAcciones++;
-		if(contadorAcciones % 3/6 == 0) { // 30 ms  //CAMBIADO de % 3 == 0 a % 1 == 0
-			setChanged();
-			notifyObservers(TipoEventoJuego.REPAINT);
-		}
-		// mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
-		if (contadorAcciones % 5/6 == 0) { // 50 ms //ahora tb esta cambiado (diferente a 50ms)
-			ListaNaves.getListaNaves().moverBalas();
-		}
-		if (contadorAcciones % 20/2 == 0) { // 200 ms //(lo mismo)
-			ListaEnemigos.getListaEnemigos().moverEnemigos();
-			contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
 		}
 	}
 
@@ -151,7 +120,7 @@ public class GestorPartida extends Observable {
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
-				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEnem.normal );
+				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEntidad.enemigo );
 			}
 			while(!creado);
 		}
@@ -165,23 +134,24 @@ public class GestorPartida extends Observable {
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
 		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
+
 	/**
 	 * La partida se pierde cuando no "getEspacio.quedanNaves()" o el ".enemigoGana()"
-	 * porque ha llegado abajo
-	 * @return
+	 * porque ha llegado abajo. Este métoodo nos sirve para saber que tenemos que pasar de fase
+	 * @return si no hemos ganado ni perdido, devuelve un TipoEventoJuego.Jugar, ya que llamamos a este métoodo en cada vuelta del bucle
 	 */
-	private boolean esFinPartida() {
-		if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
+	public TipoEventoJuego esFinPartida() {
+        TipoEventoJuego estadoFinal;
+        if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = TipoEventoJuego.GANADO;
-			return true;
 		}
 		else if(!ListaNaves.getListaNaves().quedanNaves() || Espacio.getEspacio().enemigoGana()){
 			estadoFinal = TipoEventoJuego.PERDIDO;
-			return true;
 
 		}else{
-			return false;
+			estadoFinal = TipoEventoJuego.JUGAR;
 		}
+		return estadoFinal;
 	}
 
 	public void detenerGameTimer() {
@@ -202,5 +172,13 @@ public class GestorPartida extends Observable {
 		GeneradorId.getGeneradorId().reset();
 	}
 
+	public void cambiarEstado(EstadoPartida pEst){
+		this.estadoPartida= pEst;
+	}
 
+
+	public void cambiarPantalla(TipoEventoJuego pEvento) {
+		setChanged();
+		notifyObservers(pEvento);
+	}
 }

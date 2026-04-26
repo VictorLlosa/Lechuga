@@ -1,6 +1,5 @@
 package model.Factorias;
 
-import model.Composite.Pixel;
 import model.Naves.NaveAbstracta;
 import model.Naves.NaveAzul;
 import model.Naves.NaveRoja;

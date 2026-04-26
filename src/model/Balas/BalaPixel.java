@@ -1,8 +1,7 @@
 package model.Balas;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
-import model.Composite.Pixel;
+import model.CompositeCoordenada.CompositeCoordenada;
+import model.CompositeCoordenada.Pixel;
 
 public class BalaPixel extends BalaAbstracta{
     public BalaPixel(int cX, int cY) {

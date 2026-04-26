@@ -1,9 +1,5 @@
 package viewController;
-import model.Balas.ListaBalas;
-import model.Enemigos.ListaEnemigos;
-import model.GestorPartida;
-import model.Naves.ListaNaves;
-import model.Naves.NaveAbstracta;
+import model.StatePartida.GestorPartida;
 
 import javax.swing.*;
 import javax.swing.border.LineBorder;

@@ -30,6 +30,7 @@ public class LabelCasilla extends JLabel implements Observer{
 	 */
 	@Override
 	public void update(Observable o, Object arg) {
+
 		TipoEntidad entidad = (TipoEntidad)arg;
 		switch (entidad){
 			case TipoEntidad.vacio:
@@ -44,9 +45,13 @@ public class LabelCasilla extends JLabel implements Observer{
 			case TipoEntidad.enemigo:
 				this.setBackground(Color.RED);
 				break;
-
+			case TipoEntidad.boss1:
+				this.setBackground(Color.LIGHT_GRAY);
+				 break;
+			case TipoEntidad.boss2:
+				this.setBackground(Color.MAGENTA);
+				break;
 		}
-
 	}
 	
 

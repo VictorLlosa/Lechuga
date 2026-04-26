@@ -2,7 +2,6 @@ package model.Enemigos;
 
 import model.ColisionEvent;
 import model.Factorias.FactoriaEnemigo;
-import model.Tipos.TipoEnem;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
@@ -34,7 +33,7 @@ public class ListaEnemigos implements Observer {
      * @param pTipo
      * @return Coordenada del enemigo o null si no ha podido crearlo
      */
-    public boolean anadirEnemigo(int pX, int pY, TipoEnem pTipo) {
+    public boolean anadirEnemigo(int pX, int pY, TipoEntidad pTipo) {
         boolean exito = true;
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
             EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pX, pY);
@@ -86,35 +85,29 @@ public class ListaEnemigos implements Observer {
     }
 
     /**
-     * La casilla nos notifica dos tuplas: [TipoEntidad.eltipo, pCasilla.getId()},{pEnt, pIdEntidad (entidad movida)} ]
-     * @param o     the observable object.
-     * @param arg   an argument passed to the {@code notifyObservers}
-     *                 method.
-     */
-    @Override
-    public void update(Observable o, Object arg) {
-        ColisionEvent evento = (ColisionEvent) arg;
-        if(evento.getCambio() && evento.getTipo() == TipoEntidad.enemigo) borrarEnemigo(evento.getIdEntidad());
-    }
-
-    /**
-     * Le dice a todos los enemigos que se muevan. Si el enemigo se ha intentado mover fuera
-     * del espacio (exito = false) se le dice que se borre, se marca que los enemigos
-     * han llegado abajo y se elimina de la lista.
+     * Le dice a todos los enemigos que se muevan. Si han llegado abajo y se elimina de la lista.
+     * Llama a lethalHit() para ver si se ha matado al enemigo y
+     * en ese caso lo borra
      */
     public void moverEnemigos() {
-        Iterator<EnemigoAbstracto> it = listaEnemigos.iterator();
-
-        while (it.hasNext()) {
-            EnemigoAbstracto enem = it.next();
-            boolean exito = enem.moverEnEspacio();
-            if(enem.haLLegadoAbajo()) enemigoHaLlegadoAbajo = true;
-            if (!exito) {
-                enem.borrar();
-                it.remove();
+        for(EnemigoAbstracto enem : listaEnemigos){ //primero marcamos como muerto
+            enem.moverEnEspacio();
+            if(enem.haLLegadoAbajo()){
+                enemigoHaLlegadoAbajo = true;
+                enem.matar();
             }
         }
 
+    }
+    public void borrarMuertos(){
+        Iterator<EnemigoAbstracto> itr = listaEnemigos.iterator();
+        while(itr.hasNext()){
+            EnemigoAbstracto enem = itr.next();
+            if(enem.estaMuerto()){
+                enem.borrar();
+                itr.remove();
+            }
+        }
     }
 
     public void borrarEnemigos() {
@@ -123,11 +116,23 @@ public class ListaEnemigos implements Observer {
         }
         borrarListaEnemigos();
     }
-    public void borrarEnemigo(int pId) {
-        EnemigoAbstracto enemigo = findEnemigo(pId);
-        if (enemigo != null) {
-            enemigo.borrar();
-            listaEnemigos.remove(enemigo);
+    /**
+     * La casilla nos notifica dos tuplas: [TipoEntidad.eltipo, pCasilla.getId()},{pEnt, pIdEntidad (entidad movida)} ].
+     *
+     * @param o     the observable object.
+     * @param arg   an argument passed to the {@code notifyObservers}
+     *                 method.
+     */
+    @Override
+    public void update(Observable o, Object arg) {
+        ArrayList<ColisionEvent> eventos = (ArrayList<ColisionEvent>)arg;
+        for(ColisionEvent evento : eventos){
+            if(evento.getCambio() && evento.getTipo().esEnemigo()){
+                EnemigoAbstracto enem = findEnemigo(evento.getIdEntidad());
+                enem.lethalHit();
+            }
         }
+
     }
+
 }

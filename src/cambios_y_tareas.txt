@@ -4,6 +4,7 @@ TAREAS
 - Meter el patron State para manejar la municion (no ammo)
 - (en el futuro) poner que en la pantalla de inicio, aparezcan as tres naves; cuando te paras encima salen los dipasros que tiene y cuando clickas, la selecciona
 - (en el futuro) poner niveles de enemigos
+- (en el futuro) hacer que cuando haces hit al boss visualmente cambie de color durante un segundo y vuelva a su color original, para simular el efecto
 
 - Hacer que controlador llame a nave para mover. Nave actualiza sus coordenadas y le dice a espacio que vacie/lene las casillas
 

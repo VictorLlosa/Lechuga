@@ -1,9 +1,6 @@
-package model.Composite;
+package model.CompositeCoordenada;
 
 import model.Tipos.TipoEntidad;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
 
 public interface Coordenada {
     void actualizarCoord(int dx, int dy);
@@ -12,11 +9,11 @@ public interface Coordenada {
 
     boolean sePuedeMover(int dx, int dy);
 
-    boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
+    void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
 
     void borrar();
 
     boolean colocarEnEspacio(TipoEntidad tipoEntidad, int id);
 
-    boolean abajo();
+
 }

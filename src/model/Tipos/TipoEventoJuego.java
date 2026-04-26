@@ -5,6 +5,5 @@ public enum TipoEventoJuego {
     JUGAR,
     PERDIDO,
     GANADO,
-    BOSS_FINAL,
     REINICIAR
 }

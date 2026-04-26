@@ -1,8 +1,7 @@
 package model.Enemigos;
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
-
-import java.util.Observable;
+import model.CompositeCoordenada.CompositeCoordenada;
+import model.CompositeCoordenada.Pixel;
+import model.Tipos.TipoEntidad;
 
 public class Enemigo extends EnemigoAbstracto{
     public Enemigo (int cX, int cY) {
@@ -27,5 +26,4 @@ public class Enemigo extends EnemigoAbstracto{
 
         this.setCoord(coordForma);
     }
-
 }

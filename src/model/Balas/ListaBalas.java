@@ -1,9 +1,12 @@
 package model.Balas;
 
 import model.ColisionEvent;
+import model.Enemigos.EnemigoAbstracto;
+import model.Naves.NaveAbstracta;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -23,16 +26,9 @@ public class ListaBalas implements Observer {
      * (exito = false) se le dice a la bala que se borre y se elimina de la lista.
      */
     public void moverBalas() {
-        ArrayList<BalaAbstracta> toRemove = new ArrayList<>();
         for(BalaAbstracta bala: listaBalas){
-            boolean exito = bala.moverEnEspacio();
-            if (!exito) {
-                toRemove.add(bala);
-            }
-        }
-        for(BalaAbstracta bala: toRemove){
-            bala.borrar();
-            listaBalas.remove(bala);
+            bala.moverEnEspacio();
+            if(bala.estaFuera()) bala.matar();
         }
     }
 
@@ -49,9 +45,16 @@ public class ListaBalas implements Observer {
         }
         listaBalas.clear();
     }
-    private void borrarBala(int pId) {
-        BalaAbstracta bala = findBala(pId);
-        if(bala != null) bala.borrar();
+
+    public void borrarMuertos(){
+        Iterator<BalaAbstracta> itr = listaBalas.iterator();
+        while(itr.hasNext()){
+            BalaAbstracta bala = itr.next();
+            if(bala.estaMuerta()){
+                bala.borrar();
+                itr.remove();
+            }
+        }
     }
 
     private BalaAbstracta findBala(int pId) {
@@ -63,8 +66,13 @@ public class ListaBalas implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        ColisionEvent evento = (ColisionEvent) arg;
-        if(evento.getCambio() && evento.getTipo() == TipoEntidad.bala) borrarBala(evento.getIdEntidad());
+        ArrayList<ColisionEvent> eventos = (ArrayList<ColisionEvent>)arg;
+        for(ColisionEvent evento : eventos){
+            if(evento.getCambio() && evento.getTipo() == TipoEntidad.bala){
+                BalaAbstracta bala = findBala(evento.getIdEntidad());
+                if(bala != null) bala.matar();
+            }
+        }
     }
 
 

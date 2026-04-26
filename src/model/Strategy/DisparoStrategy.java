@@ -1,7 +1,6 @@
 package model.Strategy;
 
 import model.Balas.BalaAbstracta;
-import model.Composite.Pixel;
 
 /**
  * he puesto que tenga un propio atributo coordenada (pq es la madre de las strategy's)/

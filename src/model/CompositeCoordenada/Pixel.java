@@ -1,4 +1,4 @@
-package model.Composite;
+package model.CompositeCoordenada;
 
 import model.Espacio;
 import model.Tipos.TipoEntidad;
@@ -52,21 +52,15 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+	public void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
 		this.borrar();
 		this.actualizarCoord(dx, dy);
 		this.colocarEnEspacio(pEnt, pIdEnt);
-		return true;
 	}
 	@Override
 	public boolean colocarEnEspacio(TipoEntidad pEnt, int pIdEnt) {
 		Espacio.getEspacio().colocarEntidad(x, y, pEnt, pIdEnt);
 		return true;
-	}
-
-	@Override
-	public boolean abajo() {
-		return Espacio.getEspacio().abajo(y);
 	}
 
 	@Override

@@ -1,20 +1,14 @@
 package model.Naves;
 
 import model.Balas.BalaAbstracta;
-import model.Composite.CompositeCoordenada;
-import model.Composite.Coordenada;
-import model.Composite.Pixel;
 import model.Balas.ListaBalas;
-import model.GeneradorId;
-import model.Strategy.*;
+import model.CompositeCoordenada.Coordenada;
+import model.CompositeCoordenada.Pixel;
+import model.Espacio;
+import model.Strategy.DisparoStrategy;
 import model.Tipos.TipoEntidad;
 
-
-/**
- * id Empieza en 0, es un atributo autoincremental
- */
-public abstract class NaveAbstracta {
-
+public class NaveAbstracta {
     private Coordenada coord;
     private Pixel cannon;
     private int id; // ID único de cada instancia
@@ -22,13 +16,13 @@ public abstract class NaveAbstracta {
     private DisparoStrategy[] strategies;
     private int stratAct;
     private ListaBalas listaBalas;
-    private boolean muerta;
+    private boolean muerta = false;
 
     protected NaveAbstracta(){
         //TODO: id = GeneradorId.getGeneradorId().nextId();
         id = 0;
         listaBalas = new ListaBalas();
-        muerta = false;
+        Espacio.getEspacio().addObserver(this.listaBalas);
     }
 
     /**
@@ -63,6 +57,9 @@ public abstract class NaveAbstracta {
     public void borrarBalas() {
         listaBalas.borrarListaBalas();
     }
+    public void borrarBalasMuertas(){
+        listaBalas.borrarMuertos();
+    }
 
     public int getId() {
         return id; // Devolver el ID único de la instancia
@@ -87,14 +84,13 @@ public abstract class NaveAbstracta {
      * @param dx
      * @param dy
      */
-    public boolean moverNave(int dx, int dy) {
-        if(!coord.sePuedeMover(dx, dy)) return true; //Si la nave se intenta salir no se mueve pero no se borra
-        if(coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id)){
-            this.cannon.actualizarCoord(dx,dy);
-            return true;
-        } else return false;
-
+    public void moverNave(int dx, int dy) {
+        if(!coord.sePuedeMover(dx, dy)) return; //Si la nave se intenta salir no se mueve pero no se borra
+        coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id);
+        this.cannon.actualizarCoord(dx,dy);
     }
+
+
 
     /**
      * Metodo que llama ListaNaves el cual mueve la entidad por el espacio

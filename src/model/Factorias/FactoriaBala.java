@@ -1,8 +1,6 @@
 package model.Factorias;
 
 import model.Balas.*;
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
 import model.Tipos.TipoBala;
 
 

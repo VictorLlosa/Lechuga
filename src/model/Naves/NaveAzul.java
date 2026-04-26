@@ -1,7 +1,7 @@
 package model.Naves;
 
-import model.Composite.CompositeCoordenada;
-import model.Composite.Pixel;
+import model.CompositeCoordenada.CompositeCoordenada;
+import model.CompositeCoordenada.Pixel;
 import model.Strategy.DisparoPixel;
 import model.Strategy.DisparoRombo;
 import model.Strategy.DisparoStrategy;
