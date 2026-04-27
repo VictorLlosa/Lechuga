@@ -46,7 +46,7 @@ public class LabelCasilla extends JLabel implements Observer{
 				this.setBackground(Color.RED);
 				break;
 			case TipoEntidad.boss1:
-				this.setBackground(Color.LIGHT_GRAY);
+				this.setBackground(Color.CYAN);
 				 break;
 			case TipoEntidad.boss2:
 				this.setBackground(Color.MAGENTA);
