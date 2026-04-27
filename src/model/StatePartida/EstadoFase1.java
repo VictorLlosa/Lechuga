@@ -27,7 +27,7 @@ public class EstadoFase1 implements EstadoPartida {
                 gestorPartida.contadorAcciones++; //suma 1 cada 10 ms
 
                 // mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
-                if (gestorPartida.contadorAcciones % 2 == 0) { // 50 ms
+                if (gestorPartida.contadorAcciones % 2 == 0) { // 20 ms
                     ListaNaves.getListaNaves().moverBalas();
                 }
 

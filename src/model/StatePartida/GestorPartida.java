@@ -114,7 +114,7 @@ public class GestorPartida extends Observable {
 
 
 	private void anadirEnemigos() {
-		int random = 5;
+		int random = 10;
 		boolean creado;
 		int numEnemigos = numeroEnemigosAleatorio();
 		for (int i = 0; i < numEnemigos; i++) {

@@ -7,6 +7,8 @@ import java.awt.*;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+import javax.swing.border.LineBorder;
 
 public class SpaceInvaders extends JFrame implements Observer {
 
@@ -41,9 +43,8 @@ public class SpaceInvaders extends JFrame implements Observer {
         // Crear CardLayout y contenedor
         cardLayout = new CardLayout();
         contenedor = new JPanel(cardLayout);
-        contenedor.setBackground(Color.WHITE);
 
-
+        setBackground(Color.BLACK);
         JPanel panelInicio = PantallaInicio.getPantallaInicio();
         JPanel panelJuego = PantallaJuego.getPantallaJuego();
         JPanel panelFin = PantallaFin.getPantallaFin();

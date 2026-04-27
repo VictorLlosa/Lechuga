@@ -25,7 +25,6 @@ public class PantallaJuego extends JPanel {
 		setLayout(new GridLayout(vDim,hDim));
 		matrizLabels = new LabelCasilla[hDim][vDim];
 		this.addKeyListener(Controlador.getControlador());
-		setPreferredSize(new Dimension(hDim, vDim));
 		// Crear y configurar todas las casillas
 		// Se itera primero por j (filas del GridLayout) y luego por i (columnas del GridLayout)
 		// para que la posición visual coincida con la matriz [i][j]
@@ -43,6 +42,8 @@ public class PantallaJuego extends JPanel {
 			}
 		}
 		setPreferredSize(new Dimension(  hDim * ALTO_CASILLA,  vDim * ANCHO_CASILLA));
+		setBackground(Color.BLACK);
+		setOpaque(true);
 		asignarObservers();
 	}
 
