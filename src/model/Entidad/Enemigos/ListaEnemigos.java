@@ -1,4 +1,4 @@
-package model.Enemigos;
+package model.Entidad.Enemigos;
 
 import model.ColisionEvent;
 import model.Factorias.FactoriaEnemigo;
@@ -103,7 +103,7 @@ public class ListaEnemigos implements Observer {
         Iterator<EnemigoAbstracto> itr = listaEnemigos.iterator();
         while(itr.hasNext()){
             EnemigoAbstracto enem = itr.next();
-            if(enem.estaMuerto()){
+            if(enem.estaMuerta()){
                 enem.borrar();
                 itr.remove();
             }

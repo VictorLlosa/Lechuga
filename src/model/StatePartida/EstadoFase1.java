@@ -1,8 +1,7 @@
 package model.StatePartida;
 
-import model.Enemigos.ListaEnemigos;
-import model.Espacio;
-import model.Naves.ListaNaves;
+import model.Entidad.Enemigos.ListaEnemigos;
+import model.Entidad.Naves.ListaNaves;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 

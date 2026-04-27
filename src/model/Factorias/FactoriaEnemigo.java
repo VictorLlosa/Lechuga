@@ -1,5 +1,5 @@
 package model.Factorias;
-import model.Enemigos.*;
+import model.Entidad.Enemigos.*;
 import model.Tipos.TipoEntidad;
 
 

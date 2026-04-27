@@ -1,13 +1,17 @@
 package model.Strategy;
 
-import model.Balas.BalaAbstracta;
+import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
 import model.Tipos.TipoBala;
 
 /**
  * Representa un disparo de una unica bala
  */
-public class DisparoPixel implements DisparoStrategy{
+public class DisparoPixel extends DisparoAbstracto{
+    public DisparoPixel() {
+        super(-1, 8);
+    }
+
     /**
      * Dispara 1 pixel por encima de las coordenadas del cannon
      * @oaram pCoordCannon
@@ -15,6 +19,8 @@ public class DisparoPixel implements DisparoStrategy{
      */
     @Override
     public BalaAbstracta disparar(int cX, int cY) {
+        if (!puedeDisparar()) return null;
+
         BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.pixel, cX, cY);
         bala.ponerEnEspacio();
         return bala;

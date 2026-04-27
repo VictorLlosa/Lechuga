@@ -1,8 +1,7 @@
 package model;
 
-import model.Balas.ListaBalas;
-import model.Enemigos.ListaEnemigos;
-import model.Naves.ListaNaves;
+import model.Entidad.Enemigos.ListaEnemigos;
+import model.Entidad.Naves.ListaNaves;
 import model.StateCasilla.Casilla;
 import model.Tipos.TipoEntidad;
 
@@ -88,10 +87,6 @@ public class Espacio extends Observable{
 	 */
 	public void vaciarCasilla(int x, int y){
 		matriz[x][y].vaciar();
-	}
-
-	public boolean abajo(int y) {
-		return y >= vDim;
 	}
 
 	public void borrarEntidadesMuertas() {

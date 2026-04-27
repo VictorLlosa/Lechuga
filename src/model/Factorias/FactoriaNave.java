@@ -1,9 +1,9 @@
 package model.Factorias;
 
-import model.Naves.NaveAbstracta;
-import model.Naves.NaveAzul;
-import model.Naves.NaveRoja;
-import model.Naves.NaveVerde;
+import model.Entidad.Naves.NaveAbstracta;
+import model.Entidad.Naves.NaveAzul;
+import model.Entidad.Naves.NaveRoja;
+import model.Entidad.Naves.NaveVerde;
 import model.Tipos.TipoNave;
 
 public class FactoriaNave {

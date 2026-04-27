@@ -1,4 +1,4 @@
-package model.Balas;
+package model.Entidad.Balas;
 
 import model.CompositeCoordenada.CompositeCoordenada;
 import model.CompositeCoordenada.Pixel;

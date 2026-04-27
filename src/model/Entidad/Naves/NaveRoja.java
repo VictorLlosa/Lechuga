@@ -1,4 +1,4 @@
-package model.Naves;
+package model.Entidad.Naves;
 
 import model.CompositeCoordenada.CompositeCoordenada;
 import model.CompositeCoordenada.Pixel;

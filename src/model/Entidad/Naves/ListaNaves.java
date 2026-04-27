@@ -1,16 +1,13 @@
-package model.Naves;
+package model.Entidad.Naves;
 
-import model.Balas.BalaAbstracta;
-import model.Balas.ListaBalas;
+import model.Entidad.Balas.ListaBalas;
 import model.ColisionEvent;
 import model.CompositeCoordenada.Coordenada;
-import model.Enemigos.EnemigoAbstracto;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,12 +28,11 @@ public class ListaNaves implements Observer {
 
     /**
      * Llama al disparar() de la nave.
-     * @param pIdNave es el id de la nave
      * @return devuelve un CompositeCoordenada (las coordenadas de la bala) o null si no se ha podido crear.
      */
-    public void disparar(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null) nave.disparar();
+    public void disparar(int pJugador) {
+        NaveAbstracta nave = listaNaves.get(pJugador);
+        nave.disparar();
     }
 
     /**
@@ -46,10 +42,9 @@ public class ListaNaves implements Observer {
      * @param cY
      * @return
      */
-    public Coordenada anadirNave(TipoNave pTipo, int cX, int cY) {
+    public void anadirNave(TipoNave pTipo, int cX, int cY) {
         NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, cX, cY);
         listaNaves.add(nave);
-        return nave.getForma();
     }
 
     public int getNumNaves() {
@@ -68,9 +63,9 @@ public class ListaNaves implements Observer {
         return null;
     }
 
-    public void alternarModoDisparo(int pIdNave) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if(nave != null) nave.changeStrategy();
+    public void alternarModoDisparo(int pJugador) {
+        NaveAbstracta nave = listaNaves.get(pJugador);
+        nave.changeStrategy();
     }
 
     public void moverBalas(){
@@ -82,15 +77,13 @@ public class ListaNaves implements Observer {
 
     /**
      * Se usa en Espacio para mover la nave a las coordenadas seleccionadas. Actualiza cada coordenada que compone a la nave
-     * @param pIdNave
+     * @param pJugador
      * @param dx
      * @param dy
      */
-    public void moverNave(int pIdNave, int dx, int dy) {
-        NaveAbstracta nave = findNave(pIdNave);
-        if (nave != null){
-            nave.moverNave(dx, dy);
-        }
+    public void moverNave(int pJugador, int dx, int dy) {
+        NaveAbstracta nave = listaNaves.get(pJugador);
+        nave.moverNave(dx, dy);
     }
 
     /**
@@ -139,14 +132,6 @@ public class ListaNaves implements Observer {
             }
         }
         return vivas;
-    }
-
-    public ArrayList<ListaBalas> getListaBalas() {
-        ArrayList<ListaBalas> lb = new ArrayList<>();
-        for(NaveAbstracta nave: listaNaves){
-            lb.add(nave.getListaBalas());
-        }
-        return lb;
     }
 
     /**

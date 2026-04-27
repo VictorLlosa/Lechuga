@@ -1,6 +1,6 @@
 package model.Factorias;
 
-import model.Balas.*;
+import model.Entidad.Balas.*;
 import model.Tipos.TipoBala;
 
 

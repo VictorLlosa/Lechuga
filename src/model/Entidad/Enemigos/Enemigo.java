@@ -1,11 +1,11 @@
-package model.Enemigos;
+package model.Entidad.Enemigos;
 import model.CompositeCoordenada.CompositeCoordenada;
 import model.CompositeCoordenada.Pixel;
 import model.Tipos.TipoEntidad;
 
 public class Enemigo extends EnemigoAbstracto{
     public Enemigo (int cX, int cY) {
-        super();
+        super(1);
         CompositeCoordenada coordForma = new CompositeCoordenada();
         coordForma.addComponent(new Pixel(cX, cY));
         coordForma.addComponent(new Pixel(cX, cY - 1));
@@ -25,5 +25,9 @@ public class Enemigo extends EnemigoAbstracto{
         coordForma.addComponent(new Pixel(cX  + 3 , cY + 2));
 
         this.setCoord(coordForma);
+    }
+
+    public void moverEnEspacio() {
+        getCoord().moverEnEspacio(0, 1, TipoEntidad.enemigo, getId());
     }
 }

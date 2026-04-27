@@ -1,26 +1,22 @@
-package model.Naves;
+package model.Entidad.Naves;
 
-import model.Balas.BalaAbstracta;
-import model.Balas.ListaBalas;
+import model.Entidad.Balas.BalaAbstracta;
+import model.Entidad.Balas.ListaBalas;
 import model.CompositeCoordenada.Coordenada;
 import model.CompositeCoordenada.Pixel;
+import model.Entidad.EntidadAbstracta;
 import model.Espacio;
 import model.Strategy.DisparoStrategy;
 import model.Tipos.TipoEntidad;
 
-public class NaveAbstracta {
-    private Coordenada coord;
+public class NaveAbstracta extends EntidadAbstracta {
     private Pixel cannon;
-    private int id; // ID único de cada instancia
     private DisparoStrategy disparo;
     private DisparoStrategy[] strategies;
     private int stratAct;
     private ListaBalas listaBalas;
-    private boolean muerta = false;
 
     protected NaveAbstracta(){
-        //TODO: id = GeneradorId.getGeneradorId().nextId();
-        id = 0;
         listaBalas = new ListaBalas();
         Espacio.getEspacio().addObserver(this.listaBalas);
     }
@@ -35,7 +31,7 @@ public class NaveAbstracta {
     }
 
     public boolean tienesId(int idNave) {
-        return this.id == idNave;
+        return getId() == idNave;
     }
 
     public void changeStrategy(){
@@ -61,22 +57,6 @@ public class NaveAbstracta {
         listaBalas.borrarMuertos();
     }
 
-    public int getId() {
-        return id; // Devolver el ID único de la instancia
-    }
-
-    public void matar() {
-        muerta = true;
-    }
-
-    /**
-     *
-     * @return Devuelve el valor del atributo "muerta"
-     */
-    public boolean estaMuerta() {
-        return muerta;
-    }
-
 
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
@@ -85,8 +65,8 @@ public class NaveAbstracta {
      * @param dy
      */
     public void moverNave(int dx, int dy) {
-        if(!coord.sePuedeMover(dx, dy)) return; //Si la nave se intenta salir no se mueve pero no se borra
-        coord.moverEnEspacio(dx,dy, TipoEntidad.nave, this.id);
+        if(!getCoord().sePuedeMover(dx, dy)) return; //Si la nave se intenta salir no se mueve pero no se borra
+        getCoord().moverEnEspacio(dx,dy, TipoEntidad.nave, getId());
         this.cannon.actualizarCoord(dx,dy);
     }
 
@@ -96,14 +76,11 @@ public class NaveAbstracta {
      * Metodo que llama ListaNaves el cual mueve la entidad por el espacio
      */
     public void ponerEnEspacio(){
-        coord.colocarEnEspacio(TipoEntidad.nave, this.id);
+        getCoord().colocarEnEspacio(TipoEntidad.nave, getId());
     }
 
     public void borrarNave(){
-        coord.borrar();
-    }
-    public Coordenada getForma() {
-        return coord;
+        getCoord().borrar();
     }
 
     protected void setStrategies(DisparoStrategy[] pStrategies) {
@@ -112,15 +89,8 @@ public class NaveAbstracta {
         disparo = strategies[stratAct];
     }
 
-    protected void setCoord(Coordenada pCoordForma) {
-        this.coord = pCoordForma;
-    }
-
     protected void setCannon(Pixel pCoordCannon) {
         this.cannon = pCoordCannon;
     }
 
-    public ListaBalas getListaBalas() {
-        return listaBalas;
-    }
 }

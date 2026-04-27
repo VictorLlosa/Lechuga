@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import model.StatePartida.GestorPartida;
-import model.Naves.ListaNaves;
+import model.Entidad.Naves.ListaNaves;
 import model.Tipos.TipoNave;
 
 import javax.swing.*;
@@ -20,19 +20,11 @@ public class Controlador implements KeyListener {
 	private static Controlador miControlador =null;
 	private Timer timer;
 
-	// estado de teclas para movimiento continuo
-	private volatile boolean upPressed = false;
-	private volatile boolean downPressed = false;
-	private volatile boolean leftPressed = false;
-	private volatile boolean rightPressed = false;
-	private volatile boolean spacePressed = false;
+	private InputJugador jugador1 = new InputJugador();
+	private InputJugador jugador2 = new InputJugador();
 
 	//nave seleccionada
 	private TipoNave tipoNave = TipoNave.red;
-
-
-	private int contDisparo = 0; // contador para limitar velocidad de disparo
-	private final int CADENCIA = 5; // ajustar para controlar cadencia de disparo (más bajo = más rápido)
 
 	/**
 	 * Si el atrib. disparoPressed es T y el numero de disparos en pantalla (contDisparo) es
@@ -40,19 +32,11 @@ public class Controlador implements KeyListener {
 	 */
 	private Controlador() {
 		timer = new Timer(10, e -> { //delay antes en 40, ahora en 10
-			procesarMovimientoNave();
-			if (spacePressed) {
-				contDisparo++;
-				if (contDisparo >= CADENCIA) {
-					ListaNaves.getListaNaves().disparar(0);
-					contDisparo = 0;
-				}
-			} else {
-				contDisparo = CADENCIA; // permite disparar instantáneamente al pulsar
-			}
+			procesarNaves();
 		});
 		timer.start();
 	}
+
 
 	public static Controlador getControlador() {
 		if(miControlador == null){
@@ -97,11 +81,8 @@ public class Controlador implements KeyListener {
 	 * Cuando reiniciamos la partida sin salirnos, dandole a la R
 	 */
 	private void reiniciarTeclas(){
-		upPressed = false;
-		downPressed = false;
-		leftPressed = false;
-		rightPressed = false;
-		spacePressed = false;
+		jugador1.reiniciar();
+		jugador2.reiniciar();
 	}
 
 	/**
@@ -122,27 +103,51 @@ public class Controlador implements KeyListener {
 	 */
 	private void setTecla(int keyCode, boolean pressed) {
 		switch(keyCode) {
-			case KeyEvent.VK_W: upPressed = pressed; break;
-			case KeyEvent.VK_S: downPressed = pressed; break;
-			case KeyEvent.VK_A: leftPressed = pressed; break;
-			case KeyEvent.VK_D: rightPressed = pressed; break;
-			case KeyEvent.VK_SPACE: spacePressed = pressed; break;
+			// Jugador 1 (WASD)
+			case KeyEvent.VK_W: jugador1.setAccion(Accion.UP, pressed); break;
+			case KeyEvent.VK_S: jugador1.setAccion(Accion.DOWN, pressed); break;
+			case KeyEvent.VK_A: jugador1.setAccion(Accion.LEFT, pressed); break;
+			case KeyEvent.VK_D: jugador1.setAccion(Accion.RIGHT, pressed); break;
+			case KeyEvent.VK_SPACE: jugador1.setAccion(Accion.SHOOT, pressed);break;
+
+			// Jugador 2 (flechas)
+			case KeyEvent.VK_UP: jugador2.setAccion(Accion.UP, pressed); break;
+			case KeyEvent.VK_DOWN: jugador2.setAccion(Accion.DOWN, pressed); break;
+			case KeyEvent.VK_LEFT: jugador2.setAccion(Accion.LEFT, pressed); break;
+			case KeyEvent.VK_RIGHT: jugador2.setAccion(Accion.RIGHT, pressed); break;
+			case KeyEvent.VK_ENTER: jugador2.setAccion(Accion.SHOOT, pressed); break;
 		}
 	}
 
 
-	private void procesarMovimientoNave() {
+	private void procesarNaves() {
+		procesarNaveJugador(0, jugador1);
+		procesarNaveJugador(1, jugador2);
+	}
+
+	private void procesarDisparoJugador(int pJugador, InputJugador jugador) {
+		if(jugador.estaActiva(Accion.SHOOT)) {
+			ListaNaves.getListaNaves().disparar(pJugador);
+		}
+	}
+
+	private void procesarNaveJugador(int pJugador, InputJugador input) {
 		int dx = 0, dy = 0;
 
-		if (upPressed) dy -= 1;
-		if (leftPressed) dx -= 1;
-		if (downPressed) dy += 1;
-		if (rightPressed) dx += 1;
+		if (input.estaActiva(Accion.UP)) dy -= 1;
+		if (input.estaActiva(Accion.DOWN)) dy += 1;
+		if (input.estaActiva(Accion.LEFT)) dx -= 1;
+		if (input.estaActiva(Accion.RIGHT)) dx += 1;
 
 		if (dx != 0 || dy != 0) {
-			ListaNaves.getListaNaves().moverNave(0, dx, dy);
+			ListaNaves.getListaNaves().moverNave(pJugador, dx, dy);
+		}
+
+		if (input.estaActiva(Accion.SHOOT)) {
+			procesarDisparoJugador(pJugador, jugador1);
 		}
 	}
+
 
 
 	public void seleccionarNave(TipoNave tipo) {

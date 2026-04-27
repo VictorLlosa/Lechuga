@@ -1,24 +1,19 @@
-package model.Balas;
+package model.Entidad.Balas;
 
 import model.ColisionEvent;
-import model.Enemigos.EnemigoAbstracto;
-import model.Naves.NaveAbstracta;
 import model.Tipos.TipoEntidad;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class ListaBalas implements Observer {
-    private final ArrayList<BalaAbstracta> listaBalas;
+    private final HashMap<Integer, BalaAbstracta> listaBalas;
 
     public ListaBalas() {
-        this.listaBalas = new ArrayList<>();
+        this.listaBalas = new HashMap<>();
     }
 
     public void anadirBala(BalaAbstracta pBala) {
-        listaBalas.add(pBala);
+        listaBalas.put(pBala.getId(), pBala);
     }
 
     /**
@@ -26,7 +21,7 @@ public class ListaBalas implements Observer {
      * (exito = false) se le dice a la bala que se borre y se elimina de la lista.
      */
     public void moverBalas() {
-        for(BalaAbstracta bala: listaBalas){
+        for(BalaAbstracta bala: listaBalas.values()){
             bala.moverEnEspacio();
             if(bala.estaFuera()) bala.matar();
         }
@@ -40,28 +35,24 @@ public class ListaBalas implements Observer {
      * Este metodo es llamado por naveAbstracta al reiniciar y borra la lista de balas de la nave
      */
     public void borrarListaBalas() {
-        for(BalaAbstracta bala: listaBalas){
+        for(BalaAbstracta bala: listaBalas.values()){
             bala.borrar();
         }
         listaBalas.clear();
     }
 
     public void borrarMuertos(){
-        Iterator<BalaAbstracta> itr = listaBalas.iterator();
-        while(itr.hasNext()){
-            BalaAbstracta bala = itr.next();
-            if(bala.estaMuerta()){
+        listaBalas.values().removeIf(bala -> {
+            if (bala.estaMuerta()) {
                 bala.borrar();
-                itr.remove();
+                return true;
             }
-        }
+            return false;
+        });
     }
 
     private BalaAbstracta findBala(int pId) {
-        for (BalaAbstracta bala : listaBalas){
-            if(bala.getId() == pId) return bala;
-        }
-        return null;
+        return listaBalas.get(pId);
     }
 
     @Override
