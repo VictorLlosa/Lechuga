@@ -10,7 +10,6 @@ public abstract class BalaAbstracta extends EntidadAbstracta {
     public void moverEnEspacio() {
         getCoord().moverEnEspacio(0, -1, TipoEntidad.bala, getId());
     }
-
     public void ponerEnEspacio() {
         getCoord().colocarEnEspacio(TipoEntidad.bala, getId());
     }

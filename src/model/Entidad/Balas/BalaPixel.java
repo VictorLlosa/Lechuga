@@ -1,13 +1,12 @@
 package model.Entidad.Balas;
 
-import model.CompositeCoordenada.CompositeCoordenada;
-import model.CompositeCoordenada.Pixel;
+import model.Formas.FactoriaFormas;
+import model.Tipos.TipoForma;
 
 public class BalaPixel extends BalaAbstracta{
     public BalaPixel(int cX, int cY) {
         super();
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        coordForma.addComponent(new Pixel(cX, cY));
-        super.setCoord(coordForma);
+        setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBalaPixel));
+        inicializarCoordenadas(cX, cY);
     }
 }

@@ -1,16 +1,13 @@
 package model.Entidad.Enemigos;
-import model.CompositeCoordenada.CompositeCoordenada;
-import model.CompositeCoordenada.Pixel;
+import model.Formas.FactoriaFormas;
 import model.Tipos.TipoEntidad;
+import model.Tipos.TipoForma;
 
 public class Enemigo extends EnemigoAbstracto{
     public Enemigo (int cX, int cY) {
         super(1);
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        coordForma.addComponent(new Pixel(cX, cY));
-        coordForma.addComponent(new Pixel(cX - 1, cY - 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
-        this.setCoord(coordForma);
+        setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaEnemigo));
+        inicializarCoordenadas(cX, cY);
     }
 
     public void moverEnEspacio() {

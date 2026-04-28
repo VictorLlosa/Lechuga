@@ -1,10 +1,14 @@
 package model.Entidad;
 
 import model.CompositeCoordenada.Coordenada;
+import model.Formas.FactoriaFormas;
+import model.Formas.FormaAbstracta;
 import model.GeneradorId;
+import model.Tipos.TipoForma;
 
 public abstract class EntidadAbstracta {
     private Coordenada coord;
+    private FormaAbstracta forma;
     private final int id;
     private boolean muerta = false;
 
@@ -38,4 +42,14 @@ public abstract class EntidadAbstracta {
 
     public abstract void ponerEnEspacio();
 
+    protected void inicializarCoordenadas(int cX, int cY){
+        coord = forma.getComposite(cX,cY);
+    }
+    protected void setForma(FormaAbstracta pForma) {
+        forma = pForma;
+    }
+
+    protected FormaAbstracta getForma() {
+        return forma;
+    }
 }

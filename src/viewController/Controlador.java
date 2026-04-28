@@ -31,7 +31,7 @@ public class Controlador implements KeyListener {
 	 * >= a la CADENCIA, dispararemos automaticamente.
 	 */
 	private Controlador() {
-		timer = new Timer(10, e -> { //delay antes en 40, ahora en 10
+		timer = new Timer(8, e -> {
 			procesarNaves();
 		});
 		timer.start();

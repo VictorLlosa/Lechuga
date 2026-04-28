@@ -27,4 +27,6 @@ public class DisparoPixel extends DisparoAbstracto{
     }
 
 
+
+
 }

@@ -1,15 +1,12 @@
 package model.Entidad.Balas;
 
-import model.CompositeCoordenada.CompositeCoordenada;
-import model.CompositeCoordenada.Pixel;
+import model.Formas.FactoriaFormas;
+import model.Tipos.TipoForma;
 
 public class BalaFlecha extends BalaAbstracta {
     public BalaFlecha(int cX, int cY){
         super();
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        coordForma.addComponent(new Pixel(cX, cY - 2));
-        coordForma.addComponent(new Pixel(cX - 1, cY - 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
-        super.setCoord(coordForma);
+        setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBalaFlecha));
+        inicializarCoordenadas(cX, cY);
     }
 }

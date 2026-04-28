@@ -4,6 +4,7 @@ import model.Entidad.Enemigos.ListaEnemigos;
 import model.Espacio;
 import model.GeneradorId;
 import model.Entidad.Naves.ListaNaves;
+import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 import model.Tipos.TipoNave;
@@ -92,12 +93,10 @@ public class GestorPartida extends Observable {
 	}
 
 	/**
-	 * Anadimos una nave de pid=0,"roja" y en la Coordenada (55,50)
-	 * Por defecto el id es 0. Es aqui donde se lo asignamos. De momento, solo
 	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
 	private void anadirNaves(TipoNave pTipo) {
-		ListaNaves.getListaNaves().anadirNave(pTipo, 55, 50);
+		ListaNaves.getListaNaves().anadirNave(pTipo, 100, 100);
 		ListaNaves.getListaNaves().ponerNavesEnEspacio();
 	}
 
@@ -120,12 +119,12 @@ public class GestorPartida extends Observable {
 		for (int i = 0; i < numEnemigos; i++) {
 			do {
 				random += new Random().nextInt(10, Espacio.getEspacio().getMaxEspaciado(numEnemigos));
-				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEntidad.enemigo );
+				creado = ListaEnemigos.getListaEnemigos().anadirEnemigo(random, 5, TipoEnemigo.normal );
 			}
 			while(!creado);
 		}
 		ListaEnemigos.getListaEnemigos().ponerEnemigosEnEspacio();
-	}
+	} //TODO: MOVER A CADA ESTADO
 
 	private void borrarEnemigos(){
 		ListaEnemigos.getListaEnemigos().borrarEnemigos();

@@ -2,6 +2,7 @@ package model.Entidad.Enemigos;
 
 import model.ColisionEvent;
 import model.Factorias.FactoriaEnemigo;
+import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
@@ -33,7 +34,7 @@ public class ListaEnemigos implements Observer {
      * @param pTipo
      * @return Coordenada del enemigo o null si no ha podido crearlo
      */
-    public boolean anadirEnemigo(int pX, int pY, TipoEntidad pTipo) {
+    public boolean anadirEnemigo(int pX, int pY, TipoEnemigo pTipo) {
         boolean exito = true;
         if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
             EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pX, pY);

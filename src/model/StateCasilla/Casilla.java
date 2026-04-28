@@ -18,7 +18,7 @@ public class Casilla extends Observable{
 	private int idEntidad;
 	private EstadoCasilla estado;
 
-	
+
 	public Casilla() {
 		entidad = TipoEntidad.vacio;
 		estado = new EstadoCasillaVacia();

@@ -2,6 +2,7 @@ package model.StatePartida;
 
 import model.Entidad.Enemigos.ListaEnemigos;
 import model.Entidad.Naves.ListaNaves;
+import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 
@@ -12,7 +13,7 @@ public class EstadoBoss1 implements EstadoPartida {
         TipoEventoJuego estadoAct = gestorPartida.esFinPartida();
         switch (estadoAct){
             case TipoEventoJuego.GANADO:
-                ListaEnemigos.getListaEnemigos().anadirEnemigo(100, 20, TipoEntidad.boss2);
+                ListaEnemigos.getListaEnemigos().anadirEnemigo(100, 20, TipoEnemigo.boss2);
                 gestorPartida.cambiarEstado(new EstadoBoss2());
                 break;
             case TipoEventoJuego.PERDIDO:

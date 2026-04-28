@@ -2,34 +2,20 @@ package model.Entidad.Enemigos;
 
 import model.CompositeCoordenada.CompositeCoordenada;
 import model.CompositeCoordenada.Pixel;
+import model.Formas.FactoriaFormas;
+import model.Formas.FormaAbstracta;
 import model.Tipos.TipoEntidad;
+import model.Tipos.TipoForma;
 
-public class EnemigoBoss1 extends EnemigoBossAbstracto {
+public class EnemigoBoss1 extends EnemigoAbstracto {
 
     private static int contadorMovimientos;
 
     public EnemigoBoss1(int cX, int cY){
         super(10);
-        CompositeCoordenada coordForma = new CompositeCoordenada();
-        coordForma.addComponent(new Pixel(cX, cY));
-        coordForma.addComponent(new Pixel(cX, cY - 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY + 1));
-        coordForma.addComponent(new Pixel(cX - 1, cY + 1));
-        coordForma.addComponent(new Pixel(cX + 1, cY));
-        coordForma.addComponent(new Pixel(cX - 1, cY));
-        coordForma.addComponent(new Pixel(cX + 2, cY));
-        coordForma.addComponent(new Pixel(cX -2 , cY));
-        coordForma.addComponent(new Pixel(cX + 1, cY - 1));
-        coordForma.addComponent(new Pixel(cX -1 , cY - 1));
-        coordForma.addComponent(new Pixel(cX + 2, cY - 2));
-        coordForma.addComponent(new Pixel(cX - 2, cY - 2));
-        coordForma.addComponent(new Pixel(cX - 3, cY + 1));
-        coordForma.addComponent(new Pixel(cX -3 , cY + 2));
-        coordForma.addComponent(new Pixel(cX + 3, cY + 1));
-        coordForma.addComponent(new Pixel(cX  + 3 , cY + 2));
-
         contadorMovimientos=0;
-        this.setCoord(coordForma);
+        setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBoss1));
+        inicializarCoordenadas(cX, cY);
     }
 
     /**
