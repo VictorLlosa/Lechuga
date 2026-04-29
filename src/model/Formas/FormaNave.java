@@ -19,6 +19,6 @@ public class FormaNave extends FormaAbstracta{
     }
 
     public Pixel getCannon(int cX, int cY){
-        return getTop(cX, cY);
+        return getTop(cX, cY - 1);
     }
 }

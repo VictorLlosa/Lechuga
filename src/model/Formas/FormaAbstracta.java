@@ -21,8 +21,7 @@ public abstract class FormaAbstracta {
         for(int f = 0; f < forma.length; f++){
             for(int c = 0; c < forma[0].length; c++){
                 if(forma[f][c] == 1){
-                    comp.addComponent(new Pixel(cX + (c - offsetX), cY + (f - offsetY))
-                    );
+                    comp.addComponent(new Pixel(cX + (c - offsetX), cY + (f - offsetY)));
                 }
             }
         }

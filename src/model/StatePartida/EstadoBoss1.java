@@ -24,14 +24,14 @@ public class EstadoBoss1 implements EstadoPartida {
             default:
                 gestorPartida.contadorAcciones++; //suma 1 cada 10 ms
                 // mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
-                if (gestorPartida.contadorAcciones % 2 == 0) { // 50 ms
+                if (gestorPartida.contadorAcciones % 2 == 0) { // 20 ms
                     ListaNaves.getListaNaves().moverBalas();
                 }
                 if(gestorPartida.contadorAcciones % 3 == 0) { // 30 ms
                     gestorPartida.cambiarPantalla(TipoEventoJuego.REPAINT);
                 }
 
-                if (gestorPartida.contadorAcciones % 10 == 0) { // 200 ms
+                if (gestorPartida.contadorAcciones % 10 == 0) { // 100 ms
                     ListaEnemigos.getListaEnemigos().moverEnemigos();
                     gestorPartida.contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
                 }

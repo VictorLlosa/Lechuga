@@ -15,6 +15,6 @@ public class NaveAzul extends NaveAbstracta{
         this.setStrategies(new DisparoStrategy[]{ new DisparoPixel(),  new DisparoRombo()});
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaNave));
         inicializarCoordenadas(cX, cY);
-        inicializarCannon(cX, cY);
+        inicializarCannon(cX, cY );
     }
 }

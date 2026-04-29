@@ -11,7 +11,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 public class ListaEnemigos implements Observer {
-    private final int MAX_ENEMIGOS_POSIBLES=8;
     private ArrayList<EnemigoAbstracto> listaEnemigos;
 
     private boolean enemigoHaLlegadoAbajo;
@@ -35,15 +34,12 @@ public class ListaEnemigos implements Observer {
      * @return Coordenada del enemigo o null si no ha podido crearlo
      */
     public boolean anadirEnemigo(int pX, int pY, TipoEnemigo pTipo) {
-        boolean exito = true;
-        if (listaEnemigos.size()<MAX_ENEMIGOS_POSIBLES) {
-            EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pX, pY);
-            if(enemigo!=null){
-                listaEnemigos.add(enemigo);
-                exito = true;
-            }else{
-                exito = false;
-            }
+        boolean exito;
+
+        EnemigoAbstracto enemigo = FactoriaEnemigo.getFactoriaEnemigo().generar(pTipo, pX, pY);
+        if(enemigo!=null){
+            listaEnemigos.add(enemigo);
+            exito = true;
         }else{
             exito = false;
         }
@@ -62,7 +58,6 @@ public class ListaEnemigos implements Observer {
         enemigoHaLlegadoAbajo = false;
     }
 
-    public int getNumEnemigos() { return listaEnemigos.size(); }
 
     public boolean enemigoHaLLegadoAbajo() {
         return enemigoHaLlegadoAbajo;
