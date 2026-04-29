@@ -144,7 +144,7 @@ public class Controlador implements KeyListener {
 		}
 
 		if (input.estaActiva(Accion.SHOOT)) {
-			procesarDisparoJugador(pJugador, jugador1);
+			procesarDisparoJugador(pJugador, input);
 		}
 	}
 
