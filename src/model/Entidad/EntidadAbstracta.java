@@ -1,10 +1,8 @@
 package model.Entidad;
 
 import model.CompositeCoordenada.Coordenada;
-import model.Formas.FactoriaFormas;
 import model.Formas.FormaAbstracta;
 import model.GeneradorId;
-import model.Tipos.TipoForma;
 
 public abstract class EntidadAbstracta {
     private Coordenada coord;
@@ -34,10 +32,6 @@ public abstract class EntidadAbstracta {
 
     protected Coordenada getCoord() {
         return coord;
-    }
-
-    protected void setCoord(Coordenada coord) {
-        this.coord = coord;
     }
 
     public abstract void ponerEnEspacio();

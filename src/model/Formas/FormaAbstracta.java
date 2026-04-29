@@ -12,7 +12,7 @@ public abstract class FormaAbstracta {
 
     protected abstract int[][] crearForma();
 
-    public CompositeCoordenada getComposite(int cX, int cY){//TODO: MOVER A ENTIDADABSTRACTA??
+    public CompositeCoordenada getComposite(int cX, int cY){
         CompositeCoordenada comp = new CompositeCoordenada();
 
         int offsetX = forma[0].length / 2;

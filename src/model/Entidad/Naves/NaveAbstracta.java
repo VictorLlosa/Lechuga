@@ -2,10 +2,10 @@ package model.Entidad.Naves;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Entidad.Balas.ListaBalas;
-import model.CompositeCoordenada.Coordenada;
 import model.CompositeCoordenada.Pixel;
 import model.Entidad.EntidadAbstracta;
 import model.Espacio;
+import model.Formas.FormaNave;
 import model.Strategy.DisparoStrategy;
 import model.Tipos.TipoEntidad;
 
@@ -57,7 +57,6 @@ public class NaveAbstracta extends EntidadAbstracta {
         listaBalas.borrarMuertos();
     }
 
-
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
      * Si la nave se ha intentado mover fuera de Espacio, no se actualiza cannon
@@ -69,8 +68,6 @@ public class NaveAbstracta extends EntidadAbstracta {
         getCoord().moverEnEspacio(dx,dy, TipoEntidad.nave, getId());
         this.cannon.actualizarCoord(dx,dy);
     }
-
-
 
     /**
      * Metodo que llama ListaNaves el cual mueve la entidad por el espacio
@@ -89,8 +86,9 @@ public class NaveAbstracta extends EntidadAbstracta {
         disparo = strategies[stratAct];
     }
 
-    protected void setCannon(Pixel pCoordCannon) {
-        this.cannon = pCoordCannon;
+    protected void inicializarCannon(int cX, int cY) {
+        FormaNave forma = (FormaNave)getForma();
+        cannon = forma.getCannon(cX, cY);
     }
 
 }

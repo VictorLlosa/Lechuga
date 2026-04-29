@@ -13,7 +13,7 @@ public class NaveVerde extends NaveAbstracta {
         this.setStrategies(new DisparoStrategy[]{ new DisparoPixel(),  new DisparoFlecha()});
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaNave));
         inicializarCoordenadas(cX, cY);
-        setCannon(getForma().getTop(cX,cY-1));
+        inicializarCannon(cX, cY);
 
     }
 }
