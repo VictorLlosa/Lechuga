@@ -16,7 +16,7 @@ public class EnemigoBoss2 extends EnemigoAbstracto{
 
     public EnemigoBoss2(int cX, int cY) {
         super(20, new DisparoRombo(20,7), TipoEnemigo.boss2);
-        MoverStrategy[] secuenciaMovs= {new MoverDerecha(), new MoverAbajo(), new MoverIzquierda(), new MoverAbajo()};
+        MoverStrategy[] secuenciaMovs= {new MoverDerecha(), new MoverIzquierda()};
         setSecuenciaMovimientos(secuenciaMovs);
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBoss2));
         inicializarCoordenadas(cX, cY);

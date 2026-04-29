@@ -5,7 +5,7 @@ import model.CompositeCoordenada.Pixel;
 public abstract class FormaEnemigoAbstracto extends FormaAbstractShootingEntity{
 
     @Override
-    public Pixel getCannon(int cX, int cY){
-        return getBottom(cX, cY + 1);
-    }
+        public Pixel getCannon(int cX, int cY){
+            return getBottom(cX, cY + 2 );
+        }
 }

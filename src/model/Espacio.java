@@ -97,4 +97,7 @@ public class Espacio extends Observable{
 		ListaNaves.getListaNaves().borrarMuertos();
 	}
 
+    public int getRanX() {
+		return new Random().nextInt(10, hDim);
+    }
 }

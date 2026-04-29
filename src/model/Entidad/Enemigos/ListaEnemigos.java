@@ -1,6 +1,7 @@
 package model.Entidad.Enemigos;
 
 import model.ColisionEvent;
+import model.Espacio;
 import model.Factorias.FactoriaEnemigo;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
@@ -138,9 +139,25 @@ public class ListaEnemigos implements Observer {
         }
     }
 
+    public void spawnearMinions(TipoEnemigo pTipoMaster, TipoEnemigo pTipoMinion) {
+        ArrayList<Integer> posicionesY = new ArrayList<>();
+
+        for(EnemigoAbstracto enem : listaEnemigos){
+            if(enem.eresTipo(pTipoMaster)){
+                posicionesY.add(enem.getSpawnY());
+            }
+        }
+
+        for(int y : posicionesY){
+            anadirEnemigo(Espacio.getEspacio().getRanX(), y, pTipoMinion);
+        }
+    }
+
     public void disparar() {
         for(EnemigoAbstracto enem : listaEnemigos){
             enem.disparar();
         }
     }
+
+
 }

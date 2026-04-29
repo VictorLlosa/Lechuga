@@ -122,7 +122,6 @@ public class Controlador implements KeyListener {
 
 	private void procesarNaves() {
 		procesarNaveJugador(0, jugador1);
-		procesarNaveJugador(1, jugador2);
 	}
 
 	private void procesarDisparoJugador(int pJugador, InputJugador jugador) {

@@ -11,6 +11,7 @@ public class FormaBalaFlecha extends FormaAbstracta{
                 {0,1,0},
                 {1,0,1},
                 {0,0,0}
+
         };
     }
 }

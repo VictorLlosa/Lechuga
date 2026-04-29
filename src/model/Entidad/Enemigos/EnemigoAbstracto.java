@@ -5,8 +5,6 @@ import model.Entidad.Balas.BalaAbstracta;
 import model.Entidad.Balas.ListaBalas;
 import model.Entidad.ShootingAbstractEntity;
 import model.MoverStrategy.MoverAbajo;
-import model.MoverStrategy.MoverDerecha;
-import model.MoverStrategy.MoverIzquierda;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
 
@@ -61,5 +59,9 @@ public abstract class EnemigoAbstracto extends ShootingAbstractEntity {
         if (movAct > secuenciaMovimientos.length - 1) movAct = 0;
         this.changeMoverStrategy(secuenciaMovimientos[movAct]);
 
+    }
+
+    public int getSpawnY() {
+        return getCannon().getY() + 5;
     }
 }

@@ -30,12 +30,10 @@ public abstract class FormaAbstracta{
     }
 
     public Pixel getTop(int cX, int cY){
-        int offsetX = forma[0].length / 2;
         int offsetY = forma.length / 2;
         return new Pixel(cX, cY - offsetY);
     }
     public Pixel getBottom(int cX, int cY){
-        int offsetX = forma[0].length / 2;
         int offsetY = forma.length / 2;
         return new Pixel(cX, cY + offsetY);
     }
