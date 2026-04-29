@@ -34,9 +34,6 @@ public class ListaBalas implements Observer {
         }
     }
 
-    public int getNumBalas() {
-        return listaBalas.size();
-    }
 
     /**
      * Este metodo es llamado por naveAbstracta al reiniciar y borra la lista de balas de la nave

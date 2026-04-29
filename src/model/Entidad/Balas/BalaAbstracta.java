@@ -11,8 +11,8 @@ public abstract class BalaAbstracta extends EntidadAbstracta {
 
     MoverStrategy movimiento;
 
-    protected BalaAbstracta(){
-        movimiento = new MoverArriba();
+    protected BalaAbstracta(MoverStrategy pMovStrat){
+        movimiento = pMovStrat;
     }
     public void moverEnEspacio() {
         movimiento.mover(TipoEntidad.bala, getId(), getCoord());
@@ -24,7 +24,7 @@ public abstract class BalaAbstracta extends EntidadAbstracta {
     }
 
     public boolean estaFuera() {
-        return !getCoord().sePuedeMover(0, -1);
+        return !getCoord().sePuedeMover(0, -1) || !getCoord().sePuedeMover(0, 1);
     }
 }
 

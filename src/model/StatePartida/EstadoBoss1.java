@@ -2,13 +2,16 @@ package model.StatePartida;
 
 import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
-import model.Entidad.Naves.ListaNaves;
-import model.Espacio;
+import model.MoverStrategy.MoverDerecha;
+import model.MoverStrategy.MoverIzquierda;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
-import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 
 public class EstadoBoss1 implements EstadoPartida {
+
+    private MoverStrategy[] movimientosBoss = {new MoverDerecha(), new MoverIzquierda()};
+    private int movAct = 0;
 
     @Override
     public void loopJuego(GestorPartida gestorPartida) {
@@ -37,6 +40,10 @@ public class EstadoBoss1 implements EstadoPartida {
                 if (gestorPartida.contadorAcciones % 10 == 0) { // 100 ms
                     ListaEnemigos.getListaEnemigos().moverEnemigos();
                     ListaEnemigos.getListaEnemigos().disparar();
+
+                }
+                if (gestorPartida.contadorAcciones % 100 == 0) { //1seg
+                    ListaEnemigos.getListaEnemigos().toggleMovimiento(TipoEnemigo.boss1);
                     gestorPartida.contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
                 }
                 break;

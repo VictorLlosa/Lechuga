@@ -2,10 +2,9 @@ package model.Entidad.Naves;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Entidad.Balas.ListaBalas;
-import model.CompositeCoordenada.Pixel;
 import model.Entidad.ShootingAbstractEntity;
-import model.Formas.FormaNave;
 import model.DisparoStrategy.DisparoStrategy;
+import model.MoverStrategy.MoverArriba;
 import model.Tipos.TipoEntidad;
 
 public class NaveAbstracta extends ShootingAbstractEntity {
@@ -16,6 +15,11 @@ public class NaveAbstracta extends ShootingAbstractEntity {
         super(pDisparo);
     }
 
+    @Override
+    public void disparar() {
+        BalaAbstracta bala = getDisparo().disparar(getCannon().getX(), getCannon().getY(), new MoverArriba());
+        if(bala != null) ListaBalas.getListaBalas().anadirBala(bala);
+    }
 
 
     public boolean tienesId(int idNave) {
@@ -26,7 +30,7 @@ public class NaveAbstracta extends ShootingAbstractEntity {
     public void toggleStrategy(){
         this.stratAct ++;
         if(stratAct > strategies.length -1 ) stratAct = 0;
-        changeStrategy(strategies[stratAct]);
+        changeDisparoStrategy(strategies[stratAct]);
     }
 
 

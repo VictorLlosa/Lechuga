@@ -2,6 +2,7 @@ package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoBala;
 
 public class DisparoRombo extends DisparoAbstracto {
@@ -11,10 +12,10 @@ public class DisparoRombo extends DisparoAbstracto {
     }
 
     @Override
-    public BalaAbstracta disparar(int cX, int cY) {
+    public BalaAbstracta disparar(int cX, int cY, MoverStrategy pMovStrat) {
         if (!puedeDisparar()) return null;
 
-        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, cX, cY - 1);//TODO: OFFSET ESTA HARDCODEADO
+        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.rombo, cX, cY - 1, pMovStrat);//TODO: OFFSET ESTA HARDCODEADO
 
         bala.ponerEnEspacio();
         return bala;

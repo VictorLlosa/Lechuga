@@ -1,5 +1,8 @@
 package model.DisparoStrategy;
 
+import model.Entidad.Balas.BalaAbstracta;
+import model.MoverStrategy.MoverStrategy;
+
 public abstract class DisparoAbstracto implements DisparoStrategy {
 
     private int municion;
@@ -33,4 +36,5 @@ public abstract class DisparoAbstracto implements DisparoStrategy {
     }
 
 
+    public abstract BalaAbstracta disparar(int cX, int cY, MoverStrategy pMovStrat);
 }

@@ -1,6 +1,7 @@
 package model.Factorias;
 
 import model.Entidad.Balas.*;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoBala;
 
 
@@ -25,20 +26,20 @@ public class FactoriaBala
      * @param cY
      * @return
      */
-    public BalaAbstracta generar(TipoBala pTipo, int cX, int cY){
+    public BalaAbstracta generar(TipoBala pTipo, int cX, int cY, MoverStrategy pMovStrat){
         BalaAbstracta b;
 
         switch(pTipo){
             case TipoBala.pixel:
-                b = new BalaPixel(cX, cY);
+                b = new BalaPixel(cX, cY, pMovStrat);
                 break;
             case TipoBala.flecha:
 
-                b = new BalaFlecha(cX, cY);
+                b = new BalaFlecha(cX, cY, pMovStrat);
                 break;
             case TipoBala.rombo:
 
-                b = new BalaRombo(cX, cY);
+                b = new BalaRombo(cX, cY, pMovStrat);
                 break;
             default: throw new IllegalArgumentException();
         }

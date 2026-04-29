@@ -2,6 +2,7 @@ package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoBala;
 
 
@@ -16,10 +17,10 @@ public class DisparoFlecha extends DisparoAbstracto {
         super(pMunicion,pCadencia);
     }
     @Override
-    public BalaAbstracta disparar(int cX, int cY){
+    public BalaAbstracta disparar(int cX, int cY, MoverStrategy pMovStrat){
         if (!puedeDisparar()) return null;
 
-        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, cX, cY);
+        BalaAbstracta bala = FactoriaBala.getFactoriaBala().generar(TipoBala.flecha, cX, cY, pMovStrat);
 
         bala.ponerEnEspacio();
         return bala;

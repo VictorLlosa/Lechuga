@@ -2,6 +2,7 @@ package model.Entidad.Enemigos;
 
 import model.ColisionEvent;
 import model.Factorias.FactoriaEnemigo;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEntidad;
 
@@ -131,6 +132,11 @@ public class ListaEnemigos implements Observer {
 
     }
 
+    public void toggleMovimiento(TipoEnemigo pTipoEnem){
+        for(EnemigoAbstracto enem : listaEnemigos){
+            if(enem.eresTipo(pTipoEnem)) enem.toggleMoverStrategy();
+        }
+    }
 
     public void disparar() {
         for(EnemigoAbstracto enem : listaEnemigos){
