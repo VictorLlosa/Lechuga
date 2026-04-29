@@ -7,9 +7,16 @@ import java.util.*;
 
 public class ListaBalas implements Observer {
     private final HashMap<Integer, BalaAbstracta> listaBalas;
+    private static ListaBalas miListaBalas;
 
-    public ListaBalas() {
+    private ListaBalas() {
         this.listaBalas = new HashMap<>();
+    }
+    public static ListaBalas getListaBalas(){
+        if(miListaBalas == null){
+            miListaBalas = new ListaBalas();
+        }
+        return miListaBalas;
     }
 
     public void anadirBala(BalaAbstracta pBala) {

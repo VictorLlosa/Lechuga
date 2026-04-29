@@ -1,6 +1,6 @@
 package model.Formas;
 
-public class FormaBoss2 extends FormaAbstracta{
+public class FormaBoss2 extends FormaEnemigoAbstracto{
     public FormaBoss2(){
         super();
     }

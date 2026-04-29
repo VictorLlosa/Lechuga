@@ -1,6 +1,7 @@
 package model.Entidad.Enemigos;
 
 import model.CompositeCoordenada.CompositeCoordenada;
+import model.DisparoStrategy.DisparoRombo;
 import model.Formas.FactoriaFormas;
 
 import model.Tipos.TipoEntidad;
@@ -11,10 +12,15 @@ public class EnemigoBoss2 extends EnemigoAbstracto{
     private int contadorMovimientos;
 
     public EnemigoBoss2(int cX, int cY) {
-        super(20);
+        super(20, new DisparoRombo(20,7));
         contadorMovimientos = 0;
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBoss2));
         inicializarCoordenadas(cX, cY);
+        inicializarCannon(cX,cY);
+    }
+
+    public void ponerEnEspacio() {
+        getCoord().colocarEnEspacio(TipoEntidad.boss2, getId());
     }
 
     /**

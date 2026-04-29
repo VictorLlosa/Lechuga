@@ -1,4 +1,4 @@
-package model.Strategy;
+package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
@@ -12,8 +12,8 @@ public class DisparoFlecha extends DisparoAbstracto {
      * @oaram pCoordCannon
      * @return Devuelve el CompositeCoordenada en la que se ha creado la bala
      */
-    public DisparoFlecha(){
-        super(30,7);
+    public DisparoFlecha(int pMunicion, int pCadencia){
+        super(pMunicion,pCadencia);
     }
     @Override
     public BalaAbstracta disparar(int cX, int cY){

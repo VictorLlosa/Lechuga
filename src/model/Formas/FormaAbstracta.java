@@ -3,7 +3,7 @@ package model.Formas;
 import model.CompositeCoordenada.CompositeCoordenada;
 import model.CompositeCoordenada.Pixel;
 
-public abstract class FormaAbstracta {
+public abstract class FormaAbstracta{
     private int[][] forma;
 
     protected FormaAbstracta(){
@@ -33,5 +33,10 @@ public abstract class FormaAbstracta {
         int offsetX = forma[0].length / 2;
         int offsetY = forma.length / 2;
         return new Pixel(cX, cY - offsetY);
+    }
+    public Pixel getBottom(int cX, int cY){
+        int offsetX = forma[0].length / 2;
+        int offsetY = forma.length / 2;
+        return new Pixel(cX, cY + offsetY);
     }
 }

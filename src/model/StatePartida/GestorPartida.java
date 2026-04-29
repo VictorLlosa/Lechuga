@@ -9,6 +9,7 @@ import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 import model.Tipos.TipoNave;
 
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
@@ -23,6 +24,9 @@ public class GestorPartida extends Observable {
 	private static GestorPartida miGestorPartida;
 	private final int MIN_ENEM = 4;
 	private final int MAX_ENEM = 8;
+
+	private ArrayList<Integer> idsBoss1;
+	private ArrayList<Integer> idsBoss2;
 
 	private Timer gameTimer = null; // Timer único para el bucle del juego
 									//(mejor que tener un timer por nave o bala,
@@ -180,4 +184,8 @@ public class GestorPartida extends Observable {
 		setChanged();
 		notifyObservers(pEvento);
 	}
+
+	public void addIdBoss(Integer boss) {
+	}
 }
+

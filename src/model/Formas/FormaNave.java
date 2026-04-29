@@ -3,7 +3,7 @@ package model.Formas;
 import model.CompositeCoordenada.Coordenada;
 import model.CompositeCoordenada.Pixel;
 
-public class FormaNave extends FormaAbstracta{
+public class FormaNave extends FormaAbstractShootingEntity{
 
     public FormaNave(){
         super();
@@ -18,6 +18,7 @@ public class FormaNave extends FormaAbstracta{
         };
     }
 
+    @Override
     public Pixel getCannon(int cX, int cY){
         return getTop(cX, cY - 1);
     }

@@ -1,8 +1,10 @@
 package model;
 
+import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
 import model.Entidad.Naves.ListaNaves;
 import model.StateCasilla.Casilla;
+import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEntidad;
 
 import java.util.*;
@@ -25,6 +27,7 @@ public class Espacio extends Observable{
 		}
 		addObserver(ListaEnemigos.getListaEnemigos());
 		addObserver(ListaNaves.getListaNaves());
+		addObserver(ListaBalas.getListaBalas());
 	}
 	public static Espacio getEspacio() {
 		if (miEspacio == null) {
@@ -93,4 +96,5 @@ public class Espacio extends Observable{
 		ListaEnemigos.getListaEnemigos().borrarMuertos();
 		ListaNaves.getListaNaves().borrarMuertos();
 	}
+
 }

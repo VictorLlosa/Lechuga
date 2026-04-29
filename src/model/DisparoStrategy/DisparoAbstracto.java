@@ -1,4 +1,4 @@
-package model.Strategy;
+package model.DisparoStrategy;
 
 public abstract class DisparoAbstracto implements DisparoStrategy {
 

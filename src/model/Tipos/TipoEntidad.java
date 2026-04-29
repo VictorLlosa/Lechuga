@@ -6,4 +6,8 @@ public enum TipoEntidad {
     public boolean esEnemigo() {
         return this == enemigo || this == boss1 || this == boss2;
     }
+
+    public boolean esUnaAmenazaParaLaNave() {
+        return this == enemigo || this == boss1 || this == boss2 || this == bala;
+    }
 }

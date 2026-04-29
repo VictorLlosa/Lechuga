@@ -1,4 +1,4 @@
-package model.Strategy;
+package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 

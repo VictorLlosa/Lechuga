@@ -1,5 +1,6 @@
 package model.StatePartida;
 
+import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
 import model.Entidad.Naves.ListaNaves;
 import model.Tipos.TipoEventoJuego;
@@ -24,7 +25,7 @@ public class EstadoBoss2 implements EstadoPartida {
 
                 // mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
                 if (gestorPartida.contadorAcciones % 2 == 0) { // 50 ms
-                    ListaNaves.getListaNaves().moverBalas();
+                    ListaBalas.getListaBalas().moverBalas();
                 }
                 if(gestorPartida.contadorAcciones % 3 == 0) { // 30 ms
                     gestorPartida.cambiarPantalla(TipoEventoJuego.REPAINT);

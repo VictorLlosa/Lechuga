@@ -1,20 +1,22 @@
 package model.Entidad.Enemigos;
 
-import model.Entidad.EntidadAbstracta;
-import model.Tipos.TipoEntidad;
+import model.DisparoStrategy.DisparoStrategy;
+import model.Entidad.ShootingAbstractEntity;
+import model.MoverStrategy.MoverStrategy;
 
-public abstract class EnemigoAbstracto extends EntidadAbstracta {
+public abstract class EnemigoAbstracto extends ShootingAbstractEntity {
+
 
     private int vidas;
-    protected EnemigoAbstracto(int pVidas){
+    private MoverStrategy movimiento;
+
+    protected EnemigoAbstracto(int pVidas, DisparoStrategy pDisparo){
         vidas = pVidas;
+        super(pDisparo);
     }
 
     public abstract void moverEnEspacio();
 
-    public void ponerEnEspacio() {
-        getCoord().colocarEnEspacio(TipoEntidad.enemigo, getId());
-    }
 
     public boolean haLLegadoAbajo() {
         return !getCoord().sePuedeMover(0, 1);
@@ -24,4 +26,5 @@ public abstract class EnemigoAbstracto extends EntidadAbstracta {
         vidas--;
         if (vidas == 0) matar();
     }
+
 }

@@ -21,7 +21,7 @@ public class EstadoContieneNave implements EstadoCasilla {
                 eventos.add(new ColisionEvent());
             break;
             default:
-                if(pEnt.esEnemigo()){
+                if(pEnt.esEnemigo() || pEnt == TipoEntidad.bala){
                     eventos.add(new ColisionEvent(pCasilla.getEntidad(), pCasilla.getId()));
                     eventos.add(new ColisionEvent(pEnt, pIdEntidad));
                     pCasilla.cambiarDeEstadoA(new EstadoCasillaVacia());

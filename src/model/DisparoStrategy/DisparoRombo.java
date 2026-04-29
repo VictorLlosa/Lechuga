@@ -1,4 +1,4 @@
-package model.Strategy;
+package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
@@ -6,8 +6,8 @@ import model.Tipos.TipoBala;
 
 public class DisparoRombo extends DisparoAbstracto {
 
-    public DisparoRombo() {
-        super(20, 7);
+    public DisparoRombo(int pMunicion, int pCadencia) {
+        super(pMunicion, pCadencia);
     }
 
     @Override

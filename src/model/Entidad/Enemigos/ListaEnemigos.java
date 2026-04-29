@@ -131,4 +131,10 @@ public class ListaEnemigos implements Observer {
 
     }
 
+
+    public void disparar() {
+        for(EnemigoAbstracto enem : listaEnemigos){
+            enem.disparar();
+        }
+    }
 }

@@ -65,15 +65,8 @@ public class ListaNaves implements Observer {
 
     public void alternarModoDisparo(int pJugador) {
         NaveAbstracta nave = listaNaves.get(pJugador);
-        nave.changeStrategy();
+        nave.toggleStrategy();
     }
-
-    public void moverBalas(){
-        for(NaveAbstracta nave : listaNaves){
-            nave.moverBalas();
-        }
-    }
-
 
     /**
      * Se usa en Espacio para mover la nave a las coordenadas seleccionadas. Actualiza cada coordenada que compone a la nave

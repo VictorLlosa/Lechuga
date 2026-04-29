@@ -16,7 +16,7 @@ public class EstadoContieneBala implements EstadoCasilla {
     @Override
     public ArrayList<ColisionEvent> colision(Casilla pCasilla, TipoEntidad pEnt, int pIdEntidad){
         ArrayList<ColisionEvent> eventos = new ArrayList<>();
-        if(pEnt.esEnemigo()){
+        if(pEnt.esEnemigo() || pEnt == TipoEntidad.nave){
             eventos.add(new ColisionEvent(pCasilla.getEntidad(), pCasilla.getId()));
             eventos.add(new ColisionEvent(pEnt, pIdEntidad));
         }else{

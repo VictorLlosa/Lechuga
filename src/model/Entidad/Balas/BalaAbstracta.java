@@ -3,13 +3,22 @@ package model.Entidad.Balas;
 import model.CompositeCoordenada.Coordenada;
 import model.Entidad.EntidadAbstracta;
 import model.GeneradorId;
+import model.MoverStrategy.MoverArriba;
+import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEntidad;
 
 public abstract class BalaAbstracta extends EntidadAbstracta {
 
-    public void moverEnEspacio() {
-        getCoord().moverEnEspacio(0, -1, TipoEntidad.bala, getId());
+    MoverStrategy movimiento;
+
+    protected BalaAbstracta(){
+        movimiento = new MoverArriba();
     }
+    public void moverEnEspacio() {
+        movimiento.mover(TipoEntidad.bala, getId(), getCoord());
+    }
+
+
     public void ponerEnEspacio() {
         getCoord().colocarEnEspacio(TipoEntidad.bala, getId());
     }

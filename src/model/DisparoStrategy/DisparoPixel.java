@@ -1,15 +1,16 @@
-package model.Strategy;
+package model.DisparoStrategy;
 
 import model.Entidad.Balas.BalaAbstracta;
 import model.Factorias.FactoriaBala;
 import model.Tipos.TipoBala;
+import model.Tipos.TipoEntidad;
 
 /**
  * Representa un disparo de una unica bala
  */
 public class DisparoPixel extends DisparoAbstracto{
-    public DisparoPixel() {
-        super(-1, 8);
+    public DisparoPixel(int pMunicion, int pCadencia) {
+        super(pMunicion, pCadencia);
     }
 
     /**
@@ -25,8 +26,4 @@ public class DisparoPixel extends DisparoAbstracto{
         bala.ponerEnEspacio();
         return bala;
     }
-
-
-
-
 }

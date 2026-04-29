@@ -1,5 +1,6 @@
 package model.StatePartida;
 
+import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
 import model.Entidad.Naves.ListaNaves;
 import model.Tipos.TipoEnemigo;
@@ -17,6 +18,7 @@ public class EstadoFase1 implements EstadoPartida {
         switch (estadoAct){
             case TipoEventoJuego.GANADO:
                 ListaEnemigos.getListaEnemigos().anadirEnemigo(100, 20, TipoEnemigo.boss1);
+                ListaEnemigos.getListaEnemigos().ponerEnemigosEnEspacio();
                 gestorPartida.cambiarEstado(new EstadoBoss1());
             break;
             case TipoEventoJuego.PERDIDO:
@@ -29,7 +31,7 @@ public class EstadoFase1 implements EstadoPartida {
 
                 // mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
                 if (gestorPartida.contadorAcciones % 2 == 0) { // 20 ms
-                    ListaNaves.getListaNaves().moverBalas();
+                    ListaBalas.getListaBalas().moverBalas();
                 }
 
                 if(gestorPartida.contadorAcciones % 3 == 0) { // 30 ms
@@ -45,3 +47,4 @@ public class EstadoFase1 implements EstadoPartida {
         }
         }
     }
+
