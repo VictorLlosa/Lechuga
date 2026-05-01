@@ -9,20 +9,11 @@ import model.Tipos.TipoForma;
 
 public class Enemigo extends EnemigoAbstracto{
     public Enemigo (int cX, int cY) {
-        super(1, new DisparoPixel(-1, 8), TipoEnemigo.normal);
+        super(1, new DisparoPixel(-1, 8), TipoEnemigo.normal, TipoEntidad.enemigo);
         MoverStrategy[] secuenciaMovs= {new MoverAbajo()};
         setSecuenciaMovimientos(secuenciaMovs);
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaEnemigo));
         inicializarCoordenadas(cX, cY);
         inicializarCannon(cX,cY);
-    }
-
-    public void ponerEnEspacio() {
-        getCoord().colocarEnEspacio(TipoEntidad.enemigo, getId());
-    }
-
-    public void moverEnEspacio() {
-        int[] diffs = getMovimiento().mover(TipoEntidad.enemigo, getId(),getCoord());
-        if(diffs != null) getCannon().actualizarCoord(diffs[0],diffs[1]);
     }
 }

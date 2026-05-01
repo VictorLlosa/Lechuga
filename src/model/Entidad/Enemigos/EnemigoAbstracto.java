@@ -7,6 +7,7 @@ import model.Entidad.ShootingAbstractEntity;
 import model.MoverStrategy.MoverAbajo;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
+import model.Tipos.TipoEntidad;
 
 public abstract class EnemigoAbstracto extends ShootingAbstractEntity {
 
@@ -16,16 +17,23 @@ public abstract class EnemigoAbstracto extends ShootingAbstractEntity {
     private int vidas;
     private MoverStrategy movimiento;
 
-    protected EnemigoAbstracto(int pVidas, DisparoStrategy pDisparo, TipoEnemigo pTipoEnem){
+    protected EnemigoAbstracto(int pVidas, DisparoStrategy pDisparo, TipoEnemigo pTipoEnem, TipoEntidad pTipoEntidad){
         vidas = pVidas;
         tipoEnemigo = pTipoEnem;
-        super(pDisparo);
+        super(pDisparo, pTipoEntidad);
     }
 
     public boolean eresTipo(TipoEnemigo pTipo){
         return tipoEnemigo == pTipo;
     }
-    public abstract void moverEnEspacio();
+
+    public void ponerEnEspacio() {
+        getCoord().colocarEnEspacio(getTipoEntidad(), getId());
+    }
+    public void moverEnEspacio(){
+        int[] diffs = getMovimiento().mover(getTipoEntidad(), getId(),getCoord());
+        if(diffs != null) getCannon().actualizarCoord(diffs[0],diffs[1]);
+    }
 
     @Override
     public void disparar() {

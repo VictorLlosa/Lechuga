@@ -12,7 +12,7 @@ public class NaveAbstracta extends ShootingAbstractEntity {
     private int stratAct;
 
     protected NaveAbstracta(DisparoStrategy pDisparo){
-        super(pDisparo);
+        super(pDisparo, TipoEntidad.nave);
     }
 
     @Override
@@ -61,6 +61,10 @@ public class NaveAbstracta extends ShootingAbstractEntity {
      */
     public void ponerEnEspacio(){
         getCoord().colocarEnEspacio(TipoEntidad.nave, getId());
+    }
+
+    @Override
+    public void moverEnEspacio() {
     }
 
     public void borrarNave(){

@@ -3,15 +3,18 @@ package model.Entidad;
 import model.CompositeCoordenada.Coordenada;
 import model.Formas.FormaAbstracta;
 import model.GeneradorId;
+import model.Tipos.TipoEntidad;
 
 public abstract class EntidadAbstracta {
     private Coordenada coord;
     private FormaAbstracta forma;
+    private TipoEntidad tipoEntidad;
     private final int id;
     private boolean muerta = false;
 
-    protected EntidadAbstracta() {
+    protected EntidadAbstracta(TipoEntidad pTipoent) {
         this.id = GeneradorId.getGeneradorId().nextId();
+        tipoEntidad = pTipoent;
     }
 
     public int getId() {
@@ -35,6 +38,7 @@ public abstract class EntidadAbstracta {
     }
 
     public abstract void ponerEnEspacio();
+    public abstract void moverEnEspacio();
 
     protected void inicializarCoordenadas(int cX, int cY){
         coord = forma.getComposite(cX,cY);
@@ -43,7 +47,9 @@ public abstract class EntidadAbstracta {
         forma = pForma;
     }
 
+
     protected FormaAbstracta getForma() {
         return forma;
     }
+    protected TipoEntidad getTipoEntidad(){ return tipoEntidad;}
 }

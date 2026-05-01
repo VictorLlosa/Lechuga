@@ -3,12 +3,14 @@ package model.Entidad;
 import model.CompositeCoordenada.Pixel;
 import model.DisparoStrategy.DisparoStrategy;
 import model.Formas.FormaAbstractShootingEntity;
+import model.Tipos.TipoEntidad;
 
 public abstract class ShootingAbstractEntity extends EntidadAbstracta {
     private DisparoStrategy disparo;
     private Pixel cannon;
 
-    public ShootingAbstractEntity(DisparoStrategy pDisparo){
+    public ShootingAbstractEntity(DisparoStrategy pDisparo, TipoEntidad pTipoEntidad){
+        super(pTipoEntidad);
         disparo = pDisparo;
     }
     /**
