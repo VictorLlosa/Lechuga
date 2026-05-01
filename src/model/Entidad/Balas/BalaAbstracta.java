@@ -1,9 +1,6 @@
 package model.Entidad.Balas;
 
-import model.CompositeCoordenada.Coordenada;
 import model.Entidad.EntidadAbstracta;
-import model.GeneradorId;
-import model.MoverStrategy.MoverArriba;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEntidad;
 

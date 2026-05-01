@@ -32,7 +32,7 @@ public class ListaNaves implements Observer {
      */
     public void disparar(int pJugador) {
         NaveAbstracta nave = listaNaves.get(pJugador);
-        nave.disparar();
+        if(!nave.estaMuerta()) nave.disparar();
     }
 
     /**
@@ -47,11 +47,6 @@ public class ListaNaves implements Observer {
         listaNaves.add(nave);
     }
 
-    public int getNumNaves() {
-        return listaNaves.size();
-    }
-
-
     public void reniciarListaNaves() {
         listaNaves.clear();
     }
@@ -65,7 +60,7 @@ public class ListaNaves implements Observer {
 
     public void alternarModoDisparo(int pJugador) {
         NaveAbstracta nave = listaNaves.get(pJugador);
-        nave.toggleStrategy();
+        if(!nave.estaMuerta()) nave.toggleStrategy();
     }
 
     /**
@@ -76,7 +71,7 @@ public class ListaNaves implements Observer {
      */
     public void moverNave(int pJugador, int dx, int dy) {
         NaveAbstracta nave = listaNaves.get(pJugador);
-        nave.moverNave(dx, dy);
+        if(!nave.estaMuerta()) nave.moverNave(dx, dy);
     }
 
     /**
@@ -84,7 +79,7 @@ public class ListaNaves implements Observer {
      */
     public void ponerNavesEnEspacio(){
         for(NaveAbstracta nave : listaNaves){
-            nave.ponerEnEspacio();
+            if(!nave.estaMuerta()) nave.ponerEnEspacio();
         }
     }
 

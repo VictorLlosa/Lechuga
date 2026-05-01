@@ -9,7 +9,7 @@ public interface Coordenada {
 
     boolean sePuedeMover(int dx, int dy);
 
-    void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
+    boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt);
 
     void borrar();
 

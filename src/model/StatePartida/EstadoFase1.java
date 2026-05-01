@@ -2,9 +2,7 @@ package model.StatePartida;
 
 import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
-import model.Entidad.Naves.ListaNaves;
 import model.Tipos.TipoEnemigo;
-import model.Tipos.TipoEntidad;
 import model.Tipos.TipoEventoJuego;
 
 public class EstadoFase1 implements EstadoPartida {
@@ -39,7 +37,7 @@ public class EstadoFase1 implements EstadoPartida {
                 }
 
                 if (gestorPartida.contadorAcciones % 10 == 0) { // 200 ms
-                    ListaEnemigos.getListaEnemigos().moverEnemigos();
+                    ListaEnemigos.getListaEnemigos().moverTodosEnemigos();
                     gestorPartida.contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
                 }
             break;

@@ -20,6 +20,6 @@ public class FormaNave extends FormaAbstractShootingEntity{
 
     @Override
     public Pixel getCannon(int cX, int cY){
-        return getTop(cX, cY - 1);
+        return getTop(cX, cY - 2);
     }
 }

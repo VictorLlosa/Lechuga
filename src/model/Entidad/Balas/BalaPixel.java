@@ -1,6 +1,6 @@
 package model.Entidad.Balas;
 
-import model.Formas.FactoriaFormas;
+import model.Factorias.FactoriaFormas;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoForma;
 

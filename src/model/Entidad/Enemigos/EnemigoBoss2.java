@@ -1,10 +1,8 @@
 package model.Entidad.Enemigos;
 
-import model.CompositeCoordenada.CompositeCoordenada;
 import model.DisparoStrategy.DisparoRombo;
-import model.Formas.FactoriaFormas;
+import model.Factorias.FactoriaFormas;
 
-import model.MoverStrategy.MoverAbajo;
 import model.MoverStrategy.MoverDerecha;
 import model.MoverStrategy.MoverIzquierda;
 import model.MoverStrategy.MoverStrategy;
@@ -15,7 +13,7 @@ import model.Tipos.TipoForma;
 public class EnemigoBoss2 extends EnemigoAbstracto{
 
     public EnemigoBoss2(int cX, int cY) {
-        super(20, new DisparoRombo(20,7), TipoEnemigo.boss2);
+        super(30, new DisparoRombo(20,7), TipoEnemigo.boss2);
         MoverStrategy[] secuenciaMovs= {new MoverDerecha(), new MoverIzquierda()};
         setSecuenciaMovimientos(secuenciaMovs);
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaBoss2));
@@ -35,7 +33,7 @@ public class EnemigoBoss2 extends EnemigoAbstracto{
     @Override
     public void moverEnEspacio() {
         int[] diffs = getMovimiento().mover(TipoEntidad.boss2, getId(),getCoord());
-        getCannon().actualizarCoord(diffs[0],diffs[1]);
+        if(diffs != null) getCannon().actualizarCoord(diffs[0],diffs[1]);
     }
 }
 

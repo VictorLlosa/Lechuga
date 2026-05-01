@@ -22,11 +22,9 @@ import javax.swing.Timer;
 public class GestorPartida extends Observable {
 
 	private static GestorPartida miGestorPartida;
+	private int numJugadores = 1;
 	private final int MIN_ENEM = 4;
 	private final int MAX_ENEM = 8;
-
-	private ArrayList<Integer> idsBoss1;
-	private ArrayList<Integer> idsBoss2;
 
 	private Timer gameTimer = null; // Timer único para el bucle del juego
 									//(mejor que tener un timer por nave o bala,
@@ -100,7 +98,11 @@ public class GestorPartida extends Observable {
 	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
 	private void anadirNaves(TipoNave pTipo) {
-		ListaNaves.getListaNaves().anadirNave(pTipo, 100, 100);
+		for (int i = 0; i < numJugadores; i++) {
+			int x = (i + 1) * Espacio.getEspacio().getMaxEspaciado(numJugadores + 1);
+			int y = 100;
+			ListaNaves.getListaNaves().anadirNave(pTipo, x, y);
+		}
 		ListaNaves.getListaNaves().ponerNavesEnEspacio();
 	}
 
@@ -184,8 +186,8 @@ public class GestorPartida extends Observable {
 		setChanged();
 		notifyObservers(pEvento);
 	}
-
-	public void addIdBoss(Integer boss) {
-	}
+    public void setNumeroJugadores(int pNumeroJugadores) {
+		numJugadores = pNumeroJugadores;
+    }
 }
 

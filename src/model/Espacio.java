@@ -36,8 +36,8 @@ public class Espacio extends Observable{
 		return miEspacio;
 	}
 
-	public int getMaxEspaciado(int pNumEnem){
-		return hDim / pNumEnem;
+	public int getMaxEspaciado(int pNumEnt){
+		return hDim / pNumEnt;
 	}
 
 	@SuppressWarnings("deprecation")

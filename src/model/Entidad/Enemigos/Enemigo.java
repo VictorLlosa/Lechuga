@@ -1,6 +1,6 @@
 package model.Entidad.Enemigos;
 import model.DisparoStrategy.DisparoPixel;
-import model.Formas.FactoriaFormas;
+import model.Factorias.FactoriaFormas;
 import model.MoverStrategy.MoverAbajo;
 import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
@@ -23,6 +23,6 @@ public class Enemigo extends EnemigoAbstracto{
 
     public void moverEnEspacio() {
         int[] diffs = getMovimiento().mover(TipoEntidad.enemigo, getId(),getCoord());
-        getCannon().actualizarCoord(diffs[0],diffs[1]);
+        if(diffs != null) getCannon().actualizarCoord(diffs[0],diffs[1]);
     }
 }

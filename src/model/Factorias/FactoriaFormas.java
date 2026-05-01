@@ -1,5 +1,5 @@
-package model.Formas;
-import model.Tipos.TipoEntidad;
+package model.Factorias;
+import model.Formas.*;
 import model.Tipos.TipoForma;
 
 public class FactoriaFormas {

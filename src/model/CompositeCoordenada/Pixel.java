@@ -52,10 +52,11 @@ public class Pixel implements Coordenada {
 	}
 
 	@Override
-	public void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+	public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
 		this.borrar();
 		this.actualizarCoord(dx, dy);
 		this.colocarEnEspacio(pEnt, pIdEnt);
+		return true;
 	}
 	@Override
 	public boolean colocarEnEspacio(TipoEntidad pEnt, int pIdEnt) {

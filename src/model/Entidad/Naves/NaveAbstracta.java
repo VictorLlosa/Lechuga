@@ -52,8 +52,8 @@ public class NaveAbstracta extends ShootingAbstractEntity {
      */
     public void moverNave(int dx, int dy) {
         if(!getCoord().sePuedeMover(dx, dy)) return; //Si la nave se intenta salir no se mueve pero no se borra
-        getCoord().moverEnEspacio(dx,dy, TipoEntidad.nave, getId());
-        getCannon().actualizarCoord(dx,dy);
+        if(getCoord().moverEnEspacio(dx,dy, TipoEntidad.nave, getId())) getCannon().actualizarCoord(dx,dy);
+
     }
 
     /**

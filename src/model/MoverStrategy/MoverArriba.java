@@ -6,7 +6,7 @@ import model.Tipos.TipoEntidad;
 public class MoverArriba implements MoverStrategy{
     @Override
     public int[] mover(TipoEntidad pTipoEnt, int pId, Coordenada pCoord) {
-        pCoord.moverEnEspacio(0, -1, pTipoEnt, pId);
-        return new int[]{0, -1};
+        if(pCoord.moverEnEspacio(0, -1, pTipoEnt, pId)) return new int[]{0, -1};
+        else return null;
     }
 }

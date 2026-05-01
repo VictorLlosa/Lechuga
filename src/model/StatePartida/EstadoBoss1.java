@@ -2,14 +2,8 @@ package model.StatePartida;
 
 import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
-import model.Espacio;
-import model.MoverStrategy.MoverDerecha;
-import model.MoverStrategy.MoverIzquierda;
-import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
 import model.Tipos.TipoEventoJuego;
-
-import java.util.Random;
 
 public class EstadoBoss1 implements EstadoPartida {
 
@@ -38,7 +32,7 @@ public class EstadoBoss1 implements EstadoPartida {
                 }
 
                 if (gestorPartida.contadorAcciones % 10 == 0) { // 100 ms
-                    ListaEnemigos.getListaEnemigos().moverEnemigos();
+                    ListaEnemigos.getListaEnemigos().moverTodosEnemigos();
                     ListaEnemigos.getListaEnemigos().disparar();
 
                 }

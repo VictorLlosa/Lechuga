@@ -40,12 +40,13 @@ public class CompositeCoordenada implements Coordenada {
      * @param pIdEnt
      * @return
      */
-    public void moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
+    public boolean moverEnEspacio(int dx, int dy, TipoEntidad pEnt, int pIdEnt) {
         if(this.sePuedeMover(dx, dy) && !this.colisiona(dx, dy, pEnt, pIdEnt)){
             this.borrar();
             this.actualizarCoord(dx, dy);
             this.colocarEnEspacio(pEnt, pIdEnt);
-        }
+            return true;
+        }else return false;
     }
 
     @Override

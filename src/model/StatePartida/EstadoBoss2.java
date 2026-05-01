@@ -40,15 +40,13 @@ public class EstadoBoss2 implements EstadoPartida {
 
                 if (gestorPartida.contadorAcciones % 10 == 0) { // 100 ms
                     ListaEnemigos.getListaEnemigos().disparar();
-                    ListaEnemigos.getListaEnemigos().moverEnemigos();
+                    ListaEnemigos.getListaEnemigos().moverTodosEnemigos();
                 }
                 if (gestorPartida.contadorAcciones % 100 == 0) { //1seg
                     ListaEnemigos.getListaEnemigos().toggleMovimiento(TipoEnemigo.boss1);
-                    ListaEnemigos.getListaEnemigos().toggleMovimiento(TipoEnemigo.boss2);
-
-
                 }
                 if(gestorPartida.contadorAcciones % 200 == 0) { //2 seg
+                    ListaEnemigos.getListaEnemigos().toggleMovimiento(TipoEnemigo.boss2);
                     ListaEnemigos.getListaEnemigos().spawnearMinions(TipoEnemigo.boss1, TipoEnemigo.normal);
                     gestorPartida.contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
                 }

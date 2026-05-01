@@ -1,7 +1,7 @@
 package model.Entidad.Naves;
 
 
-import model.Formas.FactoriaFormas;
+import model.Factorias.FactoriaFormas;
 import model.DisparoStrategy.DisparoFlecha;
 import model.DisparoStrategy.DisparoPixel;
 import model.DisparoStrategy.DisparoRombo;

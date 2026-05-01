@@ -3,9 +3,7 @@ package model.Entidad.Enemigos;
 import model.ColisionEvent;
 import model.Espacio;
 import model.Factorias.FactoriaEnemigo;
-import model.MoverStrategy.MoverStrategy;
 import model.Tipos.TipoEnemigo;
-import model.Tipos.TipoEntidad;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -82,12 +80,24 @@ public class ListaEnemigos implements Observer {
         return null;
     }
 
+
+    public void moverEnemigos(TipoEnemigo pTipoEnem) {
+        for(EnemigoAbstracto enem : listaEnemigos){ //primero marcamos como muerto
+            if(!enem.eresTipo(pTipoEnem)) continue;
+            enem.moverEnEspacio();
+            if(enem.haLLegadoAbajo()){
+                enemigoHaLlegadoAbajo = true;
+                enem.matar();
+            }
+        }
+
+    }
     /**
      * Le dice a todos los enemigos que se muevan. Si han llegado abajo y se elimina de la lista.
      * Llama a lethalHit() para ver si se ha matado al enemigo y
      * en ese caso lo borra
      */
-    public void moverEnemigos() {
+    public void moverTodosEnemigos() {
         for(EnemigoAbstracto enem : listaEnemigos){ //primero marcamos como muerto
             enem.moverEnEspacio();
             if(enem.haLLegadoAbajo()){
@@ -158,6 +168,7 @@ public class ListaEnemigos implements Observer {
             enem.disparar();
         }
     }
+
 
 
 }
