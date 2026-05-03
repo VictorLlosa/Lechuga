@@ -1,5 +1,6 @@
 package model.StatePartida;
 
+import model.Entidad.Balas.ListaBalas;
 import model.Entidad.Enemigos.ListaEnemigos;
 import model.Espacio;
 import model.GeneradorId;
@@ -50,7 +51,7 @@ public class GestorPartida extends Observable {
 	 * Metodo dentro de la ctr de GestorPartida, lo usamos en caso de que el n. de
 	 * querer generar los enemigos aleatoriamente (de 4 a 8)
 	 */
-	public int numeroEnemigosAleatorio(){
+	private int numeroEnemigosAleatorio(){
 		Random r = new Random();
 		return MIN_ENEM + r.nextInt(MAX_ENEM - MIN_ENEM+1);
 	}
@@ -75,10 +76,10 @@ public class GestorPartida extends Observable {
 	 * El orden de los metodos de esta funcion es lo que mas importa de cara al jeugo
 	 */
 	public void reiniciarPartida(){
-		borrarEnemigos();
-		reiniciarContadorIds();
-		borrarBalas();
-		borrarNaves();
+		ListaEnemigos.getListaEnemigos().borrarEnemigos();
+		GeneradorId.getGeneradorId().reset();
+		ListaNaves.getListaNaves().borrarBalas();
+		ListaNaves.getListaNaves().borrarNaves();
 		setChanged();
 		notifyObservers(TipoEventoJuego.REINICIAR);
 	}
@@ -86,13 +87,22 @@ public class GestorPartida extends Observable {
 	private void iniciarLoopJuego() {
 		if (gameTimer == null) {
 			gameTimer = new Timer(gameDelay, e -> {
-				Espacio.getEspacio().borrarEntidadesMuertas();
+				ListaEnemigos.getListaEnemigos().borrarMuertos();
+				ListaNaves.getListaNaves().borrarMuertos();
+				ListaBalas.getListaBalas().borrarMuertos();
 				estadoPartida.loopJuego(miGestorPartida);
 			});
 			gameTimer.setInitialDelay(0);
 			gameTimer.start();
 		}
 	}
+	public void detenerGameTimer() {
+		if (gameTimer != null) {
+			gameTimer.stop();
+			gameTimer = null;
+		}
+	}
+
 
 	/**
 	 * @param pTipo Tipo de nave(s) que queremos iniciar
@@ -104,17 +114,6 @@ public class GestorPartida extends Observable {
 			ListaNaves.getListaNaves().anadirNave(pTipo, x, y);
 		}
 		ListaNaves.getListaNaves().ponerNavesEnEspacio();
-	}
-
-	private void borrarNaves(){
-		ListaNaves.getListaNaves().borrarNaves();
-	}
-
-	/**
-	 * Metodo que borra todas las balas de la lista de naves, el cual llama a la lista de naves para borrarlas
-	 */
-	private void borrarBalas(){
-		ListaNaves.getListaNaves().borrarBalas();
 	}
 
 
@@ -132,10 +131,6 @@ public class GestorPartida extends Observable {
 		ListaEnemigos.getListaEnemigos().ponerEnemigosEnEspacio();
 	} //TODO: MOVER A CADA ESTADO
 
-	private void borrarEnemigos(){
-		ListaEnemigos.getListaEnemigos().borrarEnemigos();
-	}
-
 	public void asignarObserverCasilla(Observer o, int pX, int pY) {
 		Espacio.getEspacio().asignarObserverCasilla(o,pX,pY);
 	}
@@ -145,7 +140,7 @@ public class GestorPartida extends Observable {
 	 * porque ha llegado abajo. Este métoodo nos sirve para saber que tenemos que pasar de fase
 	 * @return si no hemos ganado ni perdido, devuelve un TipoEventoJuego.Jugar, ya que llamamos a este métoodo en cada vuelta del bucle
 	 */
-	public TipoEventoJuego esFinPartida() {
+	TipoEventoJuego esFinPartida() {
         TipoEventoJuego estadoFinal;
         if(!ListaEnemigos.getListaEnemigos().quedanEnemigos() && !Espacio.getEspacio().enemigoGana()){
 			estadoFinal = TipoEventoJuego.GANADO;
@@ -159,33 +154,18 @@ public class GestorPartida extends Observable {
 		return estadoFinal;
 	}
 
-	public void detenerGameTimer() {
-		if (gameTimer != null) {
-			gameTimer.stop();
-			gameTimer = null;
-		}
-	}
-
 	public void asignarObserver(Observer o) {
 		this.addObserver(o);
-	}
-
-	/**
-	 * LLama a naveAbstracta.reiniciarcontador naves
-	 */
-	private void reiniciarContadorIds(){
-		GeneradorId.getGeneradorId().reset();
 	}
 
 	public void cambiarEstado(EstadoPartida pEst){
 		this.estadoPartida= pEst;
 	}
-
-
-	public void cambiarPantalla(TipoEventoJuego pEvento) {
+	void cambiarPantalla(TipoEventoJuego pEvento) {
 		setChanged();
 		notifyObservers(pEvento);
 	}
+
     public void setNumeroJugadores(int pNumeroJugadores) {
 		numJugadores = pNumeroJugadores;
     }

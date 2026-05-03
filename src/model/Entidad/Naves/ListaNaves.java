@@ -104,7 +104,6 @@ public class ListaNaves implements Observer {
      */
     public void borrarMuertos(){
         for (NaveAbstracta nave : listaNaves) {
-            nave.borrarBalasMuertas();
             if (nave.estaMuerta()) {
                 nave.borrarNave();
             }

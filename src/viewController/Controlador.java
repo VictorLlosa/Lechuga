@@ -47,7 +47,9 @@ public class Controlador implements KeyListener {
 			case JUEGO:
 				if (e.getKeyCode() == KeyEvent.VK_M) {
 					ListaNaves.getListaNaves().alternarModoDisparo(0);
-				} else {
+				} else if (e.getKeyCode() == KeyEvent.VK_MINUS) {
+					ListaNaves.getListaNaves().alternarModoDisparo(1);
+				}else {
 					setTecla(e.getKeyCode(), true);
 				}
 				break;

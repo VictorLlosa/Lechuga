@@ -92,10 +92,6 @@ public class Espacio extends Observable{
 		matriz[x][y].vaciar();
 	}
 
-	public void borrarEntidadesMuertas() {
-		ListaEnemigos.getListaEnemigos().borrarMuertos();
-		ListaNaves.getListaNaves().borrarMuertos();
-	}
 
     public int getRanX() {
 		return new Random().nextInt(10, hDim);

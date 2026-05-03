@@ -40,10 +40,6 @@ public class NaveAbstracta extends ShootingAbstractEntity {
     public void borrarBalas() {
         ListaBalas.getListaBalas().borrarListaBalas();
     }
-    public void borrarBalasMuertas(){
-        ListaBalas.getListaBalas().borrarMuertos();
-    }
-
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
      * Si la nave se ha intentado mover fuera de Espacio, no se actualiza cannon
@@ -51,9 +47,7 @@ public class NaveAbstracta extends ShootingAbstractEntity {
      * @param dy
      */
     public void moverNave(int dx, int dy) {
-        if(!getCoord().sePuedeMover(dx, dy)) return; //Si la nave se intenta salir no se mueve pero no se borra
         if(getCoord().moverEnEspacio(dx,dy, TipoEntidad.nave, getId())) getCannon().actualizarCoord(dx,dy);
-
     }
 
     /**
