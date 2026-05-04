@@ -9,8 +9,8 @@ import model.Tipos.TipoForma;
 
 
 public class NaveAzul extends NaveAbstracta{
-    public NaveAzul(int cX, int cY){
-        super(new DisparoPixel(-1, 8));
+    public NaveAzul(int pJugador, int cX, int cY){
+        super(new DisparoPixel(-1, 8), pJugador);
         this.setStrategies(new DisparoStrategy[]{ new DisparoPixel(-1, 8),  new DisparoRombo(20,7)});
         setForma(FactoriaFormas.getFactoriaFormas().crearForma(TipoForma.formaNave));
         inicializarCoordenadas(cX, cY);

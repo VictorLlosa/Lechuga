@@ -7,7 +7,7 @@ import model.Tipos.TipoEntidad;
 
 public abstract class BalaAbstracta extends EntidadAbstracta {
 
-    MoverStrategy movimiento;
+    protected MoverStrategy movimiento;
 
     protected BalaAbstracta(MoverStrategy pMovStrat){
         movimiento = pMovStrat;

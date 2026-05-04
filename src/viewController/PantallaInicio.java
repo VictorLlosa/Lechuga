@@ -63,7 +63,7 @@ public class PantallaInicio extends JPanel {
 	private JLabel getLblInstrucciones() {
 		if (lblInstrucciones == null) {
 			lblInstrucciones = new JLabel(
-					"P1: WASD + SPACE  |  P2: Flechas + ENTER  |  M: cambiar munición",
+					"P1: WASD + SPACE  M: cambiar munición |  P2: Flechas + ENTER  '-': cambiar munición ",
 					SwingConstants.CENTER
 			);
 			lblInstrucciones.setFont(new Font("Bitstream Charter", Font.BOLD, 26));

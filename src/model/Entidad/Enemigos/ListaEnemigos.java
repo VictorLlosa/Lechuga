@@ -5,10 +5,7 @@ import model.Espacio;
 import model.Factorias.FactoriaEnemigo;
 import model.Tipos.TipoEnemigo;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Observable;
-import java.util.Observer;
+import java.util.*;
 
 public class ListaEnemigos implements Observer {
     private ArrayList<EnemigoAbstracto> listaEnemigos;
@@ -48,9 +45,7 @@ public class ListaEnemigos implements Observer {
     }
 
     public void ponerEnemigosEnEspacio(){
-        for(EnemigoAbstracto enem: listaEnemigos){
-            enem.ponerEnEspacio();
-        }
+        listaEnemigos.forEach(enem -> enem.ponerEnEspacio());
     }
 
     public void borrarListaEnemigos(){
@@ -74,23 +69,10 @@ public class ListaEnemigos implements Observer {
      * @return
      */
     public EnemigoAbstracto findEnemigo(int pIdEnem){
-        for (EnemigoAbstracto e : listaEnemigos){
-            if (e.getId()==pIdEnem) return e;
-        }
-        return null;
-    }
-
-
-    public void moverEnemigos(TipoEnemigo pTipoEnem) {
-        for(EnemigoAbstracto enem : listaEnemigos){ //primero marcamos como muerto
-            if(!enem.eresTipo(pTipoEnem)) continue;
-            enem.moverEnEspacio();
-            if(enem.haLLegadoAbajo()){
-                enemigoHaLlegadoAbajo = true;
-                enem.matar();
-            }
-        }
-
+        return listaEnemigos.stream()
+                .filter(enem -> enem.getId() == pIdEnem)
+                .findFirst()
+                .orElse(null);
     }
     /**
      * Le dice a todos los enemigos que se muevan. Si han llegado abajo y se elimina de la lista.
@@ -98,35 +80,57 @@ public class ListaEnemigos implements Observer {
      * en ese caso lo borra
      */
     public void moverTodosEnemigos() {
-        for(EnemigoAbstracto enem : listaEnemigos){ //primero marcamos como muerto
-            enem.moverEnEspacio();
-            if(enem.haLLegadoAbajo()){
-                enemigoHaLlegadoAbajo = true;
-                enem.matar();
-            }
-        }
-
+        listaEnemigos.stream()
+                .forEach(enem -> enem.moverEnEspacio());
+        listaEnemigos.stream()
+                .filter(enem -> enem.haLLegadoAbajo())
+                .forEach(enem -> {
+                    enem.matar();
+                    enemigoHaLlegadoAbajo = true;
+                });
     }
     public void borrarMuertos(){
-        Iterator<EnemigoAbstracto> itr = listaEnemigos.iterator();
-        while(itr.hasNext()){
-            EnemigoAbstracto enem = itr.next();
-            if(enem.estaMuerta()){
-                enem.borrar();
-                itr.remove();
+        listaEnemigos.removeIf( enemigo -> {
+            if (enemigo.estaMuerta()) {
+                enemigo.borrar();
+                return true;
             }
-        }
+            return false;
+        });
     }
-
+    //Java8 aplicado
     public void borrarEnemigos() {
-        for(EnemigoAbstracto enem: listaEnemigos){
-            enem.borrar();
-        }
+        listaEnemigos.forEach(enem -> enem.borrar());
         borrarListaEnemigos();
     }
+
+    //Java8 aplicado
+    public void toggleMovimiento(TipoEnemigo pTipoEnem){
+        listaEnemigos.stream()
+                .filter(enem -> enem.eresTipo(pTipoEnem))
+                .forEach(enem -> enem.toggleMoverStrategy());
+    }
+
+    //Java8 aplicado
+    public void spawnearMinions(TipoEnemigo pTipoMaster, TipoEnemigo pTipoMinion) {
+        ArrayList<Integer> posicionesY = new ArrayList<>();
+
+        listaEnemigos.stream()
+                .filter(enem-> enem.eresTipo(pTipoMaster))
+                .map(enem -> enem.getSpawnY())
+                .forEach(y -> posicionesY.add(y));
+
+        posicionesY.forEach(y ->  anadirEnemigo(Espacio.getEspacio().getRanX(), y, pTipoMinion));
+    }
+
+    //Java8 aplicado
+    public void disparar() {
+        listaEnemigos.forEach(enem -> enem.disparar());
+    }
+
     /**
      * La casilla nos notifica dos tuplas: [TipoEntidad.eltipo, pCasilla.getId()},{pEnt, pIdEntidad (entidad movida)} ].
-     *
+     *              Java8 aplicado
      * @param o     the observable object.
      * @param arg   an argument passed to the {@code notifyObservers}
      *                 method.
@@ -134,41 +138,10 @@ public class ListaEnemigos implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         ArrayList<ColisionEvent> eventos = (ArrayList<ColisionEvent>)arg;
-        for(ColisionEvent evento : eventos){
-            if(evento.getCambio() && evento.getTipo().esEnemigo()){
-                EnemigoAbstracto enem = findEnemigo(evento.getIdEntidad());
-                enem.lethalHit();
-            }
-        }
-
+        eventos.stream()
+                .filter(evento -> evento.getCambio() && evento.getTipo().esEnemigo())
+                .map(evento -> findEnemigo(evento.getIdEntidad()))
+                .filter(Objects::nonNull)
+                .forEach(enemigo -> enemigo.lethalHit());
     }
-
-    public void toggleMovimiento(TipoEnemigo pTipoEnem){
-        for(EnemigoAbstracto enem : listaEnemigos){
-            if(enem.eresTipo(pTipoEnem)) enem.toggleMoverStrategy();
-        }
-    }
-
-    public void spawnearMinions(TipoEnemigo pTipoMaster, TipoEnemigo pTipoMinion) {
-        ArrayList<Integer> posicionesY = new ArrayList<>();
-
-        for(EnemigoAbstracto enem : listaEnemigos){
-            if(enem.eresTipo(pTipoMaster)){
-                posicionesY.add(enem.getSpawnY());
-            }
-        }
-
-        for(int y : posicionesY){
-            anadirEnemigo(Espacio.getEspacio().getRanX(), y, pTipoMinion);
-        }
-    }
-
-    public void disparar() {
-        for(EnemigoAbstracto enem : listaEnemigos){
-            enem.disparar();
-        }
-    }
-
-
-
 }

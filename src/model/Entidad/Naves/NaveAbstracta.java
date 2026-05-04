@@ -10,9 +10,11 @@ import model.Tipos.TipoEntidad;
 public class NaveAbstracta extends ShootingAbstractEntity {
     private DisparoStrategy[] strategies;
     private int stratAct;
+    private int jugador;
 
-    protected NaveAbstracta(DisparoStrategy pDisparo){
+    protected NaveAbstracta(DisparoStrategy pDisparo, int pJugador){
         super(pDisparo, TipoEntidad.nave);
+        jugador = pJugador;
     }
 
     @Override
@@ -21,6 +23,9 @@ public class NaveAbstracta extends ShootingAbstractEntity {
         if(bala != null) ListaBalas.getListaBalas().anadirBala(bala);
     }
 
+    public boolean eresDelJugador(int pJugador){
+        return jugador == pJugador;
+    }
 
     public boolean tienesId(int idNave) {
         return getId() == idNave;
@@ -31,14 +36,6 @@ public class NaveAbstracta extends ShootingAbstractEntity {
         this.stratAct ++;
         if(stratAct > strategies.length -1 ) stratAct = 0;
         changeDisparoStrategy(strategies[stratAct]);
-    }
-
-
-    /**
-     * Metodo usado por la lista de naves que sirve para borrar todas las balas de la lista de balas
-     */
-    public void borrarBalas() {
-        ListaBalas.getListaBalas().borrarListaBalas();
     }
     /**
      * ListaNaves llama a este metodo cuando se pulsa un boton para mover la nave.
@@ -59,10 +56,6 @@ public class NaveAbstracta extends ShootingAbstractEntity {
 
     @Override
     public void moverEnEspacio() {
-    }
-
-    public void borrarNave(){
-        getCoord().borrar();
     }
 
     protected void setStrategies(DisparoStrategy[] pStrategies) {

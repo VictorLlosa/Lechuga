@@ -78,7 +78,7 @@ public class GestorPartida extends Observable {
 	public void reiniciarPartida(){
 		ListaEnemigos.getListaEnemigos().borrarEnemigos();
 		GeneradorId.getGeneradorId().reset();
-		ListaNaves.getListaNaves().borrarBalas();
+		ListaBalas.getListaBalas().borrarBalas();
 		ListaNaves.getListaNaves().borrarNaves();
 		setChanged();
 		notifyObservers(TipoEventoJuego.REINICIAR);
@@ -108,10 +108,10 @@ public class GestorPartida extends Observable {
 	 * @param pTipo Tipo de nave(s) que queremos iniciar
 	 */
 	private void anadirNaves(TipoNave pTipo) {
-		for (int i = 0; i < numJugadores; i++) {
-			int x = (i + 1) * Espacio.getEspacio().getMaxEspaciado(numJugadores + 1);
+		for (int numJug= 0; numJug < numJugadores; numJug++) {
+			int x = (numJug + 1) * Espacio.getEspacio().getMaxEspaciado(numJugadores + 1);
 			int y = 100;
-			ListaNaves.getListaNaves().anadirNave(pTipo, x, y);
+			ListaNaves.getListaNaves().anadirNave(pTipo, numJug, x, y);
 		}
 		ListaNaves.getListaNaves().ponerNavesEnEspacio();
 	}

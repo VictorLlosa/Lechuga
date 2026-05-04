@@ -28,15 +28,13 @@ public class EstadoFase1 implements EstadoPartida {
                 gestorPartida.contadorAcciones++; //suma 1 cada 10 ms
 
                 // mover balas y mover enemigos con su respectivo contador para controlar velocidad de movimiento
-                if (gestorPartida.contadorAcciones % 2 == 0) { // 20 ms
+                if (gestorPartida.contadorAcciones % 1 == 0) { // 10 ms
                     ListaBalas.getListaBalas().moverBalas();
                 }
-
-                if(gestorPartida.contadorAcciones % 3 == 0) { // 30 ms
+                if(gestorPartida.contadorAcciones % 3 == 0) { // 20 ms
                     gestorPartida.cambiarPantalla(TipoEventoJuego.REPAINT);
                 }
-
-                if (gestorPartida.contadorAcciones % 10 == 0) { // 200 ms
+                if (gestorPartida.contadorAcciones % 9 == 0) { // 90 ms
                     ListaEnemigos.getListaEnemigos().moverTodosEnemigos();
                     gestorPartida.contadorAcciones = 0; // reset contador para evitar overflow a largo plazo
                 }

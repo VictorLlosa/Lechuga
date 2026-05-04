@@ -1,13 +1,12 @@
 package model.Entidad.Naves;
 
-import model.Entidad.Balas.ListaBalas;
 import model.ColisionEvent;
-import model.CompositeCoordenada.Coordenada;
 import model.Factorias.FactoriaNave;
 import model.Tipos.TipoEntidad;
 import model.Tipos.TipoNave;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -31,8 +30,8 @@ public class ListaNaves implements Observer {
      * @return devuelve un CompositeCoordenada (las coordenadas de la bala) o null si no se ha podido crear.
      */
     public void disparar(int pJugador) {
-        NaveAbstracta nave = listaNaves.get(pJugador);
-        if(!nave.estaMuerta()) nave.disparar();
+        NaveAbstracta nave = findNaveJugador(pJugador);
+        if(nave != null) nave.disparar();
     }
 
     /**
@@ -42,8 +41,8 @@ public class ListaNaves implements Observer {
      * @param cY
      * @return
      */
-    public void anadirNave(TipoNave pTipo, int cX, int cY) {
-        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo, cX, cY);
+    public void anadirNave(TipoNave pTipo, int pJugador, int cX, int cY) {
+        NaveAbstracta nave = FactoriaNave.getFactoriaNave().generar(pTipo,pJugador, cX, cY);
         listaNaves.add(nave);
     }
 
@@ -51,16 +50,23 @@ public class ListaNaves implements Observer {
         listaNaves.clear();
     }
 
-    private NaveAbstracta findNave(int idNave) {
-        for (NaveAbstracta nave : listaNaves) {
-            if (nave.tienesId(idNave) && !nave.estaMuerta()) return nave;
-        }
-        return null;
+    private NaveAbstracta findNaveId(int idNave) {
+        return listaNaves.stream()
+                .filter(nave -> nave.tienesId(idNave) && !nave.estaMuerta())
+                .findFirst()
+                .orElse(null);
+    }
+    private NaveAbstracta findNaveJugador(int pJugador) {
+        return listaNaves.stream()
+                .filter(nave -> nave.eresDelJugador(pJugador) && !nave.estaMuerta())
+                .findFirst()
+                .orElse(null);
     }
 
+
     public void alternarModoDisparo(int pJugador) {
-        NaveAbstracta nave = listaNaves.get(pJugador);
-        if(!nave.estaMuerta()) nave.toggleStrategy();
+        NaveAbstracta nave = findNaveJugador(pJugador);
+        if(nave != null) nave.toggleStrategy();
     }
 
     /**
@@ -70,32 +76,22 @@ public class ListaNaves implements Observer {
      * @param dy
      */
     public void moverNave(int pJugador, int dx, int dy) {
-        NaveAbstracta nave = listaNaves.get(pJugador);
-        if(!nave.estaMuerta()) nave.moverNave(dx, dy);
+        NaveAbstracta nave = findNaveJugador(pJugador);
+        if(nave != null) nave.moverNave(dx, dy);
     }
 
     /**
      * Metodo que llama gestorPartida para poner cada una de las naves en el espacio
      */
     public void ponerNavesEnEspacio(){
-        for(NaveAbstracta nave : listaNaves){
-            if(!nave.estaMuerta()) nave.ponerEnEspacio();
-        }
+        listaNaves.stream() //J8
+                .filter(nave -> !nave.estaMuerta())
+                .forEach(nave -> nave.ponerEnEspacio());
     }
 
-    /**
-     * Metodo que borra todas las balas de la lista de balas, el cual es utilizado por el gestorPartida para borrarlas
-     */
-    public void borrarBalas() {
-        for(NaveAbstracta nave: listaNaves){
-            nave.borrarBalas();
-        }
-    }
-
+    //J8
     public void borrarNaves() {
-        for(NaveAbstracta nave: listaNaves){
-            nave.borrarNave();
-        }
+        listaNaves.forEach(nave -> nave.borrar());
         reniciarListaNaves();
     }
 
@@ -103,22 +99,17 @@ public class ListaNaves implements Observer {
      * Borra las Naves muertas y también borra las balas muertas de cada Nave
      */
     public void borrarMuertos(){
-        for (NaveAbstracta nave : listaNaves) {
+        listaNaves.removeIf(nave -> {
             if (nave.estaMuerta()) {
-                nave.borrarNave();
+                nave.borrar();
+                return true;
             }
-        }
+            return false;
+        });
     }
 
     public boolean quedanNaves() {
-        boolean vivas = false;
-        for(NaveAbstracta nave : listaNaves){
-            if(!nave.estaMuerta()){
-                vivas = true;
-                break;
-            }
-        }
-        return vivas;
+        return listaNaves.stream().anyMatch(nave -> !nave.estaMuerta());
     }
 
     /**
@@ -131,12 +122,11 @@ public class ListaNaves implements Observer {
     @Override
     public void update(Observable o, Object arg) {
         ArrayList<ColisionEvent> eventos = (ArrayList<ColisionEvent>)arg;
-        for(ColisionEvent evento : eventos){
-            if(evento.getCambio() && evento.getTipo() == TipoEntidad.nave){
-                NaveAbstracta nave = findNave(evento.getIdEntidad());
-                if(nave != null) nave.matar();
-            }
-        }
+        eventos.stream()
+                .filter(evento -> evento.getCambio() && evento.getTipo() == TipoEntidad.nave)
+                .map(evento -> findNaveId(evento.getIdEntidad()))
+                .filter(Objects::nonNull)
+                .forEach(nave -> nave.matar());
 
     }
 }

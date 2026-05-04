@@ -22,24 +22,21 @@ public class FactoriaNave {
 
     /**
      * Dependiendo del tipo de nave, tendrá un modo de disparo u otro (unas Strategy's diferentes)
-     * @param pTipo
-     * @param pCoordCentro
-     * @return
      */
-    public NaveAbstracta generar(TipoNave pTipo, int cX, int cY){
+    public NaveAbstracta generar(TipoNave pTipo,int pJugador, int cX, int cY){
         NaveAbstracta nave;
 
         switch(pTipo){
             case TipoNave.green:
-                nave = new NaveVerde(cX, cY);
+                nave = new NaveVerde(pJugador, cX, cY);
                 break;
 
             case TipoNave.blue:
-                nave = new NaveAzul(cX, cY);
+                nave = new NaveAzul(pJugador, cX, cY);
                 break;
 
             case TipoNave.red:
-                nave = new NaveRoja(cX, cY);
+                nave = new NaveRoja(pJugador, cX, cY);
                 break;
 
             default:
