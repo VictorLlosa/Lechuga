@@ -12,7 +12,7 @@ public class ListaEnemigos implements Observer {
 
     private boolean enemigoHaLlegadoAbajo;
     private static ListaEnemigos miListaEnemigos = null;
-    public ListaEnemigos() {
+    private ListaEnemigos() {
         this.listaEnemigos = new ArrayList<>();
         enemigoHaLlegadoAbajo = false;
     }

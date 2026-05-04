@@ -14,7 +14,7 @@ public class ListaNaves implements Observer {
     private ArrayList<NaveAbstracta> listaNaves;
     private static ListaNaves miListaNaves;
 
-    public ListaNaves() {
+    private ListaNaves() {
         this.listaNaves = new ArrayList<>();
     }
 
